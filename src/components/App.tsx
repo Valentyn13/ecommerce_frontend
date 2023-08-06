@@ -1,3 +1,10 @@
+import { Header } from "./header/Header";
+
 export const App = () => {
-  return <>Hello ecommerce!</>;
+
+  return (
+    <>
+    <Header/>
+    </>
+  )
 };

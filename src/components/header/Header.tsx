@@ -1,10 +1,10 @@
+import './Header.scss';
+
 import { RiShoppingCart2Line as ShopingCart} from 'react-icons/ri';
 import {MdOutlineArrowForwardIos as CatalogArrow} from 'react-icons/md';
 import {FiLogIn as LoginIcon} from 'react-icons/fi';
 import {AiOutlineMenuUnfold as CatalogIcon} from 'react-icons/ai';
 //import {BsPersonCircle as ProfileIcon} from 'react-icons/bs'
-
-import './Header.scss';
 
 export const Header = () => {
   return (

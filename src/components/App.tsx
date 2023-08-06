@@ -1,10 +1,14 @@
-import { Header } from "./header/Header";
+import {Routes, Route} from 'react-router-dom';
+
+import { Home } from '../pages/Home.page';
 
 export const App = () => {
 
   return (
     <>
-    <Header/>
+    <Routes>
+      <Route path="/" element={<Home/>}/>
+    </Routes>
     </>
   )
-};
+}; 

@@ -1,0 +1,44 @@
+.login {
+    color: black;
+    &__container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    &__form {
+        height: 100%;
+        input {
+            border: 2px solid #43b02a;
+            height: 35px;
+            width: 300px;
+            padding: 4px;
+            border-radius: 5px;
+        }
+        input:focus {
+            outline:3px solid #1c790a;
+            border-radius: 5px;
+            border: none;
+        }
+        label {
+            div {
+                margin-bottom: 3px;
+            }
+        }
+    }
+}
+.input-container {
+    margin-bottom: 15px;
+}
+
+.submit-container {
+    margin-top: 20px;
+    input {
+        background-color: #43b02a;
+        border-radius: 5px;
+        height: 45px;
+    }
+}
+
+.input-container-last{
+    margin-bottom: 0px;
+}

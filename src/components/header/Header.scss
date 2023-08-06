@@ -29,21 +29,40 @@
         justify-content: center;
         align-items: center;
         background-color: #379424;
-        padding: 15px 20px 15px 20px;
-        margin: auto 40px auto 0;
+        padding: 15px 30px 15px 30px;
+        margin: auto 0 auto 0;
         border-radius: 5px;
+        cursor: pointer;
+        user-select: none;
         h4 {
             margin-right: 10px;
         }
     }
+    &__dropdown{
+        margin: auto 0;
+        margin-right: 40px;
+        background-color: #379424;
+        position: relative;
+        display: inline-block;
 
+        &:hover .header__dropdown_content {display: block;}
+
+    }
+    &__dropdown_content{
+        display: none;
+        position: absolute;
+        z-index: 1;
+        .dropdown-elem{
+            background-color: #43b02a;
+        }
+    }
 
 }
 
 .catalog {
     
     &__text{
-        font-size: 24px;
+        font-size: 22px;
         line-height: 110%;
     }
     &__icon{

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import "./Login.scss";
 export const Login = () => {
   const {
@@ -10,9 +11,15 @@ export const Login = () => {
     mode: 'onBlur'
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    reset()
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await axios.post('http://localhost:4200/api/user/register',data)
+      console.log(res.data)
+      reset()
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

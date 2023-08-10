@@ -1,80 +1,86 @@
+import { useEffect,ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import "./Login.scss";
-export const Login = () => {
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useLoginMutation } from "../../redux/Slices/usersApiSlice";
+import { setCredentials } from "../../redux/Slices/AuthSlice";
+
+export const LogIn = () => {
+
+const navigate = useNavigate();
+const dispatch = useAppDispatch();
+
+const [login, {isLoading}] = useLoginMutation();
+
+const { userInfo } = useAppSelector((state) => state.auth)
+
+useEffect(() => {
+  if (userInfo) {
+    console.log('Userinfo => passed!')
+  }
+},[userInfo]);
+
   const {
     register,
-    reset,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm({
-    mode: 'onBlur'
-  });
+    reset
+  } = useForm(
+    {
+      mode: 'onBlur'
+    }
+  );
 
   const onSubmit = async (data: any) => {
+    const {email, password} = data
     try {
-      const res = await axios.post('http://localhost:4200/api/user/register',data)
-      console.log(res.data)
+      const res = await login({email, password}).unwrap();
+      dispatch(setCredentials({...res}))
+      console.log('User singed up successfuly')
+      console.log(res)
       reset()
       
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
+      console.log(err)
     }
   };
-
   return (
     <div className="login">
       <div className="login__container">
         <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container">
             <label>
-              <div> Username</div>
-              <input
-                type="text"
-                {...register("name", {
-                  required: 'Fiels is required',
-                  minLength:{value: 3, message: 'Username must be longer than 3 characters'}
-                })}
-              />
-            </label>
-            <div>{
-            errors?.name && 
-            <p style={{color:'red', marginTop: '4px'}}>{errors.name.message}</p>
-            }</div>
-          </div>
-          <div className="input-container">
-            <label>
               <div>Email</div>
               <input
                 type="text"
                 {...register("email", {
-                    required: 'Fiels is required',
-                    pattern: {
-                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        message: 'Enter a valid email'
-                    }
+                  required: true,
+                  pattern: {
+                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                    message: 'Enter a valid email'
+                }
                 })}
               />
             </label>
             <div>{
             errors?.email && 
-            <p style={{color:'red', marginTop: '4px'}}>{errors.email.message}</p>
+            <p style={{color:'red', marginTop: '4px'}}>{(errors.email?.message) as ReactNode}</p>
             }</div>
           </div>
-          <div className="input-container input-container-last">
+          <div className="input-container">
             <label>
               <div>Password</div>
               <input
                 type="password"
                 {...register("password", {
-                    required: 'Fiels is required',
-                    minLength:{value: 5, message: 'Password must be longer than 5 characters'}
+                  required: true,
+                  minLength:{value: 5, message: 'Password must be longer than 5 characters'}
                 })}
               />
             </label>
             <div>{
             errors?.password && 
-            <p style={{color:'red', marginTop: '4px'}}>{errors.password.message}</p>
+            <p style={{color:'red', marginTop: '4px'}}>{(errors?.password?.message) as ReactNode}</p>
             }</div>
           </div>
           <div className="submit-container">

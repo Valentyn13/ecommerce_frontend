@@ -1,0 +1,50 @@
+.profile {
+
+    padding: 40px;
+    background-color: rgb(180, 180, 180);
+
+    &__cointainer{
+        display: flex;
+        justify-content: space-around;
+    }
+    &__photo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 148px;
+    }
+    &__info{
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 50%;
+        height: 250px;
+        background-color: rgb(253, 234, 234);
+        div {
+            margin-bottom: 30px;
+            span{
+                font-weight: 600;
+            }
+        }
+    }
+    &__id {
+
+    }
+    &__name {
+
+    }
+    &__email {
+
+    }
+
+    &__user_purchase {
+
+    }
+}
+
+
+.purchase{
+
+    &__container {}
+}

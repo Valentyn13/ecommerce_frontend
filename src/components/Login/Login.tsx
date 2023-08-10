@@ -1,11 +1,17 @@
-import { useEffect,ReactNode } from "react";
+import { useEffect,ReactNode, Dispatch, FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useLoginMutation } from "../../redux/Slices/usersApiSlice";
 import { setCredentials } from "../../redux/Slices/AuthSlice";
 
-export const LogIn = () => {
+interface ILogInProps {
+  active:boolean;
+  setActive:Dispatch<React.SetStateAction<boolean>>
+  children?: ReactNode
+}
+
+export const LogIn:FC<ILogInProps> = ({active, setActive}) => {
 
 const navigate = useNavigate();
 const dispatch = useAppDispatch();
@@ -39,6 +45,7 @@ useEffect(() => {
       console.log('User singed up successfuly')
       console.log(res)
       reset()
+      setActive(false)
       
     } catch (err) {
       console.log(err)

@@ -12,19 +12,20 @@ import { SingUp } from "../SingUp/SingUp";
 import { LogIn } from "../Login/Login";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
-  const { user } = useAppSelector((state) => state.auth.userInfo);
+  const user = useAppSelector((state) => state.auth.userInfo);
   const dispatch = useAppDispatch()
   const [logoutApiCall] = useLogoutApiCallMutation();
-  const [signUpModalActive, setSignUpModalActive] = useState<boolean>(false);
+  const [loginModalActive, setLogInModalActive] = useState<boolean>(false);
   const [registerModalActive, setRegisterModalActive] =
     useState<boolean>(false);
 
 
     const logoutHandler = async () => {
         try {
-          const res = await logoutApiCall('').unwrap();
+          //const res = await logoutApiCall('').unwrap();
 
           dispatch(logout())
           console.log('User Logout up successfuly')
@@ -56,14 +57,14 @@ export const Header = () => {
                 <div className="header__user_logo">
                   <ProfileIcon />
                 </div>
-                <div className="header__user_email">{user.email}</div>
+                <div className="header__user_email">{user.user.email}</div>
               </div>
                 <ul className="drop-menu">
                     <li className="drop-menu-item">
-                        <a href="#">Profile</a>
+                        <Link to="profile">Profile</Link>
                     </li>
                     <li className="drop-menu-item" onClick={logoutHandler}>
-                        <a href="#" style={{color: 'red'}}>Logout</a>
+                        <a href="" style={{color: 'red'}}>Logout</a>
                     </li>
                 </ul>
             </li>
@@ -84,7 +85,7 @@ export const Header = () => {
               <div className="header__dropdown_content">
                 <div
                   className="header__auth dropdown-elem"
-                  onClick={() => setSignUpModalActive(true)}
+                  onClick={() => setLogInModalActive(true)}
                 >
                   <h4>Log In</h4>
                   <div>
@@ -108,14 +109,14 @@ export const Header = () => {
         setActive={setRegisterModalActive}
         type="Sign Up"
       >
-        <SingUp />
+        <SingUp active={registerModalActive} setActive={setRegisterModalActive} />
       </Modal>
       <Modal
-        active={signUpModalActive}
-        setActive={setSignUpModalActive}
+        active={loginModalActive}
+        setActive={setLogInModalActive}
         type="Log In"
       >
-        <LogIn />
+        <LogIn active={loginModalActive} setActive={setLogInModalActive} />
       </Modal>
     </header>
   );

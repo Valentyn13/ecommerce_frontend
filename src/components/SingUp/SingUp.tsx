@@ -1,8 +1,19 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import "./Login.scss";
-import { ReactNode } from "react";
-export const SingUp = () => {
+import { ReactNode, Dispatch, FC } from "react";
+import { useAppDispatch } from "../../redux/hooks";
+import { setCredentials } from "../../redux/Slices/AuthSlice";
+import { useRegisterMutation } from "../../redux/Slices/usersApiSlice";
+
+interface ISingUpProps {
+  active:boolean;
+  setActive:Dispatch<React.SetStateAction<boolean>>
+  children?: ReactNode
+}
+export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
+
+  const dispatch = useAppDispatch()
+  const [registerUser] = useRegisterMutation()
   const {
     register,
     reset,
@@ -14,9 +25,11 @@ export const SingUp = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await axios.post('http://localhost:4200/api/user/register',data)
-      console.log(res.data)
+      //const res = await axios.post('http://localhost:4200/api/user/register',data)
+      const res = await registerUser(data).unwrap()
       reset()
+      setActive(false)
+      dispatch(setCredentials({...res}))
       
     } catch (error) {
       console.log(error)

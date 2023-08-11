@@ -12,6 +12,13 @@
         justify-content: center;
         align-items: center;
         font-size: 148px;
+        flex-direction: column;
+        button {
+            margin-top: 10px;
+            font-size: 18px;
+            padding: 5px 15px 5px 15px;
+            border-radius: 5px;
+        }
     }
     &__info{
         padding: 40px;

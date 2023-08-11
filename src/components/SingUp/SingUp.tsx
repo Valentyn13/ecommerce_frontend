@@ -25,8 +25,10 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
 
   const onSubmit = async (data: any) => {
     try {
-      //const res = await axios.post('http://localhost:4200/api/user/register',data)
-      const res = await registerUser(data).unwrap()
+      const res = await registerUser({
+        role: 'USER',
+        ...data
+      }).unwrap()
       reset()
       setActive(false)
       dispatch(setCredentials({...res}))
@@ -46,7 +48,7 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
               <input
                 type="text"
                 {...register("name", {
-                  required: 'Fiels is required',
+                  required: 'Field is required',
                   minLength:{value: 3, message: 'Username must be longer than 3 characters'}
                 })}
               />
@@ -62,7 +64,7 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
               <input
                 type="text"
                 {...register("email", {
-                    required: 'Fiels is required',
+                    required: 'Field is required',
                     pattern: {
                         value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                         message: 'Enter a valid email'
@@ -81,7 +83,7 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
               <input
                 type="password"
                 {...register("password", {
-                    required: 'Fiels is required',
+                    required: 'Field is required',
                     minLength:{value: 5, message: 'Password must be longer than 5 characters'}
                 })}
               />

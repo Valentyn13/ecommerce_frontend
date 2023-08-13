@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
-
+import { ChangeEvent, useState } from "react";
 import "./Admin.scss";
+import { useAddLaptopMutation } from "../../redux/Slices/laptopApiSlice";
+
 export const Admin = () => {
+  const [base64Images, setBase64Images] = useState<string>('a')
   const {
     register,
-     formState: {errors, isValid},
+    formState: { errors, isValid },
     reset,
     handleSubmit,
   } = useForm({
@@ -34,7 +37,50 @@ export const Admin = () => {
     },
   });
 
-  const onSubmit = (data:any) => console.log(data)
+  const [addLaptop] = useAddLaptopMutation();
+
+  const convertToBase64 = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      if(e.target.id === 'main_image') {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file) as string
+        console.log(base64Images)
+        setBase64Images(base64)
+        console.log(base64Images)
+      }
+    }
+  };
+
+  const onSubmit = async(data: any) => {
+    try {
+      if (base64Images === '') return console.log('No file')
+
+      const laptop = {
+        ...data,
+      }
+      laptop.mainImage = base64Images;
+      const res = await addLaptop(laptop).unwrap()
+      console.log('laptop added')
+      console.log(res);
+      
+    } catch (error) { 
+      console.log(error)
+    }
+
+  };
 
   return (
     <div className="admin">
@@ -42,10 +88,15 @@ export const Admin = () => {
         <div className="admin__add_section add_section">
           <h2 className="add_section__header">Add new laptop</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="add_section__container">
+            <div className="add_section__container">
               <div className="add_section__area" id="image">
-                <h4 className="add_section__label">Laptop image</h4>
-                {/* <input type="file" /> */}
+                <h4 className="add_section__label">Laptop main image</h4>
+                <input
+                  type="file"
+                  id="main_image"
+                  accept=".jpeg, .png, .jpg"
+                  onChange={handleFileUpload}
+                />
               </div>
               <div className="add_section__area" id="info">
                 <h4 className="add_section__label">Laptop info</h4>
@@ -113,14 +164,16 @@ export const Admin = () => {
                     <div className="inputs__container">
                       <label>
                         <p>Screen Type</p>
-                        <select 
-                        id=""
-                        defaultValue=""
-                        {...register("screen.screenType", {
+                        <select
+                          id=""
+                          defaultValue=""
+                          {...register("screen.screenType", {
                             required: "Field is required",
                           })}
                         >
-                          <option value="" disabled>Select type:</option>
+                          <option value="" disabled>
+                            Select type:
+                          </option>
                           <option value="IPS">IPS</option>
                           <option value="OLED">OLED</option>
                         </select>
@@ -151,14 +204,16 @@ export const Admin = () => {
                     <div className="inputs__container">
                       <label>
                         <p>Producer</p>
-                        <select 
-                        id="cpu-producer"
-                        defaultValue=""
-                        {...register("CPU.producer", {
+                        <select
+                          id="cpu-producer"
+                          defaultValue=""
+                          {...register("CPU.producer", {
                             required: "Field is required",
                           })}
                         >
-                          <option value="" disabled>Select company:</option>
+                          <option value="" disabled>
+                            Select company:
+                          </option>
                           <option value="Intel">Intel</option>
                           <option value="AMD">AMD</option>
                           <option value="Apple">Apple</option>
@@ -202,13 +257,15 @@ export const Admin = () => {
                       <label>
                         <p>Producer</p>
                         <select
-                        defaultValue="" 
-                        id="videocard-producer"
-                        {...register("videoCard.producer", {
+                          defaultValue=""
+                          id="videocard-producer"
+                          {...register("videoCard.producer", {
                             required: "Field is required",
                           })}
                         >
-                          <option value="" disabled>Select company:</option>
+                          <option value="" disabled>
+                            Select company:
+                          </option>
                           <option value="Intel">Intel</option>
                           <option value="AMD">AMD</option>
                         </select>
@@ -251,13 +308,15 @@ export const Admin = () => {
                       <label>
                         <p>Type</p>
                         <select
-                         id="hardType"
-                         defaultValue=''
-                         {...register("hardDrive.hardType", {
+                          id="hardType"
+                          defaultValue=""
+                          {...register("hardDrive.hardType", {
                             required: "Field is required",
                           })}
-                         >
-                          <option value="" disabled>Select type:</option>
+                        >
+                          <option value="" disabled>
+                            Select type:
+                          </option>
                           <option value="SSD">SSD</option>
                           <option value="HDD">HDD</option>
                         </select>
@@ -266,8 +325,8 @@ export const Admin = () => {
                   </div>
                 </div>
               </div>
-          </div>
-          <input type="submit" disabled={!isValid} />
+            </div>
+            <input type="submit" disabled={!isValid} />
           </form>
         </div>
       </div>

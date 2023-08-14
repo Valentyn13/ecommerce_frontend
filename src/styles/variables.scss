@@ -14,7 +14,7 @@ $minWidth: 320px;
 // Ширина полотна (макету)
 $maxWidth: 1142px;
 // Ширина обмежуючого контейнера (0 = немає обмеження)
-$maxWidthContainer: 1400;
+$maxWidthContainer: 1300;
 // Загальний відступ у контейнера
 // (30 = по 15px ліворуч і праворуч, 0 = немає відступу)
 $containerPadding: 30;
@@ -31,15 +31,16 @@ $mobileSmall:479px; // Телефони S
 
 
 .wrapper {
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
+	min-height: 100vh;
+	// min-height: 100%;
+	// display: flex;
+	// flex-direction: column;
+	// overflow: hidden;
 
-	// Притискаємо footer
-	> main {
-		flex: 1 1 auto;
-	}
+	// // Притискаємо footer
+	// > main {
+	// 	flex: 1 1 auto;
+	// }
 }
 
 
@@ -47,7 +48,7 @@ $mobileSmall:479px; // Телефони S
     margin: 0 auto;
     max-width:$maxWidthContainer+px;
     @media (max-width: $pc) {
-			max-width: 970px;
+			max-width: 1070px;
 		}
 		@media (max-width: $tablet) {
 			max-width: 750px;

@@ -14,7 +14,7 @@ export const laptopApiSlice = apiSlice.injectEndpoints({
         }),
         fetchLaptops: builder.mutation({
             query:() => ({
-                url: `${LAPTOP_URL}/add`,
+                url: `${LAPTOP_URL}/all`,
                 method: 'GET'
             })
         })

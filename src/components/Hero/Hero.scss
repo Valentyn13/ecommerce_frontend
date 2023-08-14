@@ -1,12 +1,8 @@
 .main {
-    width: 100%;
-    height: 100vh;
     background-color: #f2f2f2;
+    min-height: 100%;
     &__wrapper {
-        height: 100%;
-        display: grid;
-        grid-template-areas:
-        "sidebar laptops laptops laptops"
-        ;
+        display: flex;
+        min-height: 100%;
     }
 }

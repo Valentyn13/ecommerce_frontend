@@ -1,0 +1,21 @@
+.laptop_card__wrapper {
+border-bottom: 1px solid #e5e5e5;
+border-right: 1px solid #e5e5e5;
+position: relative;
+display: flex;
+flex-direction: column;
+padding: 1.6rem 1.6rem 2.8rem 1.6rem;
+width: 100%;
+background-color: #fff;
+}
+.laptop_card__img{
+    img {
+        width: 100%;
+    }
+ 
+}
+.laptop_card__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

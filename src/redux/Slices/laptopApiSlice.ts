@@ -11,8 +11,14 @@ export const laptopApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data
             })
+        }),
+        fetchLaptops: builder.mutation({
+            query:() => ({
+                url: `${LAPTOP_URL}/add`,
+                method: 'GET'
+            })
         })
     })
 })
 
-export const {useAddLaptopMutation} = laptopApiSlice;
+export const {useAddLaptopMutation, useFetchLaptopsMutation} = laptopApiSlice;

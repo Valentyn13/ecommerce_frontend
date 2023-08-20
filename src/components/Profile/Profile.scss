@@ -1,18 +1,22 @@
 .profile {
-
-    padding: 40px;
-    background-color: rgb(180, 180, 180);
-
-    &__cointainer{
+    min-height:100vh;
+    background-color:#f7f7f7;
+    &__cointainer {
+        background-color: white;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    .user__info{
+        align-items: center;
         display: flex;
-        justify-content: space-around;
     }
     &__photo{
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-size: 148px;
-        flex-direction: column;
+    }
+    &__navigation {
+        display: flex;
+         flex-direction: column;
+         margin-bottom: 20px;
         button {
             margin-top: 10px;
             font-size: 18px;
@@ -20,29 +24,47 @@
             border-radius: 5px;
         }
     }
-    &__info{
-        padding: 40px;
+    &__header {
         display: flex;
-        justify-content: center;
         flex-direction: column;
-        width: 50%;
+        align-items: center;
+        flex-basis: 250px;
+    }
+    &__info_container{
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
         height: 250px;
-        background-color: rgb(253, 234, 234);
-        div {
-            margin-bottom: 30px;
-            span{
-                font-weight: 600;
-            }
+        border: 1px solid gainsboro;
+        border-radius: 30px;
+    }
+    &__info_content {
+        font-size: 18px;
+        font-weight: 600;
+        flex-basis: 500px;
+        flex-shrink: 1;
+        min-width: 200px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        span {
+            font-weight: 500;
         }
     }
     &__id {
-
+        border-bottom: 1px solid black;
+        padding: 3px 3px 1px 3px;
     }
     &__name {
-
+        border-bottom: 1px solid black;
+        padding: 3px 3px 0px 3px;
     }
     &__email {
-
+        border-bottom: 1px solid black;
+        padding: 3px 3px 0px 3px;
     }
 
     &__user_purchase {
@@ -52,6 +74,15 @@
 
 
 .purchase{
+    display: flex;
+    flex-direction: column;
 
     &__container {}
+
+    &__item{
+        padding: 10px;
+        height: 120px;
+        background-color: rgb(235, 235, 235);
+        border-radius: 20px;
+    }
 }

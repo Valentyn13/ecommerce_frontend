@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-interface ILaptop {
+export interface ILaptop {
     name: string;
+    _id:string;
     price: number;
     producer: string;
     mainImage: string;

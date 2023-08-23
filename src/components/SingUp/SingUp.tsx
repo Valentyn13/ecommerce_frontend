@@ -1,19 +1,18 @@
 import { useForm } from "react-hook-form";
 import "./Login.scss";
-import { ReactNode, Dispatch, FC } from "react";
-import { useAppDispatch } from "../../redux/hooks";
+import { ReactNode, FC, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setCredentials } from "../../redux/Slices/AuthSlice";
 import { useRegisterMutation } from "../../redux/Slices/usersApiSlice";
+import { useNavigate } from "react-router-dom";
+import 'react-toastify/ReactToastify.min.css'
+import { ToastContainer, toast } from "react-toastify";
 
-interface ISingUpProps {
-  active:boolean;
-  setActive:Dispatch<React.SetStateAction<boolean>>
-  children?: ReactNode
-}
-export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
+export const SingUp:FC = () => {
 
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [registerUser] = useRegisterMutation()
+  const [registerUser, {error}] = useRegisterMutation()
   const {
     register,
     reset,
@@ -30,7 +29,6 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
         ...data
       }).unwrap()
       reset()
-      setActive(false)
       dispatch(setCredentials({...res}))
       
     } catch (error) {
@@ -38,10 +36,40 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
     }
   };
 
+
+  const { userInfo } = useAppSelector((state) => state.auth)
+
+useEffect(() => {
+  if (userInfo) {
+    console.log('Userinfo => passed!')
+    navigate('/')
+  }
+},[userInfo]);
+
+
+useEffect(() => {
+  if (error ) {
+    if ('data' in error) {
+      toast.error(JSON.stringify(error.data), {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+  }
+},[error]);
+
   return (
     <div className="login">
-      <div className="login__container">
-        <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
+      <ToastContainer/>
+      <div className="form__container">
+        <h2 className="form_header">Sign Up </h2>
+      <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container">
             <label>
               <div> Username</div>
@@ -97,6 +125,8 @@ export const SingUp:FC<ISingUpProps> = ({active, setActive}) => {
             <input type="submit" disabled={!isValid} />
           </div>
         </form>
+        <p className="to-login">Already have an accoutn? Go to <span onClick={() => navigate('/login')}>login</span> page</p>
+        <p onClick={() => navigate('/')} style={{color:'red', marginTop:'10px', textAlign:'center', cursor:'pointer'}}>Back</p>
       </div>
     </div>
   );

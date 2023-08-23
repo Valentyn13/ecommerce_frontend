@@ -98,7 +98,7 @@ export const Admin = () => {
             <div className="add_section__container">
               <div className="add_section__area" id="image">
                 <h4 className="add_section__label">Laptop main image</h4>
-                <input
+                <input className="file-input"
                   type="file"
                   id="main_image"
                   accept=".jpeg, .png, .jpg .webp"

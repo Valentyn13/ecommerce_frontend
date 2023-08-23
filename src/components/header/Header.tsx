@@ -1,32 +1,26 @@
-import { useState } from "react";
-import { useLogoutApiCallMutation } from "../../redux/Slices/usersApiSlice";
 import { logout } from "../../redux/Slices/AuthSlice";
 import "./Header.scss";
-
+import { useNavigate} from "react-router-dom";
 import { RiShoppingCart2Line as ShopingCart } from "react-icons/ri";
 import { MdOutlineArrowForwardIos as CatalogArrow } from "react-icons/md";
 import { FiLogIn as LoginIcon } from "react-icons/fi";
 import { HiOutlineViewGrid as CatalogIcon } from "react-icons/hi";
-import { Modal } from "../Modal/Modal";
-import { SingUp } from "../SingUp/SingUp";
-import { LogIn } from "../Login/Login";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate()
   const user = useAppSelector((state) => state.auth.userInfo);
   const dispatch = useAppDispatch()
-  const [logoutApiCall] = useLogoutApiCallMutation();
-  const [loginModalActive, setLogInModalActive] = useState<boolean>(false);
-  const [registerModalActive, setRegisterModalActive] =
-    useState<boolean>(false);
+  // const [loginModalActive, setLogInModalActive] = useState<boolean>(false);
+  // const [registerModalActive, setRegisterModalActive] =
+  //   useState<boolean>(false);
 
 
     const logoutHandler = async () => {
         try {
-          //const res = await logoutApiCall('').unwrap();
-
           dispatch(logout())
           console.log('User Logout up successfuly')
 
@@ -75,22 +69,11 @@ export const Header = () => {
             <div className="header__dropdown">
               <div
                 className="header__auth"
-                onClick={() => setRegisterModalActive(true)}
+                onClick={() =>navigate('/register') }
               >
                 <h4>Sign Up</h4>
                 <div>
                   <LoginIcon />
-                </div>
-              </div>
-              <div className="header__dropdown_content">
-                <div
-                  className="header__auth dropdown-elem"
-                  onClick={() => setLogInModalActive(true)}
-                >
-                  <h4>Log In</h4>
-                  <div>
-                    <LoginIcon />
-                  </div>
                 </div>
               </div>
             </div>
@@ -104,20 +87,6 @@ export const Header = () => {
           </div>
         </div>
       </div>
-      <Modal
-        active={registerModalActive}
-        setActive={setRegisterModalActive}
-        type="Sign Up"
-      >
-        <SingUp active={registerModalActive} setActive={setRegisterModalActive} />
-      </Modal>
-      <Modal
-        active={loginModalActive}
-        setActive={setLogInModalActive}
-        type="Log In"
-      >
-        <LogIn active={loginModalActive} setActive={setLogInModalActive} />
-      </Modal>
     </header>
   );
 };

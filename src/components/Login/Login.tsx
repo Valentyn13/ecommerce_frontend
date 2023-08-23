@@ -1,30 +1,46 @@
-import { useEffect,ReactNode, Dispatch, FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect,ReactNode, FC } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useLoginMutation } from "../../redux/Slices/usersApiSlice";
 import { setCredentials } from "../../redux/Slices/AuthSlice";
+import { useNavigate } from "react-router-dom";
+import 'react-toastify/ReactToastify.min.css'
 
-interface ILogInProps {
-  active:boolean;
-  setActive:Dispatch<React.SetStateAction<boolean>>
-  children?: ReactNode
-}
 
-export const LogIn:FC<ILogInProps> = ({active, setActive}) => {
 
-const navigate = useNavigate();
+export const LogIn:FC = () => {
+
+  const navigate = useNavigate()
 const dispatch = useAppDispatch();
 
-const [login, {isLoading}] = useLoginMutation();
+const [login, {error}] = useLoginMutation();
 
 const { userInfo } = useAppSelector((state) => state.auth)
 
 useEffect(() => {
   if (userInfo) {
     console.log('Userinfo => passed!')
+    navigate('/')
   }
 },[userInfo]);
+
+useEffect(() => {
+  if (error ) {
+    if ('data' in error) {
+      toast.error(JSON.stringify(error.data), {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+  }
+},[error]);
 
   const {
     register,
@@ -45,7 +61,6 @@ useEffect(() => {
       console.log('User singed up successfuly')
       console.log(res)
       reset()
-      setActive(false)
       
     } catch (err) {
       console.log(err)
@@ -53,7 +68,9 @@ useEffect(() => {
   };
   return (
     <div className="login">
-      <div className="login__container">
+      <ToastContainer/>
+      <div className="form__container">
+      <h2 className="form_header">Log In </h2>
         <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
           <div className="input-container">
             <label>
@@ -94,6 +111,8 @@ useEffect(() => {
             <input type="submit" disabled={!isValid} />
           </div>
         </form>
+        <p className="to-login">Don't have an account? Go to <span onClick={() => navigate('/register')}>sign up</span> page</p>
+        <p onClick={() => navigate('/')} style={{color:'red', marginTop:'10px', textAlign:'center', cursor:'pointer'}}>Back</p>
       </div>
     </div>
   );

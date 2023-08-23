@@ -1,10 +1,12 @@
 .login {
     color: black;
-    &__container {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-    }
+    width: 100%;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     &__form {
         height: 100%;
         input {
@@ -41,4 +43,25 @@
 
 .input-container-last{
     margin-bottom: 0px;
+}
+
+.form__container {
+    position: relative;
+    padding: 40px 20px;
+    border: 2px solid green;
+}
+.form_header {
+    font-size: 28px;
+    text-align:center;
+    position: absolute;
+    top: -40px;
+    left: 40%;
+}
+.to-login {
+    margin-top: 15px;
+    span {
+        color:#43b02a;
+        cursor: pointer;
+        text-decoration: underline;
+    }
 }

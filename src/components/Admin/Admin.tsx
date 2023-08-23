@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ChangeEvent, ReactNode, useState } from "react";
 import "./Admin.scss";
-import { useAddLaptopMutation } from "../../redux/Slices/laptopApiSlice";
+import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
 import { Link } from "react-router-dom";
 
 export const Admin = () => {

@@ -9,15 +9,16 @@ import { HiOutlineViewGrid as CatalogIcon } from "react-icons/hi";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { Modal } from "../Modal/Modal";
+import { useState } from "react";
+import CartWindow from "../CartWindow/CartWindow";
 
 export const Header = () => {
   const navigate = useNavigate()
+  const cartItems = useAppSelector((state) => state.cart.cartItems)
   const user = useAppSelector((state) => state.auth.userInfo);
+  const [isCartActive, setIsCartActive] = useState(false)
   const dispatch = useAppDispatch()
-  // const [loginModalActive, setLogInModalActive] = useState<boolean>(false);
-  // const [registerModalActive, setRegisterModalActive] =
-  //   useState<boolean>(false);
-
 
     const logoutHandler = async () => {
         try {
@@ -80,13 +81,21 @@ export const Header = () => {
           )}
 
           <div className="header__cart cart">
-            <div>
-              <ShopingCart />
+            <div style={{position:'relative'}}>
+              <ShopingCart style={{cursor:'pointer'}} onClick={() => setIsCartActive(true)} />
+              {cartItems.length > 0 && (
+                <div className="cart__item_count"> {cartItems.length}</div>
+              )}
             </div>
             <h4 className="cart__text">Cart</h4>
           </div>
         </div>
       </div>
+      <Modal 
+        active={isCartActive} 
+        setActive={setIsCartActive}
+        children={<CartWindow/>}
+      />
     </header>
   );
 };

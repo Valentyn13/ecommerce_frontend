@@ -3,7 +3,7 @@ import "./Login.scss";
 import { ReactNode, FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setCredentials } from "../../redux/Slices/AuthSlice";
-import { useRegisterMutation } from "../../redux/Slices/usersApiSlice";
+import { useRegisterMutation } from "../../redux/Slices/api/usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/ReactToastify.min.css'
 import { ToastContainer, toast } from "react-toastify";

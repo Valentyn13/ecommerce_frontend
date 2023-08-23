@@ -107,8 +107,19 @@
     }
 }
 
-
-
+.cart__item_count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    position: absolute;
+    background-color: #43b02a;
+    font-size: 16px;
+    top: -8px;
+    right: -8px;
+}
 
 
 // dropdown

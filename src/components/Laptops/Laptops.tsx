@@ -1,5 +1,5 @@
 import './Laptops.scss';
-import { useFetchLaptopsMutation } from '../../redux/Slices/laptopApiSlice';
+import { useFetchLaptopsMutation } from '../../redux/Slices/api/laptopApiSlice';
 import { useEffect } from 'react';
 import { LaptopCard } from '../LaptopCard/LaptopCard';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';

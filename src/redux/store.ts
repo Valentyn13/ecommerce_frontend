@@ -1,12 +1,14 @@
 import{configureStore} from '@reduxjs/toolkit';
 import authReducer from './Slices/AuthSlice';
-import laptopReducer from './Slices/LaptopSlice'
-import { apiSlice } from './Slices/apiSlice';
+import laptopReducer from './Slices/LaptopSlice';
+import cartReducer from './Slices/CartSlice';
+import { apiSlice } from './Slices/api/apiSlice';
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         laptop: laptopReducer,
+        cart: cartReducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
 

@@ -1,5 +1,5 @@
 import { Aside } from "../Aside/Aside"
-import { Laptops} from "../Main/Laptops"
+import { Laptops} from "../Laptops/Laptops"
 import './Hero.scss'
 
 export const Hero = () => {

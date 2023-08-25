@@ -1,4 +1,4 @@
-import {FC, useState} from 'react'
+import {FC, useState, useEffect} from 'react'
 import './LaptopCard.scss'
 import {AiOutlineShoppingCart as CartButton} from 'react-icons/ai'
 import {AiOutlineHeart as HeartButton, AiFillCheckCircle as AlreadyInCart} from 'react-icons/ai'
@@ -16,6 +16,7 @@ interface ILaptopCardProps {
 export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale}) => {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.cart.cartItems) as ICartItem<ILaptop>[]
+
   const [isElementInCart, setIsElementInCart] = useState<boolean>(false)
 
 
@@ -40,6 +41,14 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
   const handleCartController = () => {
     isElementInCart ? removeFromCart() : addToCart()
   }
+
+  const cartChecker = () => {
+    const inCart = cartItems.find((item) => item.product._id === laptopProps._id)
+
+      if (inCart) setIsElementInCart(true)
+  }
+
+  useEffect(() => cartChecker(),[])
 
   return (
     <div className='laptop_card__wrapper'>

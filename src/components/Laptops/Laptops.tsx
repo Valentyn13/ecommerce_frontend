@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 import { LaptopCard } from '../LaptopCard/LaptopCard';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ILaptop, loadLaptops } from '../../redux/Slices/LaptopSlice';
+import Preloader from '../Preloader/Preloader';
 export const Laptops = () => {
 
   const dispatch = useAppDispatch()
   const laptops = useAppSelector(state => state.laptop.laptops)
-  const [getLaptops] = useFetchLaptopsMutation()
+  const [getLaptops, {isLoading}] = useFetchLaptopsMutation()
 
 
 
@@ -35,7 +36,7 @@ export const Laptops = () => {
   return (
     <div className='laptops'>
       <div className="laptops__container">
-        {laptops.map((laptop, index) => {
+        {isLoading ? <Preloader/> : laptops.map((laptop, index) => {
 
           return(
               laptopRender(laptop, index)

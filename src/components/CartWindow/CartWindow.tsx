@@ -1,19 +1,19 @@
 import { ILaptop } from "../../redux/Slices/LaptopSlice"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import './CartWindow.scss'
-import { ICartItem, removeItem } from "../../redux/Slices/CartSlice"
-
+import { ICartItem, removeItem,increaseAmount, decreaseAmount } from "../../redux/Slices/CartSlice"
+import Preloader from "../Preloader/Preloader"
 
 const CartWindow = () => {
     const dispatch = useAppDispatch();
     const cartElements = useAppSelector((state) => state.cart.cartItems) as ICartItem<ILaptop>[]
     const total = (arr: ICartItem<ILaptop>[]) => arr.reduce((acc,element) => { 
-        return acc += element.product.price
+        return acc = acc + (element.product.price * element.amount)
     },0)
     return(
         <div className="cartWindow">
-            {cartElements.map((element) => {
-
+            
+            {!cartElements? <Preloader/> : cartElements.map((element) => {
                 return(
                     <div key={element.product._id} className="cartWindow__cartElement cartElement">
                         <div className="cartElement__image">
@@ -26,8 +26,8 @@ const CartWindow = () => {
                             <div className="cartElement__options">
                                 <button onClick={() => dispatch(removeItem(element.product._id))}>Remove</button>
                                 <div className="cartElement__amount">
-                                    <button>+1</button>
-                                    <button>-1</button>
+                                    <button onClick={() => dispatch(increaseAmount(element.product._id))}>+1</button>
+                                    <button onClick={() => dispatch(decreaseAmount(element.product._id))}>-1</button>
                                 </div>
                                 <div>Amount: {element.amount}</div>
                             </div>

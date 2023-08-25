@@ -25,9 +25,29 @@ const cartReducer = createSlice({
        removeItem: (state, action: PayloadAction<string>) => {
         state.cartItems =  state.cartItems.filter((item: ICartItem<ILaptop>) => item.product._id != action.payload)
         localStorage.setItem('cartItem',JSON.stringify(state.cartItems))
-       }
+       },
+
+       increaseAmount: (state, action: PayloadAction<string>) => {
+        state.cartItems =  state.cartItems.map((item: ICartItem<ILaptop>) => {
+             if (item.product._id === action.payload) {
+                item.amount += 1
+             }
+             return item
+        })
+       },
+
+       decreaseAmount: (state, action: PayloadAction<string>) => {
+        state.cartItems =  state.cartItems.map((item: ICartItem<ILaptop>) => {
+                if (item.product._id === action.payload) {
+                    if (item.amount <= 1) return item
+                    item.amount -= 1
+                }
+                return item
+        })
+       },
+
     }
 })
 
-export const {addItem, removeItem}  = cartReducer.actions;
+export const {addItem, removeItem, increaseAmount, decreaseAmount}  = cartReducer.actions;
 export default cartReducer.reducer;

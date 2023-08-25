@@ -2,7 +2,6 @@ import { ILaptop } from "../../redux/Slices/LaptopSlice"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import './CartWindow.scss'
 import { ICartItem, removeItem,increaseAmount, decreaseAmount } from "../../redux/Slices/CartSlice"
-import Preloader from "../Preloader/Preloader"
 
 const CartWindow = () => {
     const dispatch = useAppDispatch();
@@ -13,7 +12,7 @@ const CartWindow = () => {
     return(
         <div className="cartWindow">
             
-            {!cartElements? <Preloader/> : cartElements.map((element) => {
+            {cartElements.map((element) => {
                 return(
                     <div key={element.product._id} className="cartWindow__cartElement cartElement">
                         <div className="cartElement__image">

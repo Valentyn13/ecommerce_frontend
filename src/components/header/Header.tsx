@@ -92,6 +92,9 @@ export const Header = () => {
         </div>
       </div>
       <Modal 
+        contentWidth="475px"
+        contentHeight="100%"
+        modalJustifyContent="flex-end"
         active={isCartActive} 
         setActive={setIsCartActive}
         children={<CartWindow/>}

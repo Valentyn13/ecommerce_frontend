@@ -6,6 +6,8 @@ import {LiaBalanceScaleSolid as Weights} from 'react-icons/lia'
 import { ILaptop } from '../../redux/Slices/LaptopSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ICartItem, addItem, removeItem } from '../../redux/Slices/CartSlice';
+import { Modal } from '../Modal/Modal'
+import LaptopModal from '../LaptopModal/LaptopModal'
 
 interface ILaptopCardProps {
   isAction?: boolean;
@@ -18,7 +20,7 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
   const cartItems = useAppSelector((state) => state.cart.cartItems) as ICartItem<ILaptop>[]
 
   const [isElementInCart, setIsElementInCart] = useState<boolean>(false)
-
+  const [isViewDetailActive,setIsViewDetailActive] = useState<boolean>(false)
 
   const isCartIncludeItem = () => {
     let inCart = false
@@ -75,8 +77,16 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
             </div>
         </div>
         <div className="view-more">
-          <button>View details</button>
+          <button onClick={() => setIsViewDetailActive(true)}>View details</button>
         </div>
+        <Modal
+          active={isViewDetailActive}
+          setActive={setIsViewDetailActive}
+          children={<LaptopModal modalProps={laptopProps} setActive={setIsViewDetailActive}/>}
+          contentHeight='100%'
+          contentWidth='80%'
+          modalJustifyContent='center'
+        />
     </div>
   )
 }

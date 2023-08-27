@@ -1,14 +1,29 @@
 import { useForm } from "react-hook-form";
 import { ChangeEvent, ReactNode, useState } from "react";
-import "./Admin.scss";
+
 import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
 import { Link } from "react-router-dom";
+import { useAddSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/ReactToastify.min.css'
+import "./Admin.scss";
 
 export const Admin = () => {
-  const [base64Images, setBase64Images] = useState<string>('a')
+  const [base64Images, setBase64Images] = useState<string>("");
+  const [sliderImages] = useState<(string | undefined)[]>([])
+  const enum REDUCER_ACTION_TYPES {
+    ADD_FIRST_IMAGE,
+    ADD_SECOND_IMAGE,
+    ADD_THIRD_IMAGE
+  }
+
+  type ReducerAction = {
+    type:REDUCER_ACTION_TYPES;
+  }
+
   const {
     register,
-    formState: { isValid,errors },
+    formState: { isValid, errors },
     handleSubmit,
   } = useForm({
     mode: "onBlur",
@@ -38,8 +53,9 @@ export const Admin = () => {
   });
 
   const [addLaptop] = useAddLaptopMutation();
+  const [addImages] = useAddSliderImagesMutation()
 
-  const convertToBase64 = (file: Blob) => {
+  const convertToBase64 = (file:Blob) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -54,37 +70,79 @@ export const Admin = () => {
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      if(e.target.id === 'main_image') {
+      if (e.target.id === "main_image") {
         const file = e.target.files[0];
-        console.log(typeof file)
-        const base64 = await convertToBase64(file) as string
-        console.log(base64Images)
-        setBase64Images(base64)
-        console.log(base64Images)
+        const base64 = (await convertToBase64(file)) as string;
+        console.log(base64Images);
+        setBase64Images(base64);
+      } else {
+        const file = e.target.files[0];
+        const base64 = (await convertToBase64(file)) as string;
+        return base64
       }
     }
   };
 
-  const onSubmit = async(data: any) => {
+
+  const reducer = async(action:ReducerAction, e:ChangeEvent<HTMLInputElement>) => {
+    const converImage = await handleFileUpload(e)
+    switch (action.type) {
+      case REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE:
+        sliderImages[0] = converImage
+        console.log(sliderImages)
+        return 
+      case REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE:
+        sliderImages[1] = converImage
+        console.log(sliderImages)
+      return 
+
+      case REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE:
+        sliderImages[2] = converImage
+        console.log(sliderImages)
+      return
+    
+      default:
+        console.log('reducer unexpected action type')
+        break;
+    }
+  }
+
+
+  const onSubmit = async (data: any) => {
     try {
-      if (base64Images === '') return console.log('No file')
+      if (base64Images === "") return console.log("No file");
 
       const laptop = {
         ...data,
-      }
+      };
       laptop.mainImage = base64Images;
-      const res = await addLaptop(laptop).unwrap()
-      console.log('laptop added')
-      console.log(res);
-      
-    } catch (error) { 
-      console.log(error)
+      const res = await addLaptop(laptop).unwrap();
+      console.log("laptop added");
+      const imagesData = {
+        laptopId:res._id,
+        images: sliderImages
+      }
+      const images = addImages(imagesData).unwrap()
+      console.log({
+        res, images
+      })
+    } catch (error) {
+      toast.error(JSON.stringify(error.data), {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
-
   };
 
   return (
     <div className="admin">
+      <ToastContainer/>
       <div className="admin__container _container">
         <div className="admin__add_section add_section">
           <h2 className="add_section__header">Add new laptop</h2>
@@ -96,14 +154,48 @@ export const Admin = () => {
           </button>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="add_section__container">
-              <div className="add_section__area" id="image">
-                <h4 className="add_section__label">Laptop main image</h4>
-                <input className="file-input"
-                  type="file"
-                  id="main_image"
-                  accept=".jpeg, .png, .jpg .webp"
-                  onChange={handleFileUpload}
-                />
+              <div className="add_section__area " id="image">
+                <h4 className="add_section__label">Laptop images</h4>
+                <div className="add_section__area-images">
+                <div>
+                  <h2>Choose laptop preview image</h2>
+                  <input
+                    className="file-input"
+                    type="file"
+                    id="main_image"
+                    accept=".jpeg, .png, .jpg .webp"
+                    onChange={handleFileUpload}
+                  />
+                </div>
+                <div>
+                  <h2>Choose first slider image</h2>
+                  <input
+                    className="file-input"
+                    type="file"
+                    accept=".jpeg, .png, .jpg .webp"
+                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE}, e)}
+                  />
+                </div>
+
+                <div>
+                  <h2>Choose second slider image</h2>
+                  <input
+                    className="file-input"
+                    type="file"
+                    accept=".jpeg, .png, .jpg .webp"
+                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE},e)}
+                  />
+                </div>
+                <div>
+                  <h2>Choose third slider image</h2>
+                  <input
+                    className="file-input"
+                    type="file"
+                    accept=".jpeg, .png, .jpg .webp"
+                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE},e)}
+                  />
+                </div>
+                </div>
               </div>
               <div className="add_section__area" id="info">
                 <h4 className="add_section__label">Laptop info</h4>
@@ -122,12 +214,11 @@ export const Admin = () => {
                             },
                           })}
                         />
-                            {
-                              errors?.name && 
-                              <div className="input_error">
-                                {(errors.name.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.name && (
+                          <div className="input_error">
+                            {errors.name.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -139,12 +230,11 @@ export const Admin = () => {
                           })}
                           type="number"
                         />
-                            {
-                              errors?.price && 
-                              <div className="input_error">
-                                {(errors.price.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.price && (
+                          <div className="input_error">
+                            {errors.price.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -160,12 +250,11 @@ export const Admin = () => {
                             },
                           })}
                         />
-                            {
-                              errors?.producer && 
-                              <div className="input_error">
-                                {(errors.producer.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.producer && (
+                          <div className="input_error">
+                            {errors.producer.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -184,12 +273,11 @@ export const Admin = () => {
                             required: "Field is required",
                           })}
                         />
-                            {
-                              errors?.screen?.size && 
-                              <div className="input_error">
-                                {(errors.screen?.size.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.screen?.size && (
+                          <div className="input_error">
+                            {errors.screen?.size.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -208,12 +296,11 @@ export const Admin = () => {
                           <option value="IPS">IPS</option>
                           <option value="OLED">OLED</option>
                         </select>
-                        {
-                              errors?.screen?.screenType && 
-                              <div className="input_error">
-                                {(errors.screen?.screenType.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.screen?.screenType && (
+                          <div className="input_error">
+                            {errors.screen?.screenType.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -229,12 +316,11 @@ export const Admin = () => {
                             },
                           })}
                         />
-                                                {
-                              errors?.screen?.resolution && 
-                              <div className="input_error">
-                                {(errors.screen?.resolution.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.screen?.resolution && (
+                          <div className="input_error">
+                            {errors.screen?.resolution.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -261,12 +347,11 @@ export const Admin = () => {
                           <option value="AMD">AMD</option>
                           <option value="Apple">Apple</option>
                         </select>
-                        {
-                              errors?.CPU?.producer && 
-                              <div className="input_error">
-                                {(errors.CPU?.producer.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.CPU?.producer && (
+                          <div className="input_error">
+                            {errors.CPU?.producer.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -282,12 +367,11 @@ export const Admin = () => {
                             },
                           })}
                         />
-                                                {
-                              errors?.CPU?.model && 
-                              <div className="input_error">
-                                {(errors.CPU?.model.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.CPU?.model && (
+                          <div className="input_error">
+                            {errors.CPU?.model.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -299,12 +383,11 @@ export const Admin = () => {
                             required: "Field is required",
                           })}
                         />
-                                                {
-                              errors?.CPU?.cores && 
-                              <div className="input_error">
-                                {(errors.CPU?.cores.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.CPU?.cores && (
+                          <div className="input_error">
+                            {errors.CPU?.cores.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -330,12 +413,11 @@ export const Admin = () => {
                           <option value="Intel">Intel</option>
                           <option value="AMD">AMD</option>
                         </select>
-                        {
-                              errors?.videoCard?.producer && 
-                              <div className="input_error">
-                                {(errors.videoCard?.producer.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.videoCard?.producer && (
+                          <div className="input_error">
+                            {errors.videoCard?.producer.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -351,12 +433,11 @@ export const Admin = () => {
                             },
                           })}
                         />
-                            {
-                              errors?.videoCard?.model && 
-                              <div className="input_error">
-                                {(errors.videoCard?.model.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.videoCard?.model && (
+                          <div className="input_error">
+                            {errors.videoCard?.model.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -375,12 +456,11 @@ export const Admin = () => {
                             required: "Field is required",
                           })}
                         />
-                                                    {
-                              errors?.hardDrive?.value && 
-                              <div className="input_error">
-                                {(errors.hardDrive?.value.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.hardDrive?.value && (
+                          <div className="input_error">
+                            {errors.hardDrive?.value.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                     <div className="inputs__container">
@@ -399,12 +479,11 @@ export const Admin = () => {
                           <option value="SSD">SSD</option>
                           <option value="HDD">HDD</option>
                         </select>
-                        {
-                              errors?.hardDrive?.hardType && 
-                              <div className="input_error">
-                                {(errors.hardDrive?.hardType.message) as ReactNode}
-                              </div>
-                            }
+                        {errors?.hardDrive?.hardType && (
+                          <div className="input_error">
+                            {errors.hardDrive?.hardType.message as ReactNode}
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>

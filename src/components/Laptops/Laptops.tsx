@@ -21,7 +21,7 @@ export const Laptops = () => {
       return res
     }
     fetchLaptops()
-  }, [])
+  }, [dispatch,getLaptops])
 
   const laptopRender = (laptop: ILaptop,index: number) => {
 

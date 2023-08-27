@@ -83,6 +83,7 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
           active={isViewDetailActive}
           setActive={setIsViewDetailActive}
           children={<LaptopModal 
+            isActive={isViewDetailActive}
             isCartIncludeItem={isCartIncludeItem(cartItems)}
             modalProps={laptopProps}
             setActive={setIsViewDetailActive}

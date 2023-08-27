@@ -22,26 +22,26 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
   const [isElementInCart, setIsElementInCart] = useState<boolean>(false)
   const [isViewDetailActive,setIsViewDetailActive] = useState<boolean>(false)
 
-  const isCartIncludeItem = () => {
-    let inCart = false
-    cartItems.forEach(elem => {
-      if(elem.product._id === laptopProps._id) inCart = true
-    })
-    return inCart
+  const isCartIncludeItem = (cartItems:ICartItem<ILaptop>[] ) => {
+
+    return () => {
+      let inCart = false
+      cartItems.forEach(elem => {
+        if(elem.product._id === laptopProps._id) inCart = true
+      })
+      return inCart
+    }
   }
 
-  const addToCart = () => {
-    setIsElementInCart(true)
-    dispatch(addItem({amount:1, product: laptopProps}))
-  }
+  const handleIsInCartController = () => {
+    if (isElementInCart) {
+      setIsElementInCart(false)
+      dispatch(removeItem(laptopProps._id))
+    } else {
+      setIsElementInCart(true)
+      dispatch(addItem({amount:1, product: laptopProps}))
+    }
 
-  const removeFromCart = () => {
-    setIsElementInCart(false)
-    dispatch(removeItem(laptopProps._id))
-  }
-
-  const handleCartController = () => {
-    isElementInCart ? removeFromCart() : addToCart()
   }
 
   const cartChecker = () => {
@@ -71,8 +71,8 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
             <div className='laptop_card__name'>{laptopProps.name}</div>
             <div className="laptop_card__bottom">
             <p>{laptopProps.price} <span>₴</span></p>
-            <div className='laptop_card__cart' onClick={handleCartController}>
-              {isElementInCart && isCartIncludeItem() ?<AlreadyInCart/>:<CartButton/>}
+            <div className='laptop_card__cart' onClick={handleIsInCartController}>
+              {isElementInCart && isCartIncludeItem(cartItems)() ?<AlreadyInCart/>:<CartButton/>}
             </div>
             </div>
         </div>
@@ -82,7 +82,13 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
         <Modal
           active={isViewDetailActive}
           setActive={setIsViewDetailActive}
-          children={<LaptopModal modalProps={laptopProps} setActive={setIsViewDetailActive}/>}
+          children={<LaptopModal 
+            isCartIncludeItem={isCartIncludeItem(cartItems)}
+            modalProps={laptopProps}
+            setActive={setIsViewDetailActive}
+            isElementInCart={isElementInCart}
+            handleIsInCartController={handleIsInCartController}
+            />}
           contentHeight='100%'
           contentWidth='80%'
           modalJustifyContent='center'

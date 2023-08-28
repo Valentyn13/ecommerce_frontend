@@ -1,9 +1,10 @@
 import { ILaptop } from '../../redux/Slices/LaptopSlice';
-import {FC, Dispatch, useEffect} from 'react'
+import {FC, Dispatch, useEffect,} from 'react'
 import './LaptopModal.scss'
 import { useGetSliderImagesMutation } from '../../redux/Slices/api/sliderImagesApiSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import Preloader from '../Preloader/Preloader';
+import { LaptopSlider } from '../LaptopSlider/LaptopSlider';
 interface ILaptopModalProps {
     isActive: boolean
     modalProps: ILaptop
@@ -32,8 +33,7 @@ const LaptopModal:FC<ILaptopModalProps> = ({modalProps, setActive, isActive, isE
                 theme: "light",
                 });
             }
-          }
-          
+          }         
     }, [isActive])
     return(
         <div className='laptopModal'>
@@ -41,9 +41,10 @@ const LaptopModal:FC<ILaptopModalProps> = ({modalProps, setActive, isActive, isE
             {isLoading? <Preloader/>:
                            <div className="laptopModal__container _container">
                            <div className="laptopModal__headerSection">
-                               <div className="laptopModal__slider laptopSlider">
+                            <LaptopSlider mainImage={modalProps.mainImage} isActive={isActive} images={data}/>
+                                {/* <div className="laptopModal__slider laptopSlider">
                                    <img src={modalProps.mainImage} alt="product main image" />
-                               </div>
+                               </div>  */}
                                <div className='laptopModal__mainInfo'>
                                    <div>
                                    <div className='laptopModal__name'>{modalProps.name}</div>

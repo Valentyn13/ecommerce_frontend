@@ -14,7 +14,8 @@ export const Admin = () => {
   const enum REDUCER_ACTION_TYPES {
     ADD_FIRST_IMAGE,
     ADD_SECOND_IMAGE,
-    ADD_THIRD_IMAGE
+    ADD_THIRD_IMAGE,
+    ADD_FORTH_IMAGE
   }
 
   type ReducerAction = {
@@ -73,8 +74,9 @@ export const Admin = () => {
       if (e.target.id === "main_image") {
         const file = e.target.files[0];
         const base64 = (await convertToBase64(file)) as string;
-        console.log(base64Images);
+        sliderImages[0]=base64
         setBase64Images(base64);
+
       } else {
         const file = e.target.files[0];
         const base64 = (await convertToBase64(file)) as string;
@@ -88,16 +90,16 @@ export const Admin = () => {
     const converImage = await handleFileUpload(e)
     switch (action.type) {
       case REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE:
-        sliderImages[0] = converImage
+        sliderImages[1] = converImage
         console.log(sliderImages)
         return 
       case REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE:
-        sliderImages[1] = converImage
+        sliderImages[2] = converImage
         console.log(sliderImages)
       return 
 
       case REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE:
-        sliderImages[2] = converImage
+        sliderImages[3] = converImage
         console.log(sliderImages)
       return
     

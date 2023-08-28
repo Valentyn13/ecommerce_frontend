@@ -15,16 +15,32 @@
     &__headerSection {
         display: flex;
         margin-bottom: 60px;
+        margin-top: 40px;
     }
     &__slider {
-        width: 400px;
-        margin-right: 40px;
-        img {
+        position: relative;
+        flex-basis:50%;
+        margin-right: 10%;
+        .slider-img {
             width: 100%;
+        }
+        .arrow_next{
+            width: 40px;
+            top: 40%;
+            right: 0;
+
+            position: absolute;
+        }
+        .arrow_prev{
+            width: 40px;
+            position: absolute;
+            top:40%;
+            left: 0;
+            transform: rotate(180deg);
         }
     }
     &__mainInfo {
-        flex-grow: 1;
+        flex-basis: 40%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;

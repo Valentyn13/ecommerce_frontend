@@ -1,10 +1,15 @@
 
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
+import { FC, ReactNode } from "react";
 
+interface IPrivateRouteProps {
+  isAllowed: boolean;
+  redirectPath: string;
+  children:ReactNode
+}
 
-export const PrivateRoute = () => {
-    const userInfo = useAppSelector((state) => state.auth);
+export const PrivateRoute:FC<IPrivateRouteProps> = ({isAllowed, redirectPath, children}) => {
+    if(!isAllowed) return<Navigate to={redirectPath}/>
 
-  return userInfo ? <Outlet/> : <Navigate to='/profile' replace/>
+  return children ? children : <Outlet/>
 }

@@ -6,6 +6,7 @@
     flex-direction: column;
 
     &__total {
+        margin-top: 20px;
         color: darkgrey;
     }
 }
@@ -52,4 +53,31 @@
             border-radius: 3px;
         }
     }
+}
+
+.checkout-button {
+    margin-top: 10px;
+    padding: 15px 0;
+    background-color: #43b02a;
+    transition: 0.2;
+    font-size: 17px;
+    border-radius: 5px;
+    &:hover {
+        background-color:#379424 ;
+    }
+}
+.checkout-button-disabled {
+    background-color: rgb(180, 178, 178);
+    margin-top: 10px;
+    padding: 15px 0;
+    transition: 0.2;
+    font-size: 17px;
+    border-radius: 5px;
+    cursor: not-allowed;
+}
+.empty-cart {
+    font-size: 38px;
+    color: darkgrey;
+    text-align: center;
+    margin: 20px 0px 30px 0px;
 }

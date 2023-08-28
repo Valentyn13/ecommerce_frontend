@@ -6,13 +6,9 @@ export interface ICartItem<T> {
     product: T
 }
 
-
-
 const initialState = {
     cartItems: localStorage.getItem('cartItem') ? JSON.parse(localStorage.getItem('cartItem')|| '') : []
 }
-
-
 
 const cartReducer = createSlice({
     name:'cart',

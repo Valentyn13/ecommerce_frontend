@@ -1,24 +1,15 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-
-
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { IUserFetchData } from "../../types/user.types";
 
 const initialState = {
-    userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')|| '') : null
+    userInfo: (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')|| '') : null) as null | IUserFetchData
 }
-
-export const asyncHello = createAsyncThunk(
-    'userSlice/asyncHello',
-    async (_) => {
-        return 'Hello'
-    }
-)
-
 
 const authReducer = createSlice({
     name:'auth',
     initialState,
     reducers: {
-        setCredentials:(state, action: PayloadAction) => {
+        setCredentials:(state, action: PayloadAction<IUserFetchData>) => {
             state.userInfo = action.payload;
             localStorage.setItem('userInfo', JSON.stringify(action.payload))
         },
@@ -28,20 +19,7 @@ const authReducer = createSlice({
             localStorage.setItem('userInfo', '')
         }
     },
-
-    extraReducers:(builder) => {
-        builder
-        .addCase(asyncHello.pending, (state) => {
-        })
-        .addCase(asyncHello.rejected, (state) => {
-
-        })
-        .addCase(asyncHello.fulfilled, (state) => {
-
-        })
-    }
 })
-
 
 export const { setCredentials, logout } = authReducer.actions;
 export default authReducer.reducer

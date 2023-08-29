@@ -1,14 +1,15 @@
-import { ILaptop } from "../../redux/Slices/LaptopSlice"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import './CartWindow.scss'
-import { ICartItem, removeItem,increaseAmount, decreaseAmount } from "../../redux/Slices/CartSlice"
+import {  removeItem,increaseAmount, decreaseAmount } from "../../redux/Slices/CartSlice"
 import { useNavigate } from "react-router-dom"
+import { ICartLaptopList } from "../../types/cart.types"
 
 const CartWindow = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
-    const cartElements = useAppSelector((state) => state.cart.cartItems) as ICartItem<ILaptop>[]
-    const total = (arr: ICartItem<ILaptop>[]) => arr.reduce((acc,element) => { 
+    const cartElements = useAppSelector((state) => state.cart.cartItems) as ICartLaptopList
+
+    const total = (arr: ICartLaptopList) => arr.reduce((acc,element) => { 
         return acc = acc + (element.product.price * element.amount)
     },0)
     return(

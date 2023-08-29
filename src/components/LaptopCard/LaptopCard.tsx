@@ -1,13 +1,14 @@
-import {FC, useState, useEffect} from 'react'
+import {FC, useState, useEffect, useCallback} from 'react'
 import './LaptopCard.scss'
 import {AiOutlineShoppingCart as CartButton} from 'react-icons/ai'
 import {AiOutlineHeart as HeartButton, AiFillCheckCircle as AlreadyInCart} from 'react-icons/ai'
 import {LiaBalanceScaleSolid as Weights} from 'react-icons/lia'
-import { ILaptop } from '../../redux/Slices/LaptopSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { ICartItem, addItem, removeItem } from '../../redux/Slices/CartSlice';
+import { addItem, removeItem } from '../../redux/Slices/CartSlice';
 import { Modal } from '../Modal/Modal'
 import LaptopModal from '../LaptopModal/LaptopModal'
+import { ILaptop } from '../../types/laptop.types'
+import { ICartLaptopList } from '../../types/cart.types'
 
 interface ILaptopCardProps {
   isAction?: boolean;
@@ -17,12 +18,12 @@ interface ILaptopCardProps {
 
 export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale}) => {
   const dispatch = useAppDispatch()
-  const cartItems = useAppSelector((state) => state.cart.cartItems) as ICartItem<ILaptop>[]
+  const cartItems = useAppSelector((state) => state.cart.cartItems) as ICartLaptopList
 
   const [isElementInCart, setIsElementInCart] = useState<boolean>(false)
   const [isViewDetailActive,setIsViewDetailActive] = useState<boolean>(false)
 
-  const isCartIncludeItem = (cartItems:ICartItem<ILaptop>[] ) => {
+  const isCartIncludeItem = (cartItems:ICartLaptopList ) => {
 
     return () => {
       let inCart = false
@@ -44,13 +45,13 @@ export const LaptopCard:FC<ILaptopCardProps> = ({laptopProps, isAction, inSale})
 
   }
 
-  const cartChecker = () => {
+  const cartChecker =useCallback(() => {
     const inCart = cartItems.find((item) => item.product._id === laptopProps._id)
 
       if (inCart) setIsElementInCart(true)
-  }
+  },[cartItems, laptopProps._id])
 
-  useEffect(() => cartChecker(),[])
+  useEffect(() => cartChecker(),[cartChecker])
 
   return (
     <div className='laptop_card__wrapper'>

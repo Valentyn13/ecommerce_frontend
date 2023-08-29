@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import "./Login.scss";
 import { ReactNode, FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -7,44 +7,47 @@ import { useRegisterMutation } from "../../redux/Slices/api/usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/ReactToastify.min.css'
 import { ToastContainer, toast } from "react-toastify";
+import { IRegisterData } from "../../types/user.types";
 
 export const SingUp:FC = () => {
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [registerUser, {error}] = useRegisterMutation()
+
+  const [registerUser, {error, data}] = useRegisterMutation()
+
+  const  userInfo  = useAppSelector((state) => state.auth.userInfo)
+
   const {
     register,
     reset,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm({
+  } = useForm<IRegisterData>({
     mode: 'onBlur'
   });
 
-  const onSubmit = async (data: any) => {
-    try {
-      const res = await registerUser({
+  const onSubmit:SubmitHandler<IRegisterData> = (data) => {
+     registerUser({
         role: 'USER',
         ...data
-      }).unwrap()
-      reset()
-      dispatch(setCredentials({...res}))
-      
-    } catch (error) {
-      console.log(error)
-    }
+      })
+      reset()  
   };
 
+  useEffect(() => {
+    if (data) {
+      dispatch(setCredentials(data))
+    }
+  },[data,dispatch])
 
-  const { userInfo } = useAppSelector((state) => state.auth)
 
 useEffect(() => {
   if (userInfo) {
     console.log('Userinfo => passed!')
     navigate('/')
   }
-},[userInfo]);
+},[userInfo, navigate]);
 
 
 useEffect(() => {
@@ -94,7 +97,7 @@ useEffect(() => {
                 {...register("email", {
                     required: 'Field is required',
                     pattern: {
-                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                        value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                         message: 'Enter a valid email'
                     }
                 })}

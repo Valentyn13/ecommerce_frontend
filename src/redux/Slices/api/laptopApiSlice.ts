@@ -1,3 +1,4 @@
+import { ILaptopList } from "../../../types/laptop.types";
 import { apiSlice} from "./apiSlice";
 
 const LAPTOP_URL = 'api/laptop'
@@ -12,13 +13,10 @@ export const laptopApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        fetchLaptops: builder.mutation({
-            query:() => ({
-                url: `${LAPTOP_URL}/all`,
-                method: 'GET'
-            })
+        fetchLaptops: builder.query<ILaptopList,void>({
+            query:() => `${LAPTOP_URL}/all`
         })
     })
 })
 
-export const {useAddLaptopMutation, useFetchLaptopsMutation} = laptopApiSlice;
+export const {useAddLaptopMutation, useFetchLaptopsQuery} = laptopApiSlice;

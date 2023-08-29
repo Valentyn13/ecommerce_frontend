@@ -10,7 +10,9 @@ import "./Admin.scss";
 
 export const Admin = () => {
   const [base64Images, setBase64Images] = useState<string>("");
+
   const [sliderImages] = useState<(string | undefined)[]>([])
+  
   const enum REDUCER_ACTION_TYPES {
     ADD_FIRST_IMAGE,
     ADD_SECOND_IMAGE,

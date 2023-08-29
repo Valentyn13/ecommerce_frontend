@@ -1,3 +1,4 @@
+import { ISliderImagesFetchData } from "../../../types/sliderImages.types";
 import { apiSlice} from "./apiSlice";
 
 const SLIDER_URL = 'api/slider'
@@ -12,14 +13,13 @@ export const sliderImagesSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        getSliderImages: builder.mutation({
+        getSliderImages: builder.query<ISliderImagesFetchData,string>({
             query:(data) => ({
                 url: `${SLIDER_URL}/getSliderImages`,
-                method: 'GET',
                 params:{laptopId:data}
             })
         })
     })
 })
 
-export const {useAddSliderImagesMutation, useGetSliderImagesMutation} = sliderImagesSlice;
+export const {useAddSliderImagesMutation, useLazyGetSliderImagesQuery} = sliderImagesSlice;

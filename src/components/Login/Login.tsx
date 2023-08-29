@@ -1,71 +1,69 @@
 import { useEffect,ReactNode, FC } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useLoginMutation } from "../../redux/Slices/api/usersApiSlice";
 import { setCredentials } from "../../redux/Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/ReactToastify.min.css'
-
-
+import { ILoginData } from "../../types/user.types";
 
 export const LogIn:FC = () => {
 
-  const navigate = useNavigate()
+const navigate = useNavigate()
 const dispatch = useAppDispatch();
 
-const [login, {error}] = useLoginMutation();
+const [login, {error, data}] = useLoginMutation();
 
-const { userInfo } = useAppSelector((state) => state.auth)
+const userInfo  = useAppSelector((state) => state.auth.userInfo)
 
-useEffect(() => {
-  if (userInfo) {
-    console.log('Userinfo => passed!')
-    navigate('/')
+
+const {
+  register,
+  formState: { errors, isValid },
+  handleSubmit,
+  reset
+} = useForm<ILoginData>(
+  {
+    mode: 'onBlur'
   }
-},[userInfo]);
+);
 
-useEffect(() => {
-  if (error ) {
-    if ('data' in error) {
-      toast.error(JSON.stringify(error.data), {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
-    }
-  }
-},[error]);
-
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset
-  } = useForm(
-    {
-      mode: 'onBlur'
-    }
-  );
-
-  const onSubmit = async (data: any) => {
-    const {email, password} = data
-    try {
-      const res = await login({email, password}).unwrap();
-      dispatch(setCredentials({...res}))
-      console.log('User singed up successfuly')
-      console.log(res)
+  const onSubmit:SubmitHandler<ILoginData> = (data) => {
+      login(data)
       reset()
-      
-    } catch (err) {
-      console.log(err)
-    }
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      console.log('Userinfo => passed!')
+      navigate('/')
+    }
+  },[userInfo,navigate]);
+  
+  useEffect(() => {
+    if (error ) {
+      if ('data' in error) {
+        toast.error(JSON.stringify(error.data), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+      }
+    }
+  },[error]);
+  
+  useEffect(()=> {
+    if (data) {
+      dispatch(setCredentials(data))
+    }
+  },[data,dispatch])
+
   return (
     <div className="login">
       <ToastContainer/>
@@ -80,7 +78,7 @@ useEffect(() => {
                 {...register("email", {
                   required: true,
                   pattern: {
-                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                    value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                     message: 'Enter a valid email'
                 }
                 })}

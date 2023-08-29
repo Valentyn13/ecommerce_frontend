@@ -1,51 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-
-export interface ILaptop {
-    name: string;
-    _id:string;
-    price: number;
-    producer: string;
-    mainImage: string;
-    screen: {
-        size: number;
-        screenType: 'IPS'|"OLED";
-        resolution: string;
-    };
-    CPU: {
-        producer: "Intel"|"AMD"|"Apple";
-        model: string;
-        cores: number
-    };
-    videoCard: {
-        producer: 'Intel' | 'AMD';
-        model: string;
-    };
-    hardDrive: {
-        value:number;
-        hardType: 'SSD'|'HDD'
-    }
-}
-
-interface ILaptopsState {
-    laptops: ILaptop[]
-}
+import {  ILaptopList, ILaptopsState } from "../../types/laptop.types";
 
 const initialState: ILaptopsState = {
     laptops: []
 }
 
-
 const laptopReducer = createSlice({
     name:'laptops',
     initialState,
     reducers: {
-        loadLaptops: (state, action:PayloadAction<ILaptop[]>) => {
+        loadLaptops: (state, action:PayloadAction<ILaptopList>) => {
             state.laptops = action.payload
         }
     }
 })
-
 
 export const {loadLaptops} = laptopReducer.actions;
 export default laptopReducer.reducer;

@@ -1,12 +1,13 @@
 import { FC, useState } from "react";
+import { ISliderImagesFetchData } from "../../types/sliderImages.types";
 
-export interface ISliderImages {
-  laptopId: string;
-  images: string[];
-}
+// export interface ISliderImages {
+//   laptopId: string;
+//   images: string[];
+// }
 
 interface ILaptopSliderProps {
-  images: ISliderImages;
+  images: ISliderImagesFetchData;
   isActive: boolean;
   mainImage: string
 }

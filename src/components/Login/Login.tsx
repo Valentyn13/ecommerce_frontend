@@ -42,6 +42,9 @@ const {
   },[userInfo,navigate]);
   
   useEffect(() => {
+    if (data) {
+      dispatch(setCredentials(data))
+    }
     if (error ) {
       if ('data' in error) {
         toast.error(JSON.stringify(error.data), {
@@ -56,13 +59,7 @@ const {
           });
       }
     }
-  },[error]);
-  
-  useEffect(()=> {
-    if (data) {
-      dispatch(setCredentials(data))
-    }
-  },[data,dispatch])
+  },[error, data, dispatch]);
 
   return (
     <div className="login">

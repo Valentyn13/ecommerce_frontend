@@ -15,20 +15,15 @@ import CartWindow from "../CartWindow/CartWindow";
 
 export const Header = () => {
   const navigate = useNavigate()
-  const cartItems = useAppSelector((state) => state.cart.cartItems)
-  const user = useAppSelector((state) => state.auth.userInfo);
-  const [isCartActive, setIsCartActive] = useState(false)
   const dispatch = useAppDispatch()
 
-    const logoutHandler = async () => {
-        try {
-          dispatch(logout())
-          console.log('User Logout up successfuly')
+  const cartItems = useAppSelector((state) => state.cart.cartItems)
+  const user = useAppSelector((state) => state.auth.userInfo);
 
-          
-        } catch (err) {
-          console.log(err)
-        }
+  const [isCartActive, setIsCartActive] = useState(false)
+
+    const logoutHandler = async () => {
+          dispatch(logout())
       };
 
   return (
@@ -59,7 +54,7 @@ export const Header = () => {
                         <Link to="profile">Profile</Link>
                     </li>
                     <li className="drop-menu-item" onClick={logoutHandler}>
-                        <a href="" style={{color: 'red'}}>Logout</a>
+                        <button style={{color: 'red', backgroundColor:'transparent'}}>Logout</button>
                     </li>
                 </ul>
             </li>

@@ -118,7 +118,6 @@
     right: -8px;
 }
 
-
 // dropdown
 
 .menu-wrap{
@@ -137,10 +136,18 @@
     position: relative;
 }
 
-.menu-item a {
-    text-decoration: none;
-    padding: 6px 10px;
-    display: block;
+.menu-item {
+    a {
+        text-decoration: none;
+        padding: 6px 10px;
+        display: block;
+    }
+    button {
+        text-decoration: none;
+        padding: 6px 10px;
+        display: block;
+    }
+
 }
 
 .drop-menu {
@@ -163,8 +170,8 @@
 .drop-menu-item:hover {
     background-color: #379424;
 }
-.drop-menu-item a {
-    color: white
+.drop-menu-item {
+    color:  white;
 }
 
 .menu-item:hover .drop-menu {

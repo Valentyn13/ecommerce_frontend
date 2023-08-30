@@ -39,8 +39,21 @@ export const SingUp:FC = () => {
     if (data) {
       dispatch(setCredentials(data))
     }
-  },[data,dispatch])
-
+    if (error ) {
+      if ('data' in error) {
+        toast.error(JSON.stringify(error.data), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+      }
+    }
+  },[data,dispatch, error])
 
 useEffect(() => {
   if (userInfo) {
@@ -48,24 +61,6 @@ useEffect(() => {
     navigate('/')
   }
 },[userInfo, navigate]);
-
-
-useEffect(() => {
-  if (error ) {
-    if ('data' in error) {
-      toast.error(JSON.stringify(error.data), {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
-    }
-  }
-},[error]);
 
   return (
     <div className="login">

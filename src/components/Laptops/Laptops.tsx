@@ -12,17 +12,23 @@ export const Laptops:FC = () => {
   const dispatch = useAppDispatch()
   const laptops = useAppSelector(state => state.laptop.laptops)
   
-  const {data,error, isLoading}= useFetchLaptopsQuery()
+  const {data,error, isLoading, isSuccess}= useFetchLaptopsQuery()
 
+  const laptopRender = (laptop: ILaptop,index: number) => {
+
+    if (index < 1) {
+      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true} inSale={true}/>
+    }
+    if (index < 3) {
+      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true}/>
+    }
+    return<LaptopCard key={laptop._id} laptopProps={laptop}/>
+  }
 
   useEffect(() => {
     if (data) {
       dispatch(loadLaptops(data))
     }
-  },[data,dispatch])
-
-
-  useEffect(() => {
     if (error) {
       if ('data' in error) {
         toast.error(JSON.stringify(error.data), {
@@ -37,30 +43,24 @@ export const Laptops:FC = () => {
           });
       }
     }
-  },[error])
+  },[data,dispatch, error])
 
-  const laptopRender = (laptop: ILaptop,index: number) => {
-
-    if (index < 1) {
-      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true} inSale={true}/>
-    }
-    if (index < 3) {
-      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true}/>
-    }
-    return<LaptopCard key={laptop._id} laptopProps={laptop}/>
-  }
   return (
     <div className='laptops'>
       <ToastContainer/>
       <div className="laptops__container">
         {
-        isLoading ? <Preloader/> : laptops?.map((laptop, index) => {
+          isLoading && (<Preloader/>)  
+        }
+        {
+          isSuccess && (
+            laptops.map((laptop, index) => {
 
-          return(
-              laptopRender(laptop, index)
+              return(
+                  laptopRender(laptop, index)
+              )
+            })
           )
-        })
-        
         }
       </div>
     </div>

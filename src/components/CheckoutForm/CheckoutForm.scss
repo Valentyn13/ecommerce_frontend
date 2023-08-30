@@ -1,0 +1,61 @@
+.checkoutForm {
+    margin-top: 10px;
+    &__container {
+        padding: 10px;
+        form {
+            max-width: 750px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+    }
+    &__filedWrapper {
+        padding: 5px;
+        width: 100%;
+    }
+    &__label {
+        width: 100%;
+    }
+    &__inputName {
+        margin-bottom: 5px;
+        font-size: 20px;
+    }
+    &__input {
+        padding: 8px 5px;
+        color: black;
+        border: 1px solid rgb(139, 139, 139);
+        width: 100%;
+        border-radius: 5px;
+    }
+    &__address {
+        font-size: 24px;
+        text-align:center;
+    }
+
+    &__address_Section {
+        position: relative;
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        .checkoutForm__label {
+            width: 50%;
+        }
+        .checkoutForm__input {
+            width: 100%;
+        }
+    }
+}
+.submit-button {
+    padding: 10px 15px;
+    width: 200px;
+    font-size: 18px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+.disabled {
+    background-color: rgb(165, 162, 162);
+}

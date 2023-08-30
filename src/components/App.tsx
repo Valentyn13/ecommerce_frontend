@@ -9,6 +9,7 @@ import AdminPage from "../pages/Admin.page";
 import CheckoutPage from "../pages/Checkout.page";
 
 import { useAppSelector } from "../redux/hooks";
+import Hero from "./Hero/Hero";
 
 const App = () => {
   const userinfo = useAppSelector((state) => state.auth.userInfo);
@@ -16,36 +17,38 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute isAllowed={!!userinfo} redirectPath="/register">
-              <ProfilePpage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute
-              isAllowed={!!userinfo && userinfo.user.role === "ADMIN"}
-              redirectPath="/profile"
-            >
-              <AdminPage />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/register" element={<SingUp />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route
-          path="/checkout"
-          element={
-            <PrivateRoute isAllowed={!!userinfo} redirectPath="/register">
-              <CheckoutPage />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/" element={<Home />}>
+          <Route index element={<Hero />} />
+          <Route
+            path="profile"
+            element={
+              <PrivateRoute isAllowed={!!userinfo} redirectPath="register">
+                <ProfilePpage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="admin"
+            element={
+              <PrivateRoute
+                isAllowed={!!userinfo && userinfo.user.role === "ADMIN"}
+                redirectPath="profile"
+              >
+                <AdminPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="register" element={<SingUp />} />
+          <Route path="login" element={<LogIn />} />
+          <Route
+            path="checkout"
+            element={
+              <PrivateRoute isAllowed={!!userinfo} redirectPath="register">
+                <CheckoutPage />
+              </PrivateRoute>
+            }
+          />
+        </Route>
       </Routes>
     </>
   );

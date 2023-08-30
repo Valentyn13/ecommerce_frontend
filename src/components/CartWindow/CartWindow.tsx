@@ -1,86 +1,35 @@
 import { useNavigate } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  removeItem,
-  increaseAmount,
-  decreaseAmount,
-} from "../../redux/Slices/CartSlice";
+import { useAppSelector } from "../../redux/hooks";
 
 import { ICartLaptopList } from "../../types/cart.types";
 
+import CartProductList from "../CartProductList/CartProductList";
+
 import "./CartWindow.scss";
+import TotalPrice from "../TotalPrcie/TotalPrice";
 
 const CartWindow = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
-  const cartElements = useAppSelector(
+  const cartProducts = useAppSelector(
     (state) => state.cart.cartItems
   ) as ICartLaptopList;
 
-  const total = (arr: ICartLaptopList) =>
-    arr.reduce((acc, element) => {
-      return (acc = acc + element.product.price * element.amount);
-    }, 0);
+
 
   return (
     <div className="cartWindow">
-      {cartElements.length > 0 ? (
-        cartElements.map((element) => {
-          return (
-            <div
-              key={element.product._id}
-              className="cartWindow__cartElement cartElement"
-            >
-              <div className="cartElement__image">
-                <img src={element.product.mainImage} alt="product image" />
-              </div>
-              <div className="cartElement__properties">
-                <div className="cartElement__name">{element.product.name}</div>
-                <p className="cartElement__price">{element.product.price} ₴ </p>
-                <div className="cartElement__producer">
-                  {element.product.producer}
-                </div>
-                <div className="cartElement__options">
-                  <button
-                    onClick={() => dispatch(removeItem(element.product._id))}
-                  >
-                    Remove
-                  </button>
-                  <div className="cartElement__amount">
-                    <button
-                      onClick={() =>
-                        dispatch(increaseAmount(element.product._id))
-                      }
-                    >
-                      +1
-                    </button>
-                    <button
-                      onClick={() =>
-                        dispatch(decreaseAmount(element.product._id))
-                      }
-                    >
-                      -1
-                    </button>
-                  </div>
-                  <div>Amount: {element.amount}</div>
-                </div>
-              </div>
-            </div>
-          );
-        })
+      {cartProducts.length > 0 ? (
+        <CartProductList cartProducts={cartProducts} />
       ) : (
         <div className="empty-cart">Your cart is empty</div>
       )}
-
-      <div className="cartWindow__total">
-        Total price of all elements in cart is {total(cartElements)} ₴
-      </div>
+      <TotalPrice cartProducts={cartProducts}/>
       <button
-        disabled={cartElements.length > 0 ? false : true}
+        disabled={cartProducts.length > 0 ? false : true}
         className={
-          cartElements.length > 0
+          cartProducts.length > 0
             ? "checkout-button"
             : "checkout-button-disabled"
         }

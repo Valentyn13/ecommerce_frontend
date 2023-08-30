@@ -1,12 +1,13 @@
 import { ILaptopList } from "./laptop.types";
 
 export interface ICustomerAddress {
+    country: string
     city: string;
     street: string;
     postIndex: number;
 }
 
-export interface ICustomerData {
+export interface ICustomerFormData {
     name: string;
     surname: string;
     phone: number;
@@ -15,6 +16,6 @@ export interface ICustomerData {
 
 export interface ICheckout {
     customerID: string;
-    customerData: ICustomerData
+    customerData: ICustomerFormData
     products: ILaptopList[]
 }

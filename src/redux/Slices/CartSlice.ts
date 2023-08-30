@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICartLaptop } from "../../types/cart.types";
+import { ICartLaptop, ICartLaptopList } from "../../types/cart.types";
 
 const initialState = {
-    cartItems: localStorage.getItem("cartItem")
+    cartItems: (localStorage.getItem("cartItem")
         ? JSON.parse(localStorage.getItem("cartItem") || "")
-        : [],
+        : []) as ICartLaptopList
 };
 
 const cartReducer = createSlice({

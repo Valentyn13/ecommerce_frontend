@@ -1,11 +1,6 @@
 import { FC, useState } from "react";
 import { ISliderImagesFetchData } from "../../types/sliderImages.types";
 
-// export interface ISliderImages {
-//   laptopId: string;
-//   images: string[];
-// }
-
 interface ILaptopSliderProps {
   images: ISliderImagesFetchData;
   isActive: boolean;
@@ -19,14 +14,12 @@ export const LaptopSlider: FC<ILaptopSliderProps> = ({ images, isActive }) => {
     const isLastSlide = currentSlideIndex === images.images.length - 1;
     const newIndex = isLastSlide ? 0 : currentSlideIndex + 1;
     setCurrentSlideIndex(newIndex);
-    console.log(currentSlideIndex)
   };
 
   const prevSlide = () => {
     const isFirst = currentSlideIndex === 0;
     const newIndex = isFirst ? images.images.length - 1 : currentSlideIndex - 1;
     setCurrentSlideIndex(newIndex);
-    console.log(currentSlideIndex)
   };
   return (
     <>

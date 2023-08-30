@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { ChangeEvent, ReactNode, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 
 import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
 import { Link } from "react-router-dom";
@@ -7,11 +7,12 @@ import { useAddSliderImagesMutation } from "../../redux/Slices/api/sliderImagesA
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/ReactToastify.min.css'
 import "./Admin.scss";
+import { ILaptopFormData } from "../../types/laptop.types";
 
 export const Admin = () => {
-  const [base64Images, setBase64Images] = useState<string>("");
+  const [base64Images, setBase64Images] = useState("");
 
-  const [sliderImages] = useState<(string | undefined)[]>([])
+  const [sliderImages] = useState<(string|undefined)[]>([])
   
   const enum REDUCER_ACTION_TYPES {
     ADD_FIRST_IMAGE,
@@ -28,7 +29,7 @@ export const Admin = () => {
     register,
     formState: { isValid, errors },
     handleSubmit,
-  } = useForm({
+  } = useForm<ILaptopFormData>({
     mode: "onBlur",
     defaultValues: {
       name: "",
@@ -55,7 +56,7 @@ export const Admin = () => {
     },
   });
 
-  const [addLaptop] = useAddLaptopMutation();
+  const [addLaptop, {data, error}] = useAddLaptopMutation();
   const [addImages] = useAddSliderImagesMutation()
 
   const convertToBase64 = (file:Blob) => {
@@ -78,6 +79,7 @@ export const Admin = () => {
         const base64 = (await convertToBase64(file)) as string;
         sliderImages[0]=base64
         setBase64Images(base64);
+        return base64
 
       } else {
         const file = e.target.files[0];
@@ -112,37 +114,61 @@ export const Admin = () => {
   }
 
 
-  const onSubmit = async (data: any) => {
-    try {
-      if (base64Images === "") return console.log("No file");
+  const onSubmit: SubmitHandler<ILaptopFormData> = async (formData) => {
 
-      const laptop = {
-        ...data,
-      };
-      laptop.mainImage = base64Images;
-      const res = await addLaptop(laptop).unwrap();
-      console.log("laptop added");
-      const imagesData = {
-        laptopId:res._id,
-        images: sliderImages
+      if (base64Images === "") {
+        toast.error(("Main image must be provided"), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          })
       }
-      const images = addImages(imagesData).unwrap()
-      console.log({
-        res, images
-      })
-    } catch (error) {
-      toast.error(JSON.stringify(error.data), {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
-    }
+      formData.mainImage = base64Images;
+      addLaptop(formData)
   };
+
+  useEffect(() => {
+    if (data) {
+      if(sliderImages[0] && sliderImages[1] &&sliderImages[2] && sliderImages[3]) {
+        const imagesData = {
+          laptopId:data._id,
+          images: sliderImages
+        }
+        addImages(imagesData)
+        console.log('Laptop added')
+      } else {
+        toast.error(("All slider images must be provided"), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          })
+      }
+    }
+    if (error) {
+      if('data' in error) {
+        toast.error((JSON.stringify(error.data)), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          })
+      }
+    }
+  },[data, addImages, sliderImages,error])
 
   return (
     <div className="admin">

@@ -1,4 +1,4 @@
-import { ILaptopList } from "../../../types/laptop.types";
+import { ILaptopFetchData, ILaptopFormData, ILaptopList } from "../../../types/laptop.types";
 import { apiSlice} from "./apiSlice";
 
 const LAPTOP_URL = 'api/laptop'
@@ -6,7 +6,7 @@ const LAPTOP_URL = 'api/laptop'
 
 export const laptopApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        addLaptop: builder.mutation({
+        addLaptop: builder.mutation<ILaptopFetchData,ILaptopFormData>({
             query:(data) => ({
                 url: `${LAPTOP_URL}/add`,
                 method: "POST",

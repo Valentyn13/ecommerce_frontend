@@ -1,4 +1,4 @@
-import { ISliderImagesFetchData } from "../../../types/sliderImages.types";
+import { ISliderImagesFetchData, ISliderImagesFormData } from "../../../types/sliderImages.types";
 import { apiSlice} from "./apiSlice";
 
 const SLIDER_URL = 'api/slider'
@@ -6,7 +6,7 @@ const SLIDER_URL = 'api/slider'
 
 export const sliderImagesSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        addSliderImages: builder.mutation({
+        addSliderImages: builder.mutation<ISliderImagesFetchData,ISliderImagesFormData>({
             query:(data) => ({
                 url: `${SLIDER_URL}/addSliderImages`,
                 method: "POST",

@@ -1,29 +1,32 @@
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 
 import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
-import { Link } from "react-router-dom";
 import { useAddSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/ReactToastify.min.css'
-import "./Admin.scss";
 import { ILaptopFormData } from "../../types/laptop.types";
 
-export const Admin = () => {
-  const [base64Images, setBase64Images] = useState("");
+import "react-toastify/ReactToastify.min.css";
+import "./Admin.scss";
 
-  const [sliderImages] = useState<(string|undefined)[]>([])
-  
+const Admin = () => {
+  const [addLaptop, { data, error }] = useAddLaptopMutation();
+  const [addImages] = useAddSliderImagesMutation();
+
+  const [base64Images, setBase64Images] = useState("");
+  const [sliderImages] = useState<(string | undefined)[]>([]);
+
   const enum REDUCER_ACTION_TYPES {
     ADD_FIRST_IMAGE,
     ADD_SECOND_IMAGE,
     ADD_THIRD_IMAGE,
-    ADD_FORTH_IMAGE
+    ADD_FORTH_IMAGE,
   }
 
   type ReducerAction = {
-    type:REDUCER_ACTION_TYPES;
-  }
+    type: REDUCER_ACTION_TYPES;
+  };
 
   const {
     register,
@@ -56,10 +59,7 @@ export const Admin = () => {
     },
   });
 
-  const [addLaptop, {data, error}] = useAddLaptopMutation();
-  const [addImages] = useAddSliderImagesMutation()
-
-  const convertToBase64 = (file:Blob) => {
+  const convertToBase64 = (file: Blob) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -77,72 +77,76 @@ export const Admin = () => {
       if (e.target.id === "main_image") {
         const file = e.target.files[0];
         const base64 = (await convertToBase64(file)) as string;
-        sliderImages[0]=base64
+        sliderImages[0] = base64;
         setBase64Images(base64);
-        return base64
-
+        return base64;
       } else {
         const file = e.target.files[0];
         const base64 = (await convertToBase64(file)) as string;
-        return base64
+        return base64;
       }
     }
   };
 
-
-  const reducer = async(action:ReducerAction, e:ChangeEvent<HTMLInputElement>) => {
-    const converImage = await handleFileUpload(e)
+  const reducer = async (
+    action: ReducerAction,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    const converImage = await handleFileUpload(e);
     switch (action.type) {
       case REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE:
-        sliderImages[1] = converImage
-        console.log(sliderImages)
-        return 
+        sliderImages[1] = converImage;
+        console.log(sliderImages);
+        return;
       case REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE:
-        sliderImages[2] = converImage
-        console.log(sliderImages)
-      return 
+        sliderImages[2] = converImage;
+        console.log(sliderImages);
+        return;
 
       case REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE:
-        sliderImages[3] = converImage
-        console.log(sliderImages)
-      return
-    
+        sliderImages[3] = converImage;
+        console.log(sliderImages);
+        return;
+
       default:
-        console.log('reducer unexpected action type')
+        console.log("reducer unexpected action type");
         break;
     }
-  }
-
+  };
 
   const onSubmit: SubmitHandler<ILaptopFormData> = async (formData) => {
-
-      if (base64Images === "") {
-        toast.error(("Main image must be provided"), {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          })
-      }
-      formData.mainImage = base64Images;
-      addLaptop(formData)
+    if (base64Images === "") {
+      toast.error("Main image must be provided", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    formData.mainImage = base64Images;
+    addLaptop(formData);
   };
 
   useEffect(() => {
     if (data) {
-      if(sliderImages[0] && sliderImages[1] &&sliderImages[2] && sliderImages[3]) {
+      if (
+        sliderImages[0] &&
+        sliderImages[1] &&
+        sliderImages[2] &&
+        sliderImages[3]
+      ) {
         const imagesData = {
-          laptopId:data._id,
-          images: sliderImages
-        }
-        addImages(imagesData)
-        console.log('Laptop added')
+          laptopId: data._id,
+          images: sliderImages,
+        };
+        addImages(imagesData);
+        console.log("Laptop added");
       } else {
-        toast.error(("All slider images must be provided"), {
+        toast.error("All slider images must be provided", {
           position: "top-right",
           autoClose: 4000,
           hideProgressBar: false,
@@ -151,12 +155,12 @@ export const Admin = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          })
+        });
       }
     }
     if (error) {
-      if('data' in error) {
-        toast.error((JSON.stringify(error.data)), {
+      if ("data" in error) {
+        toast.error(JSON.stringify(error.data), {
           position: "top-right",
           autoClose: 4000,
           hideProgressBar: false,
@@ -165,14 +169,14 @@ export const Admin = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          })
+        });
       }
     }
-  },[data, addImages, sliderImages,error])
+  }, [data, addImages, sliderImages, error]);
 
   return (
     <div className="admin">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="admin__container _container">
         <div className="admin__add_section add_section">
           <h2 className="add_section__header">Add new laptop</h2>
@@ -187,44 +191,59 @@ export const Admin = () => {
               <div className="add_section__area " id="image">
                 <h4 className="add_section__label">Laptop images</h4>
                 <div className="add_section__area-images">
-                <div>
-                  <h2>Choose laptop preview image</h2>
-                  <input
-                    className="file-input"
-                    type="file"
-                    id="main_image"
-                    accept=".jpeg, .png, .jpg .webp"
-                    onChange={handleFileUpload}
-                  />
-                </div>
-                <div>
-                  <h2>Choose first slider image</h2>
-                  <input
-                    className="file-input"
-                    type="file"
-                    accept=".jpeg, .png, .jpg .webp"
-                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE}, e)}
-                  />
-                </div>
+                  <div>
+                    <h2>Choose laptop preview image</h2>
+                    <input
+                      className="file-input"
+                      type="file"
+                      id="main_image"
+                      accept=".jpeg, .png, .jpg .webp"
+                      onChange={handleFileUpload}
+                    />
+                  </div>
+                  <div>
+                    <h2>Choose first slider image</h2>
+                    <input
+                      className="file-input"
+                      type="file"
+                      accept=".jpeg, .png, .jpg .webp"
+                      onChange={(e) =>
+                        reducer(
+                          { type: REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE },
+                          e
+                        )
+                      }
+                    />
+                  </div>
 
-                <div>
-                  <h2>Choose second slider image</h2>
-                  <input
-                    className="file-input"
-                    type="file"
-                    accept=".jpeg, .png, .jpg .webp"
-                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE},e)}
-                  />
-                </div>
-                <div>
-                  <h2>Choose third slider image</h2>
-                  <input
-                    className="file-input"
-                    type="file"
-                    accept=".jpeg, .png, .jpg .webp"
-                    onChange={(e) => reducer({type:REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE},e)}
-                  />
-                </div>
+                  <div>
+                    <h2>Choose second slider image</h2>
+                    <input
+                      className="file-input"
+                      type="file"
+                      accept=".jpeg, .png, .jpg .webp"
+                      onChange={(e) =>
+                        reducer(
+                          { type: REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE },
+                          e
+                        )
+                      }
+                    />
+                  </div>
+                  <div>
+                    <h2>Choose third slider image</h2>
+                    <input
+                      className="file-input"
+                      type="file"
+                      accept=".jpeg, .png, .jpg .webp"
+                      onChange={(e) =>
+                        reducer(
+                          { type: REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE },
+                          e
+                        )
+                      }
+                    />
+                  </div>
                 </div>
               </div>
               <div className="add_section__area" id="info">
@@ -527,3 +546,5 @@ export const Admin = () => {
     </div>
   );
 };
+
+export default Admin;

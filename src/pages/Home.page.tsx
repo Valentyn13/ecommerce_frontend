@@ -1,8 +1,8 @@
-import { Footer } from "../components/Footer/Footer"
-import { Hero } from "../components/Hero/Hero"
-import { Header } from "../components/header/Header"
+import Footer from "../components/Footer/Footer";
+import Hero from "../components/Hero/Hero";
+import Header from "../components/header/Header";
 
-export const Home = () => {
+const Home = () => {
   return (
     <div className="wrapper">
         <Header/>
@@ -11,3 +11,5 @@ export const Home = () => {
     </div>
   )
 }
+
+export default Home;

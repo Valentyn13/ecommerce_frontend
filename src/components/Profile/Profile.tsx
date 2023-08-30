@@ -1,10 +1,14 @@
-import { useAppSelector } from "../../redux/hooks";
-import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
-import "./Profile.scss";
 import { Link } from "react-router-dom";
 
-export const Profile = () => {
+import { useAppSelector } from "../../redux/hooks";
+
+import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
+
+import "./Profile.scss";
+
+const Profile = () => {
   const user = useAppSelector((state) => state.auth.userInfo);
+
   return (
     <div className="profile ">
       {user && (
@@ -45,9 +49,7 @@ export const Profile = () => {
 
           <div className="purchase">
             <div className="purchase__container">
-              <div className="purchase__item">
-                Product
-              </div>
+              <div className="purchase__item">Product</div>
             </div>
           </div>
         </div>
@@ -56,3 +58,5 @@ export const Profile = () => {
     </div>
   );
 };
+
+export default Profile;

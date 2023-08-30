@@ -1,13 +1,17 @@
-import './Laptops.scss';
-import { useFetchLaptopsQuery } from '../../redux/Slices/api/laptopApiSlice';
 import { FC, useEffect } from 'react';
-import { LaptopCard } from '../LaptopCard/LaptopCard';
+import { ToastContainer, toast } from 'react-toastify';
+
+import  LaptopCard  from '../LaptopCard/LaptopCard';
+import Preloader from '../Preloader/Preloader';
+import { useFetchLaptopsQuery } from '../../redux/Slices/api/laptopApiSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {  loadLaptops } from '../../redux/Slices/LaptopSlice';
-import Preloader from '../Preloader/Preloader';
 import { ILaptop } from '../../types/laptop.types';
-import { ToastContainer, toast } from 'react-toastify';
-export const Laptops:FC = () => {
+
+import "react-toastify/ReactToastify.min.css";
+import './Laptops.scss';
+
+const Laptops:FC = () => {
 
   const dispatch = useAppDispatch()
   const laptops = useAppSelector(state => state.laptop.laptops)
@@ -66,3 +70,5 @@ export const Laptops:FC = () => {
     </div>
   )
 }
+
+export default Laptops

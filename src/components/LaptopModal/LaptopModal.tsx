@@ -1,12 +1,14 @@
-
 import {FC, Dispatch, useEffect,} from 'react'
-import './LaptopModal.scss'
-import { useLazyGetSliderImagesQuery } from '../../redux/Slices/api/sliderImagesApiSlice';
 import { ToastContainer, toast } from 'react-toastify';
+
 import Preloader from '../Preloader/Preloader';
-import { LaptopSlider } from '../LaptopSlider/LaptopSlider';
+import  LaptopSlider from '../LaptopSlider/LaptopSlider';
+import { useLazyGetSliderImagesQuery } from '../../redux/Slices/api/sliderImagesApiSlice';
 import { ILaptop } from '../../types/laptop.types';
 import { ISliderImagesFetchData } from '../../types/sliderImages.types';
+
+import "react-toastify/ReactToastify.min.css";
+import './LaptopModal.scss'
 
 interface ILaptopModalProps {
     isActive: boolean
@@ -100,6 +102,5 @@ const LaptopModal:FC<ILaptopModalProps> = ({modalProps, setActive, isActive, isE
         </div>
     )
 }
-
 
 export default LaptopModal;

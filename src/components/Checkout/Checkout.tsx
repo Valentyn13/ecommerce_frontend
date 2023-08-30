@@ -1,7 +1,7 @@
-import './Checkout.scss'
+import "./Checkout.scss";
 
-export const Checkout = () => {
-  return (
-    <div>Checkout</div>
-  )
-}
+const Checkout = () => {
+  return <div>Checkout</div>;
+};
+
+export default Checkout;

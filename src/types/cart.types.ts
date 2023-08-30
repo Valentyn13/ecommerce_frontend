@@ -1,10 +1,10 @@
-import { ILaptop } from "./laptop.types"
+import { ILaptop } from "./laptop.types";
 
 export interface ICartItem<T> {
-    amount: number
-    product: T
+    amount: number;
+    product: T;
 }
 
-export type ICartLaptop = ICartItem<ILaptop>
+export type ICartLaptop = ICartItem<ILaptop>;
 
-export type ICartLaptopList = ICartLaptop[]
+export type ICartLaptopList = ICartLaptop[];

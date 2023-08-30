@@ -5,7 +5,7 @@ const USERS_URL = '/api/user';
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation<IUserFetchData,ILoginData>({
+        login: builder.mutation<IUserFetchData, ILoginData>({
             query: (data) => ({
                 url: `${USERS_URL}/login`,
                 method: 'POST',
@@ -18,11 +18,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
         //         method: 'GET',
         //     })
         // }),
-        register: builder.mutation<IUserFetchData,IRegisterData>({
-            query:(data)=>({
-                url:`${USERS_URL}/register`,
+        register: builder.mutation<IUserFetchData, IRegisterData>({
+            query: (data) => ({
+                url: `${USERS_URL}/register`,
                 method: 'POST',
-                body:data
+                body: data
             })
         })
     })

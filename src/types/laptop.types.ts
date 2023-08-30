@@ -1,16 +1,16 @@
 export interface ILaptop {
     name: string;
-    _id:string;
+    _id: string;
     price: number;
     producer: string;
     mainImage: string;
     screen: {
         size: number;
-        screenType: 'IPS'|"OLED";
+        screenType: 'IPS' | "OLED";
         resolution: string;
     };
     CPU: {
-        producer: "Intel"|"AMD"|"Apple";
+        producer: "Intel" | "AMD" | "Apple";
         model: string;
         cores: number
     };
@@ -19,26 +19,26 @@ export interface ILaptop {
         model: string;
     };
     hardDrive: {
-        value:number;
-        hardType: 'SSD'|'HDD'
+        value: number;
+        hardType: 'SSD' | 'HDD'
     }
 }
 
 
 export interface ILaptopFetchData {
     name: string;
-    _id:string;
+    _id: string;
     price: number;
     producer: string;
     mainImage: string;
-    __v:number
+    __v: number
     screen: {
         size: number;
-        screenType: 'IPS'|"OLED";
+        screenType: 'IPS' | "OLED";
         resolution: string;
     };
     CPU: {
-        producer: "Intel"|"AMD"|"Apple";
+        producer: "Intel" | "AMD" | "Apple";
         model: string;
         cores: number
     };
@@ -47,8 +47,8 @@ export interface ILaptopFetchData {
         model: string;
     };
     hardDrive: {
-        value:number;
-        hardType: 'SSD'|'HDD'
+        value: number;
+        hardType: 'SSD' | 'HDD'
     }
 }
 
@@ -59,11 +59,11 @@ export interface ILaptopFormData {
     mainImage: string;
     screen: {
         size: number;
-        screenType: 'IPS'|"OLED" | "";
+        screenType: 'IPS' | "OLED" | "";
         resolution: string;
     };
     CPU: {
-        producer: "Intel"|"AMD"|"Apple" | "";
+        producer: "Intel" | "AMD" | "Apple" | "";
         model: string;
         cores: number
     };
@@ -72,8 +72,8 @@ export interface ILaptopFormData {
         model: string;
     };
     hardDrive: {
-        value:number;
-        hardType: 'SSD'|'HDD' | "";
+        value: number;
+        hardType: 'SSD' | 'HDD' | "";
     }
 }
 

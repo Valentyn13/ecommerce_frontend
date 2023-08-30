@@ -1,8 +1,6 @@
-import { Admin } from "../components/Admin/Admin"
+import Admin from "../components/Admin/Admin";
 
-
-export const AdminPage = () => {
-  return (
-    <Admin/>
-  )
-}
+const AdminPage = () => {
+  return <Admin />;
+};
+export default AdminPage;

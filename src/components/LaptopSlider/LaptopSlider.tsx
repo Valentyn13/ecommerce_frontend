@@ -1,13 +1,14 @@
 import { FC, useState } from "react";
+
 import { ISliderImagesFetchData } from "../../types/sliderImages.types";
 
 interface ILaptopSliderProps {
   images: ISliderImagesFetchData;
   isActive: boolean;
-  mainImage: string
+  mainImage: string;
 }
 
-export const LaptopSlider: FC<ILaptopSliderProps> = ({ images, isActive }) => {
+const LaptopSlider: FC<ILaptopSliderProps> = ({ images, isActive }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const nextSlide = () => {
@@ -25,7 +26,11 @@ export const LaptopSlider: FC<ILaptopSliderProps> = ({ images, isActive }) => {
     <>
       {isActive && images && (
         <div className="laptopModal__slider laptopSlider">
-          <img className="slider-img" src={images.images[currentSlideIndex]} alt="slider image" />
+          <img
+            className="slider-img"
+            src={images.images[currentSlideIndex]}
+            alt="slider image"
+          />
           <img
             onClick={nextSlide}
             className="arrow_next"
@@ -43,3 +48,5 @@ export const LaptopSlider: FC<ILaptopSliderProps> = ({ images, isActive }) => {
     </>
   );
 };
+
+export default LaptopSlider;

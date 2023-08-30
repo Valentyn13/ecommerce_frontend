@@ -1,25 +1,25 @@
 type UserRole = 'USER' | 'ADMIN';
 
 export interface IUser {
-    info:string;
+    info: string;
     email: string;
     password: string;
     name: string;
     role: UserRole;
     _id: string;
-    __v:number
+    __v: number
 }
 
 export interface ILoginData {
-    email:string;
-    password:string;
+    email: string;
+    password: string;
 }
 
 export interface IRegisterData {
-    role?:UserRole
-    name:string;
-    email:string;
-    password:string;
+    role?: UserRole
+    name: string;
+    email: string;
+    password: string;
 }
 
 

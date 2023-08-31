@@ -3,8 +3,10 @@ import { ICustomerFormData } from "../../types/checkout.types";
 import { ReactNode } from "react";
 
 import './CheckoutForm.scss';
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
+    const navigate = useNavigate()
 
     const {register, formState:{ isValid, errors}, handleSubmit} = useForm<ICustomerFormData>({
         mode: 'onBlur',
@@ -194,7 +196,8 @@ const CheckoutForm = () => {
                     </label>
                 </div>
                 </section>
-                <input className={!isValid? "submit-button disabled": "submit-button"} type="submit" disabled={!isValid} />  
+                <input className={!isValid? "submit-button disabled": "submit-button"} type="submit" disabled={!isValid} />
+                <button onClick={()=> navigate('/')} className='go-back checkout-back-button'>Go back</button> 
             </form>
         </div>
     </div>

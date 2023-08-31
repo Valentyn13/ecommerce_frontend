@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Dispatch, FC, SetStateAction } from "react";
 
 import { useAppSelector } from "../../redux/hooks";
 
@@ -9,7 +10,11 @@ import CartProductList from "../CartProductList/CartProductList";
 import "./CartWindow.scss";
 import TotalPrice from "../TotalPrcie/TotalPrice";
 
-const CartWindow = () => {
+
+interface ICartWindowProps  {
+  setIsActive:Dispatch<SetStateAction<boolean>>;
+}
+const CartWindow:FC<ICartWindowProps> = ({setIsActive}) => {
   const navigate = useNavigate();
 
   const cartProducts = useAppSelector(
@@ -28,12 +33,16 @@ const CartWindow = () => {
       <TotalPrice cartProducts={cartProducts}/>
       <button
         disabled={cartProducts.length > 0 ? false : true}
+
         className={
           cartProducts.length > 0
             ? "checkout-button"
             : "checkout-button-disabled"
         }
-        onClick={() => navigate("/checkout")}
+        onClick={() =>  {
+          setIsActive(false)
+          navigate("/checkout")
+        }}
       >
         Checkout
       </button>

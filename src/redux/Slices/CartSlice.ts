@@ -40,9 +40,14 @@ const cartReducer = createSlice({
                 return item;
             });
         },
+
+        clearCart: (state) => {
+            state.cartItems = []
+            localStorage.setItem('cartItem',JSON.stringify([]))
+        }
     },
 });
 
-export const { addItem, removeItem, increaseAmount, decreaseAmount } =
+export const { addItem, removeItem, increaseAmount, decreaseAmount, clearCart } =
     cartReducer.actions;
 export default cartReducer.reducer;

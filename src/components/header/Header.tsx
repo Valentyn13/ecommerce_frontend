@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import Modal from "../Modal/Modal";
 import CartWindow from "../CartWindow/CartWindow";
+import { clearCart } from "../../redux/Slices/CartSlice";
 import { logout } from "../../redux/Slices/AuthSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
@@ -14,6 +15,7 @@ import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 
 import "./Header.scss";
 
+
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -23,8 +25,10 @@ const Header = () => {
 
   const [isCartActive, setIsCartActive] = useState(false);
 
-  const logoutHandler = () => {
+  const logoutHandler:MouseEventHandler<HTMLButtonElement> = () => {
+    dispatch(clearCart())
     dispatch(logout());
+    navigate("/")
   };
 
   return (
@@ -52,10 +56,11 @@ const Header = () => {
                   </div>
                   <ul className="drop-menu">
                     <li className="drop-menu-item">
-                      <Link to="profile">Profile</Link>
+                      <Link to="/profile">Profile</Link>
                     </li>
-                    <li className="drop-menu-item" onClick={logoutHandler}>
+                    <li className="drop-menu-item" >
                       <button
+                      onClick={logoutHandler}
                         style={{ color: "red", backgroundColor: "transparent" }}
                       >
                         Logout
@@ -100,7 +105,7 @@ const Header = () => {
         modalJustifyContent="flex-end"
         active={isCartActive}
         setActive={setIsCartActive}
-        children={<CartWindow />}
+        children={<CartWindow setIsActive={setIsCartActive}/>}
       />
     </header>
   );

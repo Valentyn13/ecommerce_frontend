@@ -5,9 +5,27 @@ import { useAppSelector } from "../../redux/hooks";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 
 import "./Profile.scss";
+import { useGetCheckoutsQuery } from "../../redux/Slices/api/checkoutApiSlice";
+import { useEffect } from "react";
+import Preloader from "../Preloader/Preloader";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.auth.userInfo);
+
+  const {data,error,isLoading, isSuccess} = useGetCheckoutsQuery((user?.user._id) as string)
+
+  useEffect(() => {
+if(error) {
+  if ('data' in error) {
+    console.log(error.data)
+  }
+
+}
+if(data) {
+  console.log(data)
+}
+  }, [error,data])
+      
 
   return (
     <div className="profile ">
@@ -49,7 +67,11 @@ const Profile = () => {
 
           <div className="purchase">
             <div className="purchase__container">
-              <div className="purchase__item">Product</div>
+              {isLoading && (<Preloader/>)}
+              {data && isSuccess && (
+              <div>{data.length}</div>
+              )}
+              
             </div>
           </div>
         </div>

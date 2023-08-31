@@ -66,23 +66,15 @@
         border-bottom: 1px solid black;
         padding: 3px 3px 0px 3px;
     }
-
-    &__user_purchase {
-
-    }
 }
 
 
 .purchase{
-    display: flex;
-    flex-direction: column;
-
-    &__container {}
-
-    &__item{
-        padding: 10px;
-        height: 120px;
-        background-color: rgb(235, 235, 235);
-        border-radius: 20px;
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
+
+
 }

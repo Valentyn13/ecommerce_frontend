@@ -1,4 +1,4 @@
-import { ILaptopList } from "./laptop.types";
+import { ICartLaptopList } from "./cart.types";
 
 export interface ICustomerAddress {
     country: string
@@ -17,5 +17,12 @@ export interface ICustomerFormData {
 export interface ICheckout {
     customerID: string;
     customerData: ICustomerFormData
-    products: ILaptopList[]
+    products: ICartLaptopList
 }
+
+export interface ICheckoutFetchData extends ICheckout {
+    _id:string;
+    __v:number;
+}
+
+export type ICheckoutFetchDataList = ICheckoutFetchData[]

@@ -1,12 +1,18 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ICustomerFormData } from "../../types/checkout.types";
-import { ReactNode } from "react";
+import { ICheckout, ICustomerFormData } from "../../types/checkout.types";
+import { ReactNode, useEffect } from "react";
 
 import './CheckoutForm.scss';
 import { useNavigate } from "react-router-dom";
+import { useAddNewCheckoutMutation } from "../../redux/Slices/api/checkoutApiSlice";
+import { useAppSelector } from "../../redux/hooks";
 
 const CheckoutForm = () => {
     const navigate = useNavigate()
+
+    const [addCheckout, {error, data}] = useAddNewCheckoutMutation()
+    const cartItems = useAppSelector((state) => state.cart.cartItems)
+    const userId = useAppSelector((state) => state.auth.userInfo?.user._id)
 
     const {register, formState:{ isValid, errors}, handleSubmit} = useForm<ICustomerFormData>({
         mode: 'onBlur',
@@ -23,8 +29,29 @@ const CheckoutForm = () => {
         }
     })
 
+    useEffect(() => {
+      if (error) {
+        if ('data' in error) {
+            console.log(error.data)
+        }
+      }
+      if (data) {
+        console.log(data)
+      }
+
+    }, [error,data])
+    
+
     const onSubmit:SubmitHandler<ICustomerFormData> = (formData) => {
-        console.log(formData)
+
+        const newCheckout: ICheckout = {
+            customerData: {
+                ...formData
+            },
+            customerID:userId as string,
+            products: cartItems
+        }
+        addCheckout(newCheckout)
     }
   return (
     <div className="checkoutForm">

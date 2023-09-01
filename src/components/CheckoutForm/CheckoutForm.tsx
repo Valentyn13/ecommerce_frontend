@@ -1,15 +1,18 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ICheckout, ICustomerFormData } from "../../types/checkout.types";
 import { ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { ICheckout, ICustomerFormData } from "../../types/checkout.types";
+import { useAddNewCheckoutMutation } from "../../redux/Slices/api/checkoutApiSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import './CheckoutForm.scss';
-import { useNavigate } from "react-router-dom";
-import { useAddNewCheckoutMutation } from "../../redux/Slices/api/checkoutApiSlice";
-import { useAppSelector } from "../../redux/hooks";
+import { total } from "../../utils/utils";
+import { clearCart } from "../../redux/Slices/CartSlice";
 
 const CheckoutForm = () => {
     const navigate = useNavigate()
-
+    const dispatch = useAppDispatch()
     const [addCheckout, {error, data}] = useAddNewCheckoutMutation()
     const cartItems = useAppSelector((state) => state.cart.cartItems)
     const userId = useAppSelector((state) => state.auth.userInfo?.user._id)
@@ -43,15 +46,18 @@ const CheckoutForm = () => {
     
 
     const onSubmit:SubmitHandler<ICustomerFormData> = (formData) => {
-
+        const totalPrice = total(cartItems)
         const newCheckout: ICheckout = {
             customerData: {
                 ...formData
             },
+            totalPrice,
             customerID:userId as string,
             products: cartItems
         }
         addCheckout(newCheckout)
+        dispatch(clearCart())
+        navigate("/")
     }
   return (
     <div className="checkoutForm">

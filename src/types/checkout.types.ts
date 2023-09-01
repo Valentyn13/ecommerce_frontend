@@ -16,8 +16,9 @@ export interface ICustomerFormData {
 
 export interface ICheckout {
     customerID: string;
-    customerData: ICustomerFormData
-    products: ICartLaptopList
+    customerData: ICustomerFormData;
+    products: ICartLaptopList;
+    totalPrice: number;
 }
 
 export interface ICheckoutFetchData extends ICheckout {

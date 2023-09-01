@@ -8,6 +8,7 @@ import "./Profile.scss";
 import { useGetCheckoutsQuery } from "../../redux/Slices/api/checkoutApiSlice";
 import { useEffect } from "react";
 import Preloader from "../Preloader/Preloader";
+import ProfileDealsList from "../ProfileDealsList/ProfileDealsList";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.auth.userInfo);
@@ -69,7 +70,7 @@ if(data) {
             <div className="purchase__container">
               {isLoading && (<Preloader/>)}
               {data && isSuccess && (
-              <div>{data.length}</div>
+              <ProfileDealsList deals={data}/>
               )}
               
             </div>

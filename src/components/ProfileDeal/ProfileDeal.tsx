@@ -25,7 +25,7 @@ const ProfileDeal:FC<IProfileDealProps> = ({deal}) => {
                         </div>
                         <div className='deal__item_metrics'>
                             <p>Amount: {product.amount}</p>
-                            <p style={{color:'rgb(236, 97, 97)'}}>Total price:{deal.totalPrice} ₴  </p>
+                            <p style={{color:'rgb(236, 97, 97)'}}>Total price:{product.product.price * product.amount} ₴  </p>
                         </div>
                     </div>
                     )

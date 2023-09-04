@@ -3,15 +3,16 @@ import { ToastContainer, toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent, useEffect, useState } from "react";
 
+import FormInput from "../FormInput/FormInput";
+import AdminFormArea from "../AdminFormArea/AdminFormArea";
+import AddLaptopImageField from "../AddLaptopImageField/AddLaptopImageField";
 import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
 import { useAddSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
 import { ILaptopFormData } from "../../types/laptop.types";
 
 import "react-toastify/ReactToastify.min.css";
 import "./Admin.scss";
-import FormInput from "../FormInput/FormInput";
-import AdminFormArea from "../AdminFormArea/AdminFormArea";
-import AddLaptopImageField from "../AddLaptopImageField/AddLaptopImageField";
+
 
 const Admin = () => {
   const [addLaptop, { data, error }] = useAddLaptopMutation();

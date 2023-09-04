@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ILaptopFormData } from "../../types/laptop.types";
+import { IFormLength } from "../../types/checkout.types";
 
 interface IFormInputProps {
   name: string;
@@ -27,10 +28,7 @@ interface IFormInputProps {
     | "videoCard.model"
     | "hardDrive.value"
     | "hardDrive.hardType";
-  minLength?: {
-    value: number;
-    message: string;
-  };
+  minLength?: IFormLength
   optionValues?: string[];
 }
 const FormInput: FC<IFormInputProps> = ({

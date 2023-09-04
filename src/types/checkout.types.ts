@@ -27,3 +27,9 @@ export interface ICheckoutFetchData extends ICheckout {
 }
 
 export type ICheckoutFetchDataList = ICheckoutFetchData[]
+
+
+export interface IFormLength {
+    value: number;
+    message: string;
+}

@@ -78,7 +78,6 @@ const Admin = () => {
     if (e.target.files) {
       const file = e.target.files[0];
       const base64 = (await convertToBase64(file)) as string;
-      sliderImages[0] = base64;
       return base64;
     }
     toast.error("e.target files[0] is undefined", {

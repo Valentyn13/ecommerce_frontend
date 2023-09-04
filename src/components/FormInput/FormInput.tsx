@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ILaptopFormData } from "../../types/laptop.types";
@@ -56,7 +57,7 @@ const FormInput: FC<IFormInputProps> = ({
               Select {name.toLocaleLowerCase()}
             </option>
             {optionValues?.map((option) => (
-              <option value={option}>{option}</option>
+              <option key={uuidv4()} value={option}>{option}</option>
             ))}
           </select>
         ) : (

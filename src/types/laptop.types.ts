@@ -1,6 +1,5 @@
 export interface ILaptop {
     name: string;
-    info?: string;
     _id: string;
     price: number;
     producer: string;

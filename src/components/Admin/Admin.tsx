@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ChangeEvent, ReactNode, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { useAddLaptopMutation } from "../../redux/Slices/api/laptopApiSlice";
 import { useAddSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
@@ -9,13 +9,15 @@ import { ILaptopFormData } from "../../types/laptop.types";
 
 import "react-toastify/ReactToastify.min.css";
 import "./Admin.scss";
+import FormInput from "../FormInput/FormInput";
+import AdminFormArea from "../AdminFormArea/AdminFormArea";
+import AddLaptopImageField from "../AddLaptopImageField/AddLaptopImageField";
 
 const Admin = () => {
   const [addLaptop, { data, error }] = useAddLaptopMutation();
   const [addImages] = useAddSliderImagesMutation();
 
-  const [base64Images, setBase64Images] = useState("");
-  const [sliderImages] = useState<(string | undefined)[]>([]);
+  const [sliderImages] = useState<string[]>([]);
 
   const enum REDUCER_ACTION_TYPES {
     ADD_FIRST_IMAGE,
@@ -74,18 +76,22 @@ const Admin = () => {
 
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      if (e.target.id === "main_image") {
-        const file = e.target.files[0];
-        const base64 = (await convertToBase64(file)) as string;
-        sliderImages[0] = base64;
-        setBase64Images(base64);
-        return base64;
-      } else {
-        const file = e.target.files[0];
-        const base64 = (await convertToBase64(file)) as string;
-        return base64;
-      }
+      const file = e.target.files[0];
+      const base64 = (await convertToBase64(file)) as string;
+      sliderImages[0] = base64;
+      return base64;
     }
+    toast.error("e.target files[0] is undefined", {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    return "";
   };
 
   const reducer = async (
@@ -95,15 +101,19 @@ const Admin = () => {
     const converImage = await handleFileUpload(e);
     switch (action.type) {
       case REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE:
-        sliderImages[1] = converImage;
+        sliderImages[0] = converImage;
         console.log(sliderImages);
         return;
       case REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE:
+        sliderImages[1] = converImage;
+        console.log(sliderImages);
+        return;
+      case REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE:
         sliderImages[2] = converImage;
         console.log(sliderImages);
         return;
 
-      case REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE:
+      case REDUCER_ACTION_TYPES.ADD_FORTH_IMAGE:
         sliderImages[3] = converImage;
         console.log(sliderImages);
         return;
@@ -115,7 +125,7 @@ const Admin = () => {
   };
 
   const onSubmit: SubmitHandler<ILaptopFormData> = async (formData) => {
-    if (base64Images === "") {
+    if (!sliderImages[0]) {
       toast.error("Main image must be provided", {
         position: "top-right",
         autoClose: 4000,
@@ -127,7 +137,7 @@ const Admin = () => {
         theme: "light",
       });
     }
-    formData.mainImage = base64Images;
+    formData.mainImage = sliderImages[0];
     addLaptop(formData);
   };
 
@@ -188,356 +198,159 @@ const Admin = () => {
           </button>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="add_section__container">
-              <div className="add_section__area " id="image">
-                <h4 className="add_section__label">Laptop images</h4>
+              <AdminFormArea areaName="Laptop images">
                 <div className="add_section__area-images">
-                  <div>
-                    <h2>Choose laptop preview image</h2>
-                    <input
-                      className="file-input"
-                      type="file"
-                      id="main_image"
-                      accept=".jpeg, .png, .jpg .webp"
-                      onChange={handleFileUpload}
-                    />
-                  </div>
-                  <div>
-                    <h2>Choose first slider image</h2>
-                    <input
-                      className="file-input"
-                      type="file"
-                      accept=".jpeg, .png, .jpg .webp"
-                      onChange={(e) =>
-                        reducer(
-                          { type: REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE },
-                          e
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <h2>Choose second slider image</h2>
-                    <input
-                      className="file-input"
-                      type="file"
-                      accept=".jpeg, .png, .jpg .webp"
-                      onChange={(e) =>
-                        reducer(
-                          { type: REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE },
-                          e
-                        )
-                      }
-                    />
-                  </div>
-                  <div>
-                    <h2>Choose third slider image</h2>
-                    <input
-                      className="file-input"
-                      type="file"
-                      accept=".jpeg, .png, .jpg .webp"
-                      onChange={(e) =>
-                        reducer(
-                          { type: REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE },
-                          e
-                        )
-                      }
-                    />
-                  </div>
+                  <AddLaptopImageField
+                    text="Choose laptop preview image"
+                    onChange={(e) =>
+                      reducer({ type: REDUCER_ACTION_TYPES.ADD_FIRST_IMAGE }, e)
+                    }
+                  />
+                  <AddLaptopImageField
+                    text="Choose second slider image"
+                    onChange={(e) =>
+                      reducer({ type: REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE }, e)
+                    }
+                  />
+                  <AddLaptopImageField
+                    text="Choose third slider image"
+                    onChange={(e) =>
+                      reducer({ type: REDUCER_ACTION_TYPES.ADD_THIRD_IMAGE }, e)
+                    }
+                  />
+                  <AddLaptopImageField
+                    text="Choose forth slider image"
+                    onChange={(e) =>
+                      reducer({ type: REDUCER_ACTION_TYPES.ADD_FORTH_IMAGE }, e)
+                    }
+                  />
                 </div>
-              </div>
-              <div className="add_section__area" id="info">
-                <h4 className="add_section__label">Laptop info</h4>
-                <div className="add_section__content">
-                  <div className="add_section__inputs inputs">
-                    <div className="inputs__container">
-                      <label>
-                        <p>Name</p>
-                        <input
-                          type="text"
-                          {...register("name", {
-                            required: "Field is required",
-                            minLength: {
-                              value: 5,
-                              message: "Must be more than 5 characters",
-                            },
-                          })}
-                        />
-                        {errors?.name && (
-                          <div className="input_error">
-                            {errors.name.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Price</p>
-                        <input
-                          {...register("price", {
-                            required: "Field is required",
-                          })}
-                          type="number"
-                        />
-                        {errors?.price && (
-                          <div className="input_error">
-                            {errors.price.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Producer</p>
-                        <input
-                          type="text"
-                          {...register("producer", {
-                            required: "Field is required",
-                            minLength: {
-                              value: 3,
-                              message: "Must be more than 5 characters",
-                            },
-                          })}
-                        />
-                        {errors?.producer && (
-                          <div className="input_error">
-                            {errors.producer.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="add_section__area" id="screen">
-                <h4 className="add_section__label">Screen</h4>
-                <div className="add_section__content">
-                  <div className="add_section__inputs inputs">
-                    <div className="inputs__container">
-                      <label>
-                        <p>Size</p>
-                        <input
-                          type="number"
-                          {...register("screen.size", {
-                            required: "Field is required",
-                          })}
-                        />
-                        {errors?.screen?.size && (
-                          <div className="input_error">
-                            {errors.screen?.size.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Screen Type</p>
-                        <select
-                          id=""
-                          defaultValue=""
-                          {...register("screen.screenType", {
-                            required: "Field is required",
-                          })}
-                        >
-                          <option value="" disabled>
-                            Select type:
-                          </option>
-                          <option value="IPS">IPS</option>
-                          <option value="OLED">OLED</option>
-                        </select>
-                        {errors?.screen?.screenType && (
-                          <div className="input_error">
-                            {errors.screen?.screenType.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Resolution</p>
-                        <input
-                          type="text"
-                          {...register("screen.resolution", {
-                            required: "Field is required",
-                            minLength: {
-                              value: 9,
-                              message: "Must be like: 1920x1200 Full HD",
-                            },
-                          })}
-                        />
-                        {errors?.screen?.resolution && (
-                          <div className="input_error">
-                            {errors.screen?.resolution.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="add_section__area" id="cpu">
-                <h4 className="add_section__label">CPU</h4>
-                <div className="add_section__content">
-                  <div className="add_section__inputs inputs">
-                    <div className="inputs__container">
-                      <label>
-                        <p>Producer</p>
-                        <select
-                          id="cpu-producer"
-                          defaultValue=""
-                          {...register("CPU.producer", {
-                            required: "Field is required",
-                          })}
-                        >
-                          <option value="" disabled>
-                            Select company:
-                          </option>
-                          <option value="Intel">Intel</option>
-                          <option value="AMD">AMD</option>
-                          <option value="Apple">Apple</option>
-                        </select>
-                        {errors?.CPU?.producer && (
-                          <div className="input_error">
-                            {errors.CPU?.producer.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Model</p>
-                        <input
-                          type="text"
-                          {...register("CPU.model", {
-                            required: "Field is required",
-                            minLength: {
-                              value: 9,
-                              message: "Must be like: Core i5-1135G7 ",
-                            },
-                          })}
-                        />
-                        {errors?.CPU?.model && (
-                          <div className="input_error">
-                            {errors.CPU?.model.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Cores</p>
-                        <input
-                          type="number"
-                          {...register("CPU.cores", {
-                            required: "Field is required",
-                          })}
-                        />
-                        {errors?.CPU?.cores && (
-                          <div className="input_error">
-                            {errors.CPU?.cores.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="add_section__area" id="videoCard">
-                <h4 className="add_section__label">Video Card</h4>
-                <div className="add_section__content">
-                  <div className="add_section__inputs inputs">
-                    <div className="inputs__container">
-                      <label>
-                        <p>Producer</p>
-                        <select
-                          defaultValue=""
-                          id="videocard-producer"
-                          {...register("videoCard.producer", {
-                            required: "Field is required",
-                          })}
-                        >
-                          <option value="" disabled>
-                            Select company:
-                          </option>
-                          <option value="Intel">Intel</option>
-                          <option value="AMD">AMD</option>
-                        </select>
-                        {errors?.videoCard?.producer && (
-                          <div className="input_error">
-                            {errors.videoCard?.producer.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Model</p>
-                        <input
-                          type="text"
-                          {...register("videoCard.model", {
-                            required: "Field is required",
-                            minLength: {
-                              value: 9,
-                              message: "Must be like: Iris Xe Graphics",
-                            },
-                          })}
-                        />
-                        {errors?.videoCard?.model && (
-                          <div className="input_error">
-                            {errors.videoCard?.model.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="add_section__area" id="hardDrive">
-                <h4 className="add_section__label">Hard Drive</h4>
-                <div className="add_section__content">
-                  <div className="add_section__inputs inputs">
-                    <div className="inputs__container">
-                      <label>
-                        <p>Value</p>
-                        <input
-                          type="number"
-                          {...register("hardDrive.value", {
-                            required: "Field is required",
-                          })}
-                        />
-                        {errors?.hardDrive?.value && (
-                          <div className="input_error">
-                            {errors.hardDrive?.value.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                    <div className="inputs__container">
-                      <label>
-                        <p>Type</p>
-                        <select
-                          id="hardType"
-                          defaultValue=""
-                          {...register("hardDrive.hardType", {
-                            required: "Field is required",
-                          })}
-                        >
-                          <option value="" disabled>
-                            Select type:
-                          </option>
-                          <option value="SSD">SSD</option>
-                          <option value="HDD">HDD</option>
-                        </select>
-                        {errors?.hardDrive?.hardType && (
-                          <div className="input_error">
-                            {errors.hardDrive?.hardType.message as ReactNode}
-                          </div>
-                        )}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </AdminFormArea>
+              <AdminFormArea areaName="Laptop info">
+                <FormInput
+                  name="Name"
+                  register={register}
+                  inputType="text"
+                  formFieldName="name"
+                  minLength={{
+                    value: 5,
+                    message: '"Must be more than 5 characters"',
+                  }}
+                  errors={errors}
+                />
+                <FormInput
+                  name="Price"
+                  register={register}
+                  inputType="number"
+                  formFieldName="price"
+                  errors={errors}
+                />
+                <FormInput
+                  name="Producer"
+                  register={register}
+                  inputType="text"
+                  formFieldName="producer"
+                  minLength={{
+                    value: 3,
+                    message: "Must be more than 3 characters",
+                  }}
+                  errors={errors}
+                />
+              </AdminFormArea>
+              <AdminFormArea areaName="Screen">
+                <FormInput
+                  name="Size"
+                  register={register}
+                  inputType="number"
+                  formFieldName="screen.size"
+                  errors={errors}
+                />
+                <FormInput
+                  name="Screen Type"
+                  register={register}
+                  inputType="option"
+                  formFieldName="screen.screenType"
+                  errors={errors}
+                  optionValues={["IPS", "OLED"]}
+                />
+                <FormInput
+                  name="Resolution"
+                  register={register}
+                  inputType="text"
+                  formFieldName="screen.resolution"
+                  minLength={{
+                    value: 9,
+                    message: "Must be like: 1920x1200 Full HD",
+                  }}
+                  errors={errors}
+                />
+              </AdminFormArea>
+              <AdminFormArea areaName="CPU">
+                <FormInput
+                  name="Producer"
+                  register={register}
+                  inputType="option"
+                  formFieldName="CPU.producer"
+                  errors={errors}
+                  optionValues={["Intel", "AMD", "Apple"]}
+                />
+                <FormInput
+                  name="Model"
+                  register={register}
+                  inputType="text"
+                  formFieldName="CPU.model"
+                  minLength={{
+                    value: 9,
+                    message: "Must be like: Core i5-1135G7",
+                  }}
+                  errors={errors}
+                />
+                <FormInput
+                  name="Cores"
+                  register={register}
+                  inputType="number"
+                  formFieldName="CPU.cores"
+                  errors={errors}
+                />
+              </AdminFormArea>
+              <AdminFormArea areaName="Video Card">
+                <FormInput
+                  name="Producer"
+                  register={register}
+                  inputType="option"
+                  formFieldName="videoCard.producer"
+                  errors={errors}
+                  optionValues={["Intel", "AMD"]}
+                />
+                <FormInput
+                  name="Model"
+                  register={register}
+                  inputType="text"
+                  formFieldName="videoCard.model"
+                  minLength={{
+                    value: 9,
+                    message: "Must be like: Iris Xe Graphics",
+                  }}
+                  errors={errors}
+                />
+              </AdminFormArea>
+              <AdminFormArea areaName="Hard Drive">
+                <FormInput
+                  name="Value"
+                  register={register}
+                  inputType="number"
+                  formFieldName="hardDrive.value"
+                  errors={errors}
+                />
+                <FormInput
+                  name="Type"
+                  register={register}
+                  inputType="option"
+                  formFieldName="hardDrive.hardType"
+                  errors={errors}
+                  optionValues={["SSD", "HDD"]}
+                />
+              </AdminFormArea>
             </div>
             <input type="submit" disabled={!isValid} />
           </form>

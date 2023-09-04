@@ -13,7 +13,6 @@ import { ILaptopFormData } from "../../types/laptop.types";
 import "react-toastify/ReactToastify.min.css";
 import "./Admin.scss";
 
-
 const Admin = () => {
   const [addLaptop, { data, error }] = useAddLaptopMutation();
   const [addImages] = useAddSliderImagesMutation();
@@ -210,7 +209,10 @@ const Admin = () => {
                   <AddLaptopImageField
                     text="Choose second slider image"
                     onChange={(e) =>
-                      reducer({ type: REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE }, e)
+                      reducer(
+                        { type: REDUCER_ACTION_TYPES.ADD_SECOND_IMAGE },
+                        e
+                      )
                     }
                   />
                   <AddLaptopImageField
@@ -293,7 +295,7 @@ const Admin = () => {
                   inputType="option"
                   formFieldName="CPU.producer"
                   errors={errors}
-                  optionValues={["Intel", "AMD", "Apple"]}
+                  optionValues={["Intel", "AMD", "Apple", "Nvidia"]}
                 />
                 <FormInput
                   name="Model"
@@ -321,7 +323,7 @@ const Admin = () => {
                   inputType="option"
                   formFieldName="videoCard.producer"
                   errors={errors}
-                  optionValues={["Intel", "AMD"]}
+                  optionValues={["Intel", "AMD", "Apple", "Nvidia"]}
                 />
                 <FormInput
                   name="Model"

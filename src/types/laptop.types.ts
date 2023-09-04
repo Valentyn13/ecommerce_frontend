@@ -1,30 +1,29 @@
 export interface ILaptop {
     name: string;
-    info?:string;
+    info?: string;
     _id: string;
     price: number;
     producer: string;
     mainImage: string;
     screen: {
         size: number;
-        screenType: 'IPS' | "OLED";
+        screenType: "IPS" | "OLED";
         resolution: string;
     };
     CPU: {
-        producer: "Intel" | "AMD" | "Apple";
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
         model: string;
-        cores: number
+        cores: number;
     };
     videoCard: {
-        producer: 'Intel' | 'AMD';
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
         model: string;
     };
     hardDrive: {
         value: number;
-        hardType: 'SSD' | 'HDD'
-    }
+        hardType: "SSD" | "HDD";
+    };
 }
-
 
 export interface ILaptopFetchData {
     name: string;
@@ -32,25 +31,25 @@ export interface ILaptopFetchData {
     price: number;
     producer: string;
     mainImage: string;
-    __v: number
+    __v: number;
     screen: {
         size: number;
-        screenType: 'IPS' | "OLED";
+        screenType: "IPS" | "OLED";
         resolution: string;
     };
     CPU: {
-        producer: "Intel" | "AMD" | "Apple";
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
         model: string;
-        cores: number
+        cores: number;
     };
     videoCard: {
-        producer: 'Intel' | 'AMD';
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
         model: string;
     };
     hardDrive: {
         value: number;
-        hardType: 'SSD' | 'HDD'
-    }
+        hardType: "SSD" | "HDD";
+    };
 }
 
 export interface ILaptopFormData {
@@ -60,26 +59,26 @@ export interface ILaptopFormData {
     mainImage: string;
     screen: {
         size: number;
-        screenType: 'IPS' | "OLED" | "";
+        screenType: "IPS" | "OLED" | "";
         resolution: string;
     };
     CPU: {
-        producer: "Intel" | "AMD" | "Apple" | "";
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia" | "";
         model: string;
-        cores: number
+        cores: number;
     };
     videoCard: {
-        producer: 'Intel' | 'AMD' | "";
+        producer: "Intel" | "AMD" | "Apple" | "Nvidia" | "";
         model: string;
     };
     hardDrive: {
         value: number;
-        hardType: 'SSD' | 'HDD' | "";
-    }
+        hardType: "SSD" | "HDD" | "";
+    };
 }
 
-export type ILaptopList = ILaptop[]
+export type ILaptopList = ILaptop[];
 
 export interface ILaptopsState {
-    laptops: ILaptop[]
+    laptops: ILaptop[];
 }

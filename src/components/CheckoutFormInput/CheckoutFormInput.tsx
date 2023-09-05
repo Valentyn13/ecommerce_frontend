@@ -1,13 +1,14 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ICustomerFormData, IFormLength } from "../../types/checkout.types";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface ICheckoutFormInput {
   name: string;
   register: UseFormRegister<ICustomerFormData>;
   errors: FieldErrors<ICustomerFormData>;
-  formFiledName:
+  formFieldName:
     | "name"
     | "surname"
     | "phone"
@@ -26,7 +27,7 @@ const CheckoutFormInput: FC<ICheckoutFormInput> = ({
   name,
   minLength,
   maxLength,
-  formFiledName,
+  formFieldName,
 }) => {
   return (
     <div className="checkoutForm__filedWrapper">
@@ -35,15 +36,17 @@ const CheckoutFormInput: FC<ICheckoutFormInput> = ({
         <input
           type="text"
           className="checkoutForm__input"
-          {...register(formFiledName, {
+          {...register(formFieldName, {
             required: `${name} is required`,
             minLength,
             maxLength,
           })}
         />
-        {errors?.name && (
-          <div className="input_error">{errors.name.message as ReactNode}</div>
-        )}
+        <ErrorMessage
+          errors={errors}
+          name={formFieldName}
+          render={({ message }) => <div className="input_error">{message}</div>}
+        />
       </label>
     </div>
   );

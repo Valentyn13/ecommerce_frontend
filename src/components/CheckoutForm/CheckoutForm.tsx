@@ -71,7 +71,7 @@ const CheckoutForm = () => {
             type="text"
             register={register}
             errors={errors}
-            formFiledName="name"
+            formFieldName="name"
             minLength={{
               value: 4,
               message: "Name must be longer than 5 characters",
@@ -86,7 +86,7 @@ const CheckoutForm = () => {
             type="text"
             register={register}
             errors={errors}
-            formFiledName="surname"
+            formFieldName="surname"
             minLength={{
               value: 4,
               message: "Surname must be longer than 5 characters",
@@ -101,7 +101,7 @@ const CheckoutForm = () => {
             type="text"
             register={register}
             errors={errors}
-            formFiledName="phone"
+            formFieldName="phone"
             minLength={{
               value: 10,
               message: "Phone must contain 10 number",
@@ -118,7 +118,7 @@ const CheckoutForm = () => {
               type="text"
               register={register}
               errors={errors}
-              formFiledName="address.country"
+              formFieldName="address.country"
               minLength={{
                 value: 4,
                 message: "Country name must contain more than 4 characters",
@@ -133,7 +133,7 @@ const CheckoutForm = () => {
               type="text"
               register={register}
               errors={errors}
-              formFiledName="address.city"
+              formFieldName="address.city"
               minLength={{
                 value: 4,
                 message: "City name must contain more than 4 characters",
@@ -148,7 +148,7 @@ const CheckoutForm = () => {
               type="text"
               register={register}
               errors={errors}
-              formFiledName="address.street"
+              formFieldName="address.street"
               minLength={{
                 value: 4,
                 message: "Street name must contain more than 4 characters",
@@ -163,7 +163,7 @@ const CheckoutForm = () => {
               type="number"
               register={register}
               errors={errors}
-              formFiledName="address.postIndex"
+              formFieldName="address.postIndex"
               minLength={{
                 value: 4,
                 message: "Post Index must contain 4 numbers",

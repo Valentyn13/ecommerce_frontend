@@ -1,9 +1,10 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ILaptopFormData } from "../../types/laptop.types";
 import { IFormLength } from "../../types/checkout.types";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface IFormInputProps {
   name: string;
@@ -69,10 +70,11 @@ const FormInput: FC<IFormInputProps> = ({
             })}
           />
         )}
-
-        {errors?.name && (
-          <div className="input_error">{errors.name.message as ReactNode}</div>
-        )}
+      <ErrorMessage
+        errors={errors}
+        name={formFieldName}
+        render={({ message }) => <div className="input_error">{message}</div>}
+      />
       </label>
     </div>
   );

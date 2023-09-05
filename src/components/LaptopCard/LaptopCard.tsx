@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addItem, removeItem } from "../../redux/Slices/CartSlice";
 import { ILaptop } from "../../types/laptop.types";
 import { ICartLaptopList } from "../../types/cart.types";
+import { truncate } from "../../utils/utils";
 
 import {
   AiOutlineHeart as HeartButton,
@@ -82,7 +83,7 @@ const LaptopCard: FC<ILaptopCardProps> = ({
         <img src={laptopProps.mainImage} alt="laptop image" />
       </div>
       <div className="laptop_card__info">
-        <div className="laptop_card__name">{laptopProps.name}</div>
+        <div className="laptop_card__name">{truncate(laptopProps.name,35)}</div>
         <div className="laptop_card__bottom">
           <p>
             {laptopProps.price} <span>₴</span>

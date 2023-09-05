@@ -282,7 +282,7 @@ const Admin = () => {
                   formFieldName="screen.resolution"
                   minLength={{
                     value: 9,
-                    message: "Must be like: 1920x1200 Full HD",
+                    message: "Min length 9. Must be like: 1920x1200 Full HD",
                   }}
                   errors={errors}
                 />
@@ -303,7 +303,7 @@ const Admin = () => {
                   formFieldName="CPU.model"
                   minLength={{
                     value: 9,
-                    message: "Must be like: Core i5-1135G7",
+                    message: "Min length 9. Must be like: Core i5-1135G7",
                   }}
                   errors={errors}
                 />
@@ -331,7 +331,7 @@ const Admin = () => {
                   formFieldName="videoCard.model"
                   minLength={{
                     value: 9,
-                    message: "Must be like: Iris Xe Graphics",
+                    message: "Min length 9. Must be like: Iris Xe Graphics",
                   }}
                   errors={errors}
                 />

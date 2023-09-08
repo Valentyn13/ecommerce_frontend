@@ -10,5 +10,18 @@ arr.reduce((acc, element) => {
 export const truncate = (str: string , maxlength: number) => {
   return (str.length > maxlength) ?
       str.slice(0, maxlength - 1) + '…' : str;
-
 }
+
+export const isCheckedHandler = (arr: string[], value: string) => {
+  const index = arr.indexOf(value);
+
+  if (index === -1) {
+    const newArr = [...arr];
+    newArr.push(value);
+    return newArr;
+  }
+  const newArr = [...arr];
+  newArr.splice(index, 1);
+  return newArr;
+};
+

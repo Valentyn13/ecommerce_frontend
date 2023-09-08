@@ -1,0 +1,41 @@
+.filtersBar {
+    padding: 10px 15px 5px 15px;
+    height: 100%;
+    &__block {
+        h3{
+           background-color: #43b02a;
+            padding: 3px;
+            font-size: 22px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #379424 ;
+        }
+        margin-bottom: 20px;
+    }
+    &__input {
+        label {
+            cursor: pointer;
+        }
+        input {
+            cursor: pointer;
+        }
+        font-size: 18px;
+        margin-bottom: 3px;
+        input {
+            margin-right: 4px;
+        }
+    }
+    &__applyButton {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+        font-size: 20px;
+        padding: 10px 10px;
+        border-radius: 8px;
+        color: white;
+        background-color: #43b02a;
+        &:hover {
+            background-color: #379424;
+        }
+    }
+
+}

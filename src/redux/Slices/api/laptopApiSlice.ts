@@ -1,3 +1,4 @@
+import { IFiletersFieldsPrepeared } from "../../../types/filter.types";
 import { ILaptopFetchData, ILaptopFormData, ILaptopList } from "../../../types/laptop.types";
 import { apiSlice } from "./apiSlice";
 
@@ -13,10 +14,16 @@ export const laptopApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        fetchLaptops: builder.query<ILaptopList, void>({
-            query: () => `${LAPTOP_URL}/all`
+        fetchLaptops: builder.query<ILaptopList, IFiletersFieldsPrepeared>({
+            query: (data) => {
+                console.log(data)
+                return({
+                    url: `${LAPTOP_URL}/all`,
+                    params:  data
+                })
+            }
         })
     })
 })
 
-export const { useAddLaptopMutation, useFetchLaptopsQuery } = laptopApiSlice;
+export const { useAddLaptopMutation, useLazyFetchLaptopsQuery } = laptopApiSlice;

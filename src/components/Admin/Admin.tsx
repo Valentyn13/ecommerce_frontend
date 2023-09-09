@@ -41,7 +41,7 @@ const Admin = () => {
       price: 0,
       producer: "",
       screen: {
-        size: 0,
+        size: "15.6",
         screenType: "",
         resolution: "",
       },
@@ -55,7 +55,7 @@ const Admin = () => {
         model: "",
       },
       hardDrive: {
-        value: 0,
+        value: 512,
         hardType: "",
       },
     },
@@ -250,12 +250,9 @@ const Admin = () => {
                 <FormInput
                   name="Producer"
                   register={register}
-                  inputType="text"
+                  inputType="option"
                   formFieldName="producer"
-                  minLength={{
-                    value: 3,
-                    message: "Must be more than 3 characters",
-                  }}
+                  optionValues={["Lenovo", "Acer","HP","Asus","Apple","Dell"]}
                   errors={errors}
                 />
               </AdminFormArea>
@@ -263,8 +260,9 @@ const Admin = () => {
                 <FormInput
                   name="Size"
                   register={register}
-                  inputType="number"
+                  inputType="option"
                   formFieldName="screen.size"
+                  optionValues={["13", "14","15.6","16","17"]}
                   errors={errors}
                 />
                 <FormInput
@@ -340,8 +338,9 @@ const Admin = () => {
                 <FormInput
                   name="Value"
                   register={register}
-                  inputType="number"
+                  inputType="option"
                   formFieldName="hardDrive.value"
+                  optionValues={["256","512","1024"]}
                   errors={errors}
                 />
                 <FormInput

@@ -2,10 +2,10 @@ export interface ILaptop {
     name: string;
     _id: string;
     price: number;
-    producer: string;
+    producer:"Lenovo"| "Acer"|"HP"|"Asus"|"Apple"|"Dell";
     mainImage: string;
     screen: {
-        size: number;
+        size: "13"| "14"|"15.6"|"16"|"17";
         screenType: "IPS" | "OLED";
         resolution: string;
     };
@@ -19,45 +19,22 @@ export interface ILaptop {
         model: string;
     };
     hardDrive: {
-        value: number;
+        value: 256 | 512| 1024 ;
         hardType: "SSD" | "HDD";
     };
 }
 
-export interface ILaptopFetchData {
-    name: string;
-    _id: string;
-    price: number;
-    producer: string;
-    mainImage: string;
+export interface ILaptopFetchData extends ILaptop {
     __v: number;
-    screen: {
-        size: number;
-        screenType: "IPS" | "OLED";
-        resolution: string;
-    };
-    CPU: {
-        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
-        model: string;
-        cores: number;
-    };
-    videoCard: {
-        producer: "Intel" | "AMD" | "Apple" | "Nvidia";
-        model: string;
-    };
-    hardDrive: {
-        value: number;
-        hardType: "SSD" | "HDD";
-    };
 }
 
 export interface ILaptopFormData {
     name: string;
     price: number;
-    producer: string;
+    producer: "Lenovo"| "Acer"|"HP"|"Asus"|"Apple"|"Dell"| "";
     mainImage: string;
     screen: {
-        size: number;
+        size: "13"| "14"|"15.6"|"16"|"17" | ""
         screenType: "IPS" | "OLED" | "";
         resolution: string;
     };
@@ -71,7 +48,7 @@ export interface ILaptopFormData {
         model: string;
     };
     hardDrive: {
-        value: number;
+        value: 256 | 512| 1024 ;
         hardType: "SSD" | "HDD" | "";
     };
 }

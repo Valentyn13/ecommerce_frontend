@@ -34,7 +34,7 @@ export interface ILaptopFormData {
     producer: "Lenovo"| "Acer"|"HP"|"Asus"|"Apple"|"Dell"| "";
     mainImage: string;
     screen: {
-        size: "13"| "14"|"15.6"|"16"|"17" | ""
+        size: "13"| "14"|"15.6"|"16"|"17"| ""
         screenType: "IPS" | "OLED" | "";
         resolution: string;
     };
@@ -54,7 +54,11 @@ export interface ILaptopFormData {
 }
 
 export type ILaptopList = ILaptop[];
-
+export type ILaptopPayload ={
+    laptops: ILaptopList
+    isLoadSuccess: boolean
+}
 export interface ILaptopsState {
     laptops: ILaptop[];
+    isLoadSuccess: boolean
 }

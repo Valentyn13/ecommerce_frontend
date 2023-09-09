@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ILaptopList, ILaptopsState } from "../../types/laptop.types";
+import { ILaptopPayload, ILaptopsState } from "../../types/laptop.types";
 
 const initialState: ILaptopsState = {
-    laptops: []
+    laptops: [],
+    isLoadSuccess:false
 }
 
 const laptopReducer = createSlice({
     name: 'laptops',
     initialState,
     reducers: {
-        loadLaptops: (state, action: PayloadAction<ILaptopList>) => {
-            state.laptops = action.payload
+        loadLaptops: (state, action: PayloadAction<ILaptopPayload>) => {
+            state.laptops = action.payload.laptops
+            state.isLoadSuccess = action.payload.isLoadSuccess
         }
     }
 })

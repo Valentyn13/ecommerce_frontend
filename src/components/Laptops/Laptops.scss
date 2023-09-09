@@ -5,6 +5,17 @@
     min-height: 100vh;
 
 }
+.not-items-by-filters {
+  font-size: 28px;
+  color:  gray;
+  position:  absolute;
+  text-align: center;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: inline-block;
+}
 
 .laptops__container {
   position: relative;

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICartLaptopList } from "../types/cart.types";
+import { IFiletersFieldsPrepeared } from "../types/filter.types";
 
 export const total = (arr: ICartLaptopList) =>
 arr.reduce((acc, element) => {
@@ -25,3 +27,13 @@ export const isCheckedHandler = (arr: string[], value: string) => {
   return newArr;
 };
 
+export const prepearer = (data: any) => {
+  const resultObj: any= {}
+  const keys = Object.getOwnPropertyNames(data)
+  keys.forEach((key) => {
+    if (data[key].length > 0) {
+      resultObj[key] =data[key]
+    }
+  })
+  return resultObj as IFiletersFieldsPrepeared
+  }

@@ -1,46 +1,50 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-import  LaptopCard  from '../LaptopCard/LaptopCard';
-import Preloader from '../Preloader/Preloader';
-import { useAppSelector } from '../../redux/hooks';
-import { ILaptop } from '../../types/laptop.types';
+import LaptopCard from "../LaptopCard/LaptopCard";
+import Preloader from "../Preloader/Preloader";
+import { useAppSelector } from "../../redux/hooks";
+import { ILaptop } from "../../types/laptop.types";
 
-import './Laptops.scss';
+import "./Laptops.scss";
 
-const Laptops:FC = () => {
+const Laptops: FC = () => {
+  const laptopsData = useAppSelector((state) => state.laptop);
 
-
-  const laptops = useAppSelector(state => state.laptop.laptops)
-  
-  const laptopRender = (laptop: ILaptop,index: number) => {
+  const laptopRender = (laptop: ILaptop, index: number) => {
     if (index < 1) {
-      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true} inSale={true}/>
+      return (
+        <LaptopCard
+          key={laptop._id}
+          laptopProps={laptop}
+          isAction={true}
+          inSale={true}
+        />
+      );
     }
     if (index < 3) {
-      return <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true}/>
+      return (
+        <LaptopCard key={laptop._id} laptopProps={laptop} isAction={true} />
+      );
     }
-    return<LaptopCard key={laptop._id} laptopProps={laptop}/>
-  }
+    return <LaptopCard key={laptop._id} laptopProps={laptop} />;
+  };
 
   return (
-    <div className='laptops'>
+    <div className="laptops">
       <div className="laptops__container">
-        {
-          laptops.length === 0 && (<Preloader/>)  
-        }
-        {
-          laptops.length > 0 && (
-            laptops.map((laptop, index) => {
-
-              return(
-                  laptopRender(laptop, index)
-              )
-            })
-          )
-        }
+        {!laptopsData.isLoadSuccess && <Preloader />}
+        {laptopsData.isLoadSuccess && laptopsData.laptops.length === 0 && (
+          <div className="not-items-by-filters">
+            Laptops not found by active parameters
+          </div>
+        )}
+        {laptopsData.laptops.length > 0 &&
+          laptopsData.laptops.map((laptop, index) => {
+            return laptopRender(laptop, index);
+          })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Laptops
+export default Laptops;

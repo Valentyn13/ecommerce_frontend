@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import FiltersBarBlock from "../FiltersBarBlock/FiltersBarBlock";
 import FiltersBarInput from "../FiltersBarInput/FiltersBarInput";
-import { isCheckedHandler } from "../../utils/utils";
+import { isCheckedHandler, prepearer } from "../../utils/utils";
 import { useLazyFetchLaptopsQuery } from "../../redux/Slices/api/laptopApiSlice";
 import { loadLaptops } from "../../redux/Slices/LaptopSlice";
 import { useAppDispatch } from "../../redux/hooks";
-import { ReducerAction, IFiletersFields, REDUCER_ACTION_TYPE, IFiletersFieldsPrepeared } from "../../types/filter.types";
+import { ReducerAction, IFiletersFields, REDUCER_ACTION_TYPE } from "../../types/filter.types";
 
 import "./FiltersBar.scss";
 
@@ -24,7 +23,7 @@ const [makeRquest, setMakeRequest] = useState(false)
     videoCardProducer: [],
   });
 
-  const [fetchLaptops, {data, error}]= useLazyFetchLaptopsQuery()
+  const [fetchLaptops, {data, error, isSuccess}]= useLazyFetchLaptopsQuery()
 
   const reducer = (action: ReducerAction) => {
     switch (action.type) {
@@ -84,20 +83,11 @@ const [makeRquest, setMakeRequest] = useState(false)
     }
   };
 
-  const prepearer = (data: any) => {
-    const resultObj: any= {}
-    const keys = Object.keys(data)
-    keys.forEach((key) => {
-      if (data[key].length > 0) {
-        resultObj[key] =data[key]
-      }
-    })
-    return resultObj as IFiletersFieldsPrepeared
-    }
+
   
   useEffect(() => {
     if (data) {
-      dispatch(loadLaptops(data))
+      dispatch(loadLaptops({laptops:data, isLoadSuccess: isSuccess}))
     }
     if (error) {
       console.log(error)
@@ -130,9 +120,11 @@ const [makeRquest, setMakeRequest] = useState(false)
             <FiltersBarInput name="HP" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
       </FiltersBarBlock>
       <FiltersBarBlock name="Screen size">
+            <FiltersBarInput name="13" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
             <FiltersBarInput name="14" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
-            <FiltersBarInput name="15" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
+            <FiltersBarInput name="15.6" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
             <FiltersBarInput name="16" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
+            <FiltersBarInput name="17" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
       </FiltersBarBlock>
       <FiltersBarBlock name="Screen type">
             <FiltersBarInput name="IPS" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_TYPE}/>

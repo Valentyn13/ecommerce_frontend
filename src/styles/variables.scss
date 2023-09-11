@@ -32,15 +32,12 @@ $mobileSmall:479px; // Телефони S
 
 .wrapper {
 	min-height: 100vh;
-	// min-height: 100%;
-	// display: flex;
-	// flex-direction: column;
-	// overflow: hidden;
-
-	// // Притискаємо footer
-	// > main {
-	// 	flex: 1 1 auto;
-	// }
+	display: flex;
+	flex-direction: column;
+	// Притискаємо footer
+	> main {
+		flex: 1 1 auto;
+	}
 }
 
 

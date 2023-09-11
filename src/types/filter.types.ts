@@ -20,6 +20,7 @@ export type ReducerAction = {
     hardDriveType: string[];
     cpuProducer: string[];
     videoCardProducer: string[];
+    page: number
   };
 
 
@@ -30,5 +31,6 @@ export type ReducerAction = {
     hardDriveType?: string[];
     cpuProducer?: string[];
     videoCardProducer?: string[];
+    page?: number
   };
   

@@ -32,6 +32,7 @@ export const prepearer = (data: any) => {
   const keys = Object.getOwnPropertyNames(data)
   keys.forEach((key) => {
     if (data[key].length > 0) {
+
       resultObj[key] =data[key]
     }
   })

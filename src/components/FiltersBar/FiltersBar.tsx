@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import FiltersBarBlock from "../FiltersBarBlock/FiltersBarBlock";
+import { setPageCount } from "../../redux/Slices/PaginationSlice";
 import FiltersBarInput from "../FiltersBarInput/FiltersBarInput";
 import { isCheckedHandler, prepearer } from "../../utils/utils";
 import { useLazyFetchLaptopsQuery } from "../../redux/Slices/api/laptopApiSlice";
 import { loadLaptops } from "../../redux/Slices/LaptopSlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ReducerAction, IFiletersFields, REDUCER_ACTION_TYPE } from "../../types/filter.types";
 
 import "./FiltersBar.scss";
+
 
 const FiltersBar = () => {
   const dispatch = useAppDispatch()
@@ -21,10 +23,11 @@ const [makeRquest, setMakeRequest] = useState(false)
     hardDriveType: [],
     cpuProducer: [],
     videoCardProducer: [],
+    page: 1
   });
 
   const [fetchLaptops, {data, error, isSuccess}]= useLazyFetchLaptopsQuery()
-
+  const pageNumber = useAppSelector((state) => state.pagination.page)
   const reducer = (action: ReducerAction) => {
     switch (action.type) {
       case REDUCER_ACTION_TYPE.CHOOSE_PRODUCER:
@@ -87,7 +90,8 @@ const [makeRquest, setMakeRequest] = useState(false)
   
   useEffect(() => {
     if (data) {
-      dispatch(loadLaptops({laptops:data, isLoadSuccess: isSuccess}))
+      dispatch(loadLaptops({laptops:data.laptopList, isLoadSuccess: isSuccess,pageCount:data.pageCount}))
+      dispatch(setPageCount(data.pageCount))
     }
     if (error) {
       console.log(error)
@@ -107,8 +111,12 @@ const [makeRquest, setMakeRequest] = useState(false)
   },[data,dispatch, error])
 
   useEffect(() => {
-    fetchLaptops(prepearer(checkboxesValues))
-  },[makeRquest])
+    console.log(pageNumber)
+    console.log('state: ',checkboxesValues.page)
+    const fields = prepearer(checkboxesValues)
+    fields.page = pageNumber
+    fetchLaptops(fields)
+  },[makeRquest,pageNumber])
   return (
     <div className="filtersBar">
       <ToastContainer/>

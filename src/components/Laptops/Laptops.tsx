@@ -1,11 +1,13 @@
 import { FC } from "react";
 
 import LaptopCard from "../LaptopCard/LaptopCard";
+import Pagination from "../Pagination/Pagination";
 import Preloader from "../Preloader/Preloader";
 import { useAppSelector } from "../../redux/hooks";
 import { ILaptop } from "../../types/laptop.types";
 
 import "./Laptops.scss";
+
 
 const Laptops: FC = () => {
   const laptopsData = useAppSelector((state) => state.laptop);
@@ -43,6 +45,7 @@ const Laptops: FC = () => {
             return laptopRender(laptop, index);
           })}
       </div>
+      <Pagination/>
     </div>
   );
 };

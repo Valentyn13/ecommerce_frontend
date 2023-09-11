@@ -24,8 +24,13 @@ export interface ILaptop {
     };
 }
 
-export interface ILaptopFetchData extends ILaptop {
+export interface ILaptopFetchData  extends ILaptop {
     __v: number;
+}
+
+export interface ILaptopFetchListData  {
+    laptopList: ILaptopFetchData [],
+    pageCount: number
 }
 
 export interface ILaptopFormData {
@@ -57,8 +62,10 @@ export type ILaptopList = ILaptop[];
 export type ILaptopPayload ={
     laptops: ILaptopList
     isLoadSuccess: boolean
+    pageCount: number
 }
 export interface ILaptopsState {
     laptops: ILaptop[];
+    pageCount: number;
     isLoadSuccess: boolean
 }

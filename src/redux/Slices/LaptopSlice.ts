@@ -3,6 +3,7 @@ import { ILaptopPayload, ILaptopsState } from "../../types/laptop.types";
 
 const initialState: ILaptopsState = {
     laptops: [],
+    pageCount: 0,
     isLoadSuccess:false
 }
 
@@ -13,6 +14,7 @@ const laptopReducer = createSlice({
         loadLaptops: (state, action: PayloadAction<ILaptopPayload>) => {
             state.laptops = action.payload.laptops
             state.isLoadSuccess = action.payload.isLoadSuccess
+            state.pageCount = action.payload.pageCount
         }
     }
 })

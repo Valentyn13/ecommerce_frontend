@@ -5,6 +5,34 @@
 
     &__options {
         display: flex;
+        &__hw-icons {
+            display: flex;
+            align-items: center;
+            font-size: 25px;
+            margin: 0px 5px 0px 20px;
+            div {
+                position: relative;
+                cursor: pointer;
+                margin-right: 15px;
+                transition: 0.1s;
+                &:hover {
+                    color: #daf86c;
+                }
+                .hw-icons__count {
+                    font-size: 16px;
+                    position: absolute;
+                    background-color:#298517;
+                    width: 20px;
+                    height: 20px;
+                    top:-10px;
+                    right: -20px;
+                    border-radius: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
     }
 
     &__container {
@@ -121,7 +149,7 @@
 // dropdown
 
 .menu-wrap{
-    margin: auto 15px auto 5px;
+    margin: auto 0px auto 5px;
     padding: 5px;
     background-color:#379424;
 }

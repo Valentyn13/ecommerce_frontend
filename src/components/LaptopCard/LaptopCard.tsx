@@ -5,17 +5,17 @@ import LaptopModal from "../LaptopModal/LaptopModal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addItem, removeItem } from "../../redux/Slices/CartSlice";
 import { ILaptop } from "../../types/laptop.types";
-import { ICartLaptopList } from "../../types/cart.types";
 import { truncate } from "../../utils/utils";
 
 import {
   AiOutlineHeart as HeartButton,
   AiFillCheckCircle as AlreadyInCart,
   AiOutlineShoppingCart as CartButton,
+  AiFillHeart as FilledHeart
 } from "react-icons/ai";
 import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
-
 import "./LaptopCard.scss";
+import { addFavourite, addItemToCompare, removeFavourite, removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
 
 interface ILaptopCardProps {
   isAction?: boolean;
@@ -29,41 +29,60 @@ const LaptopCard: FC<ILaptopCardProps> = ({
   inSale,
 }) => {
   const dispatch = useAppDispatch();
-
+  const [isViewDetailActive, setIsViewDetailActive] = useState<boolean>(false);
   const cartItems = useAppSelector(
     (state) => state.cart.cartItems
-  ) as ICartLaptopList;
+  )
+  const favourites = useAppSelector((state) => state.compareAndFavourite.favourite)
+  const compareList = useAppSelector((state) => state.compareAndFavourite.compare)
 
   const [isElementInCart, setIsElementInCart] = useState<boolean>(false);
-  const [isViewDetailActive, setIsViewDetailActive] = useState<boolean>(false);
 
-  const isCartIncludeItem = (cartItems: ICartLaptopList) => {
-    return () => {
-      let inCart = false;
-      cartItems.forEach((elem) => {
-        if (elem.product._id === laptopProps._id) inCart = true;
-      });
-      return inCart;
-    };
-  };
+  const [isElementInFavourite, setIsElementInFavourite] = useState(false)
+  const [isElementCompared, setIsElementCompared] = useState(false)
 
-  const handleIsInCartController = () => {
+
+
+  const isInCartController = () => {
     if (isElementInCart) {
       setIsElementInCart(false);
       dispatch(removeItem(laptopProps._id));
-    } else {
-      setIsElementInCart(true);
-      dispatch(addItem({ amount: 1, product: laptopProps }));
-    }
+      return
+    } 
+    setIsElementInCart(true);
+    dispatch(addItem({ amount: 1, product: laptopProps }));
+
   };
 
-  const cartChecker = useCallback(() => {
-    const inCart = cartItems.find(
-      (item) => item.product._id === laptopProps._id
-    );
+  const favouriteController = () => {
+    if (isElementInFavourite) {
+      setIsElementInFavourite(false)
+      dispatch(removeFavourite(laptopProps._id))
+      return
+    }
+    setIsElementInFavourite(true)
+    dispatch(addFavourite(laptopProps))
+  }
 
+  const compareController = () => {
+    if(isElementCompared) {
+      setIsElementCompared(false)
+      dispatch(removeItemFromCompateList(laptopProps._id))
+      return
+    } 
+    setIsElementCompared(true)
+    dispatch(addItemToCompare(laptopProps))
+  }
+
+  // CHECKER
+  const cartChecker = useCallback(() => {
+    const inCart = cartItems.find((item) => item.product._id === laptopProps._id);
+    const inFav = favourites.find((item) => item._id === laptopProps._id)
+    const isCompared = compareList.find((item) => item._id === laptopProps._id)
+    if (inFav) setIsElementInFavourite(true)
+    if(isCompared) setIsElementCompared(true)
     if (inCart) setIsElementInCart(true);
-  }, [cartItems, laptopProps._id]);
+  }, [cartItems, laptopProps._id, favourites, compareList]);
 
   useEffect(() => cartChecker(), [cartChecker]);
 
@@ -72,11 +91,15 @@ const LaptopCard: FC<ILaptopCardProps> = ({
       {isAction && <div className="action">Action</div>}
       {inSale && <div className="sale">Top in sale</div>}
       <div className="card-icons">
-        <div>
-          <HeartButton />
+        <div onClick={favouriteController}>
+          { isElementInFavourite ? <FilledHeart style={{color:'red'}}/> : <HeartButton  /> }
         </div>
-        <div>
-          <Weights />
+        <div onClick={compareController}>
+          { isElementCompared ?  
+          <div className="isCompared" style={{padding:'3px'}}><Weights style={{color: 'green'}}/></div>
+           :
+           <div style={{padding:'3px'}}><Weights /></div>
+          }
         </div>
       </div>
       <div className="laptop_card__img">
@@ -88,8 +111,8 @@ const LaptopCard: FC<ILaptopCardProps> = ({
           <p>
             {laptopProps.price} <span>₴</span>
           </p>
-          <div className="laptop_card__cart" onClick={handleIsInCartController}>
-            {isElementInCart && isCartIncludeItem(cartItems)() ? (
+          <div className="laptop_card__cart" onClick={isInCartController}>
+            { isElementInCart ? (
               <AlreadyInCart />
             ) : (
               <CartButton />
@@ -107,12 +130,15 @@ const LaptopCard: FC<ILaptopCardProps> = ({
         setActive={setIsViewDetailActive}
         children={
           <LaptopModal
+          isCompared={isElementCompared}
+          isInFavourites ={isElementInFavourite}
+          favouritesController={favouriteController}
+          comparedController={compareController}
             isActive={isViewDetailActive}
-            isCartIncludeItem={isCartIncludeItem(cartItems)}
             modalProps={laptopProps}
             setActive={setIsViewDetailActive}
             isElementInCart={isElementInCart}
-            handleIsInCartController={handleIsInCartController}
+            handleIsInCartController={isInCartController}
           />
         }
         contentHeight="100%"

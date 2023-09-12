@@ -26,7 +26,7 @@ const [makeRquest, setMakeRequest] = useState(false)
     page: 1
   });
 
-  const [fetchLaptops, {data, error, isSuccess}]= useLazyFetchLaptopsQuery()
+  const [fetchLaptops, {data, error, isSuccess, isLoading}]= useLazyFetchLaptopsQuery()
   const pageNumber = useAppSelector((state) => state.pagination.page)
   const reducer = (action: ReducerAction) => {
     switch (action.type) {
@@ -90,7 +90,7 @@ const [makeRquest, setMakeRequest] = useState(false)
   
   useEffect(() => {
     if (data) {
-      dispatch(loadLaptops({laptops:data.laptopList, isLoadSuccess: isSuccess,pageCount:data.pageCount}))
+      dispatch(loadLaptops({laptops:data.laptopList, isLoadSuccess: isSuccess && !isLoading,pageCount:data.pageCount}))
       dispatch(setPageCount(data.pageCount))
     }
     if (error) {

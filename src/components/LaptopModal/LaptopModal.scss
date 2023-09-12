@@ -49,17 +49,19 @@
         justify-content: space-between;
         
         font-size: 24px;
-        div {
-            margin-bottom: 30px;
-            div {
-                margin-bottom: 15px;
-            }
+        .laptopModal__InfoBlock {
+            display: flex;
+            flex-direction: column;
+            gap:  30px;
         }
     }
     &__price {
         color: rgb(247, 133, 133);
     }
     &__controllers {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
         button {
             padding: 10px 20px;
             border-radius: 4px;
@@ -106,4 +108,23 @@
 
 .go-back {
     background-color: rgb(247, 129, 129);
+}
+
+.hw-icons {
+    height: 40px;
+    align-items: center;
+    display: flex;
+    gap:20px;
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28px;
+        padding: 3px;
+    }
+}
+
+.isCompared {
+    background-color: yellow;
+    border-radius: 100%;
 }

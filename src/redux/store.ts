@@ -5,13 +5,14 @@ import laptopReducer from './Slices/LaptopSlice';
 import cartReducer from './Slices/CartSlice';
 import { apiSlice } from './Slices/api/apiSlice';
 import paginationReducer from './Slices/PaginationSlice'
-
+import compareAndFavouriteReducer from './Slices/comprasionAndFavouriteSlice'
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         laptop: laptopReducer,
         cart: cartReducer,
         pagination: paginationReducer,
+        compareAndFavourite: compareAndFavouriteReducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
 

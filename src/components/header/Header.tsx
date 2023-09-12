@@ -9,17 +9,20 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import { RiShoppingCart2Line as ShopingCart } from "react-icons/ri";
 import { MdOutlineArrowForwardIos as CatalogArrow } from "react-icons/md";
+import {MdFavorite} from 'react-icons/md';
+import {FaScaleUnbalanced} from 'react-icons/fa6'
 import { FiLogIn as LoginIcon } from "react-icons/fi";
 import { HiOutlineViewGrid as CatalogIcon } from "react-icons/hi";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 
 import "./Header.scss";
 
-
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const favourites = useAppSelector((state) => state.compareAndFavourite.favourite)
+  const compareList = useAppSelector((state) => state.compareAndFavourite.compare)
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const user = useAppSelector((state) => state.auth.userInfo);
 
@@ -71,6 +74,23 @@ const Header = () => {
               </ul>
             </div>
           )}
+        <div className="header__options__hw-icons">
+          <div>
+          <MdFavorite/>
+          {favourites.length >0 && (
+            <div className="hw-icons__count">{favourites.length}</div>
+          )}
+          </div>
+        <div>
+        <FaScaleUnbalanced/>
+        {compareList.length >0 && (
+          <div className="hw-icons__count">{compareList.length}</div>
+        )}
+        
+        </div>
+        
+        </div>
+
           {!user && (
             <div className="header__dropdown">
               <div

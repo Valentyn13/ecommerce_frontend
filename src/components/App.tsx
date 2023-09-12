@@ -22,7 +22,7 @@ const App = () => {
           <Route
             path="profile"
             element={
-              <PrivateRoute isAllowed={!!userinfo} redirectPath="register">
+              <PrivateRoute isAllowed={!!userinfo} redirectPath="/register">
                 <ProfilePpage />
               </PrivateRoute>
             }
@@ -32,7 +32,7 @@ const App = () => {
             element={
               <PrivateRoute
                 isAllowed={!!userinfo && userinfo.user.role === "ADMIN"}
-                redirectPath="profile"
+                redirectPath="/profile"
               >
                 <AdminPage />
               </PrivateRoute>
@@ -43,7 +43,7 @@ const App = () => {
           <Route
             path="checkout"
             element={
-              <PrivateRoute isAllowed={!!userinfo} redirectPath="register">
+              <PrivateRoute isAllowed={!!userinfo} redirectPath="/register">
                 <CheckoutPage />
               </PrivateRoute>
             }

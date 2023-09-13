@@ -4,7 +4,7 @@ import CartProduct from "../CartProduct/CartProduct";
 import { ICartLaptopList } from "../../types/cart.types";
 
 interface ICartProductListProps {
-    cartProducts: ICartLaptopList;
+  cartProducts: ICartLaptopList;
 }
 const CartProductList: FC<ICartProductListProps> = ({ cartProducts }) => {
   return (

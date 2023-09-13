@@ -1,8 +1,10 @@
-import "./Favourites.scss";
+import { FC } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ILaptop } from "../../types/laptop.types";
-import { FC } from "react";
 import { removeFavourite } from "../../redux/Slices/comprasionAndFavouriteSlice";
+
+import "./Favourites.scss";
 
 interface IFavouritesCardProps {
   favouriteElement: ILaptop;
@@ -10,7 +12,7 @@ interface IFavouritesCardProps {
 export const FavouritesCard: FC<IFavouritesCardProps> = ({
   favouriteElement,
 }) => {
-    const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   return (
     <div className="favouriteCard">
@@ -20,16 +22,21 @@ export const FavouritesCard: FC<IFavouritesCardProps> = ({
       <div className="favouriteCard__properties">
         <div className="favouriteCard__name">{favouriteElement.name}</div>
         <div className="favouriteCard__options">
-            <div className="favouriteCard__props">
+          <div className="favouriteCard__props">
             <p className="favouriteCard__price">{favouriteElement.price} ₴ </p>
-          <div className="favouriteCard__producer">
-            {favouriteElement.producer}
+            <div className="favouriteCard__producer">
+              {favouriteElement.producer}
+            </div>
           </div>
-            </div>
-            <div className="favouriteCard__options-elements">
-                <button className="unfavourite" onClick={() => dispatch(removeFavourite(favouriteElement._id))}>Unfavourite</button>
-                <button>More</button>
-            </div>
+          <div className="favouriteCard__options-elements">
+            <button
+              className="unfavourite"
+              onClick={() => dispatch(removeFavourite(favouriteElement._id))}
+            >
+              Unfavourite
+            </button>
+            <button>More</button>
+          </div>
         </div>
       </div>
     </div>
@@ -43,9 +50,11 @@ const Favourites = () => {
 
   return (
     <div className="favourites">
-        <h2> Your Favourites</h2>
+      <h2> Your Favourites</h2>
       {favourites.map((favElement) => {
-        return <FavouritesCard key={favElement._id} favouriteElement={favElement} />;
+        return (
+          <FavouritesCard key={favElement._id} favouriteElement={favElement} />
+        );
       })}
     </div>
   );

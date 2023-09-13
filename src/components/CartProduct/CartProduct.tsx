@@ -15,9 +15,7 @@ const CartProduct: FC<ICartProductProps> = ({ product }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div
-      className="cartWindow__cartElement cartElement"
-    >
+    <div className="cartWindow__cartElement cartElement">
       <div className="cartElement__image">
         <img src={product.product.mainImage} alt="product image" />
       </div>

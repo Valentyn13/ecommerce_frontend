@@ -27,8 +27,8 @@ interface ILaptopModalProps {
   comparedController: () => void;
   handleIsInCartController: () => void;
   isInCartExist: () => boolean;
-  isInFovouritesExist: () => boolean
-  isInCompareExist: () => boolean
+  isInFovouritesExist: () => boolean;
+  isInCompareExist: () => boolean;
 }
 
 const LaptopModal: FC<ILaptopModalProps> = ({
@@ -43,7 +43,7 @@ const LaptopModal: FC<ILaptopModalProps> = ({
   handleIsInCartController,
   isInCartExist,
   isInCompareExist,
-  isInFovouritesExist
+  isInFovouritesExist,
 }) => {
   const { CPU, screen, hardDrive, videoCard } = modalProps;
 
@@ -93,29 +93,29 @@ const LaptopModal: FC<ILaptopModalProps> = ({
               </div>
               <div className="laptopModal__controllers">
                 <div>
-                <button className="go-back" onClick={() => setActive(false)}>
-                  Go back
-                </button>
-                {isElementInCart && isInCartExist() ? (
-                  <button
-                    style={{ backgroundColor: "lightyellow" }}
-                    onClick={handleIsInCartController}
-                    className="add-to-cart"
-                  >
-                    Remove from cart
+                  <button className="go-back" onClick={() => setActive(false)}>
+                    Go back
                   </button>
-                ) : (
-                  <button
-                    className="add-to-cart"
-                    onClick={handleIsInCartController}
-                  >
-                    Add to cart +
-                  </button>
-                )}
+                  {isElementInCart && isInCartExist() ? (
+                    <button
+                      style={{ backgroundColor: "lightyellow" }}
+                      onClick={handleIsInCartController}
+                      className="add-to-cart"
+                    >
+                      Remove from cart
+                    </button>
+                  ) : (
+                    <button
+                      className="add-to-cart"
+                      onClick={handleIsInCartController}
+                    >
+                      Add to cart +
+                    </button>
+                  )}
                 </div>
 
                 <div className="hw-icons">
-                  {isInFavourites&& isInFovouritesExist()? (
+                  {isInFavourites && isInFovouritesExist() ? (
                     <div onClick={favouritesController}>
                       <FilledHeart style={{ color: "red" }} />
                     </div>
@@ -149,7 +149,6 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 {screen.size}
               </div>
               <div className="mainSection__screen-matrice mainSection__element">
-
                 <div>
                   Screen matrice type<div></div>
                 </div>

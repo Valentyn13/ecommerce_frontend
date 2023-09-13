@@ -8,14 +8,17 @@ import { isCheckedHandler, prepearer } from "../../utils/utils";
 import { useLazyFetchLaptopsQuery } from "../../redux/Slices/api/laptopApiSlice";
 import { loadLaptops } from "../../redux/Slices/LaptopSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ReducerAction, IFiletersFields, REDUCER_ACTION_TYPE } from "../../types/filter.types";
+import {
+  ReducerAction,
+  IFiletersFields,
+  REDUCER_ACTION_TYPE,
+} from "../../types/filter.types";
 
 import "./FiltersBar.scss";
 
-
 const FiltersBar = () => {
-  const dispatch = useAppDispatch()
-const [makeRquest, setMakeRequest] = useState(false)
+  const dispatch = useAppDispatch();
+  const [makeRquest, setMakeRequest] = useState(false);
   const [checkboxesValues, setCheckboxesValues] = useState<IFiletersFields>({
     producer: [],
     screenType: [],
@@ -23,11 +26,12 @@ const [makeRquest, setMakeRequest] = useState(false)
     hardDriveType: [],
     cpuProducer: [],
     videoCardProducer: [],
-    page: 1
+    page: 1,
   });
 
-  const [fetchLaptops, {data, error, isSuccess, isLoading}]= useLazyFetchLaptopsQuery()
-  const pageNumber = useAppSelector((state) => state.pagination.page)
+  const [fetchLaptops, { data, error, isSuccess, isLoading }] =
+    useLazyFetchLaptopsQuery();
+  const pageNumber = useAppSelector((state) => state.pagination.page);
   const reducer = (action: ReducerAction) => {
     switch (action.type) {
       case REDUCER_ACTION_TYPE.CHOOSE_PRODUCER:
@@ -86,16 +90,20 @@ const [makeRquest, setMakeRequest] = useState(false)
     }
   };
 
-
-  
   useEffect(() => {
     if (data) {
-      dispatch(loadLaptops({laptops:data.laptopList, isLoadSuccess: isSuccess && !isLoading,pageCount:data.pageCount}))
-      dispatch(setPageCount(data.pageCount))
+      dispatch(
+        loadLaptops({
+          laptops: data.laptopList,
+          isLoadSuccess: isSuccess && !isLoading,
+          pageCount: data.pageCount,
+        })
+      );
+      dispatch(setPageCount(data.pageCount));
     }
     if (error) {
-      console.log(error)
-      if ('data' in error) {
+      console.log(error);
+      if ("data" in error) {
         toast.error(JSON.stringify(error.data), {
           position: "top-right",
           autoClose: 4000,
@@ -105,58 +113,151 @@ const [makeRquest, setMakeRequest] = useState(false)
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
+        });
       }
     }
-  },[data,dispatch, error])
+  }, [data, dispatch, error]);
 
   useEffect(() => {
-    console.log(pageNumber)
-    console.log('state: ',checkboxesValues.page)
-    const fields = prepearer(checkboxesValues)
-    fields.page = pageNumber
-    fetchLaptops(fields)
-  },[makeRquest,pageNumber])
+    console.log(pageNumber);
+    console.log("state: ", checkboxesValues.page);
+    const fields = prepearer(checkboxesValues);
+    fields.page = pageNumber;
+    fetchLaptops(fields);
+  }, [makeRquest, pageNumber]);
   return (
     <div className="filtersBar">
-      <ToastContainer/>
+      <ToastContainer />
       <FiltersBarBlock name="Producer">
-            <FiltersBarInput name="Asus" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
-            <FiltersBarInput name="Lenovo" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
-            <FiltersBarInput name="Acer" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
-            <FiltersBarInput name="Apple" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
-            <FiltersBarInput name="HP" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}/>
+        <FiltersBarInput
+          name="Asus"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Lenovo"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Acer"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Apple"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}
+        />
+        <FiltersBarInput
+          name="HP"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_PRODUCER}
+        />
       </FiltersBarBlock>
       <FiltersBarBlock name="Screen size">
-            <FiltersBarInput name="13" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
-            <FiltersBarInput name="14" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
-            <FiltersBarInput name="15.6" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
-            <FiltersBarInput name="16" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
-            <FiltersBarInput name="17" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}/>
+        <FiltersBarInput
+          name="13"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}
+        />
+        <FiltersBarInput
+          name="14"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}
+        />
+        <FiltersBarInput
+          name="15.6"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}
+        />
+        <FiltersBarInput
+          name="16"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}
+        />
+        <FiltersBarInput
+          name="17"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_SIZE}
+        />
       </FiltersBarBlock>
       <FiltersBarBlock name="Screen type">
-            <FiltersBarInput name="IPS" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_TYPE}/>
-            <FiltersBarInput name="OLED" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_TYPE}/>
+        <FiltersBarInput
+          name="IPS"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_TYPE}
+        />
+        <FiltersBarInput
+          name="OLED"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_SCREEN_TYPE}
+        />
       </FiltersBarBlock>
       <FiltersBarBlock name="Hard disk type">
-            <FiltersBarInput name="SSD" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_HARD_TYPE}/>
-            <FiltersBarInput name="HDD" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_HARD_TYPE}/>
+        <FiltersBarInput
+          name="SSD"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_HARD_TYPE}
+        />
+        <FiltersBarInput
+          name="HDD"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_HARD_TYPE}
+        />
       </FiltersBarBlock>
       <FiltersBarBlock name="Cpu producers">
-            <FiltersBarInput name="Itel" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}/>
-            <FiltersBarInput name="AMD" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}/>
-            <FiltersBarInput name="Apple" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}/>
-            <FiltersBarInput name="Nvidia" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}/>
+        <FiltersBarInput
+          name="Itel"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}
+        />
+        <FiltersBarInput
+          name="AMD"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Apple"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Nvidia"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_CPU_PRODUCER}
+        />
       </FiltersBarBlock>
       <FiltersBarBlock name="Cpu video card producer">
-            <FiltersBarInput name="Itel" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}/>
-            <FiltersBarInput name="AMD" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}/>
-            <FiltersBarInput name="Apple" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}/>
-            <FiltersBarInput name="Nvidia" reducer={reducer} type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}/>
+        <FiltersBarInput
+          name="Itel"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}
+        />
+        <FiltersBarInput
+          name="AMD"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Apple"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}
+        />
+        <FiltersBarInput
+          name="Nvidia"
+          reducer={reducer}
+          type={REDUCER_ACTION_TYPE.CHOOSE_VIDEOCARD_PRODUCER}
+        />
       </FiltersBarBlock>
-        <button className="filtersBar__applyButton" onClick={() => {
-        setMakeRequest(!makeRquest)
-        }}>Apply</button>
+      <button
+        className="filtersBar__applyButton"
+        onClick={() => {
+          setMakeRequest(!makeRquest);
+        }}
+      >
+        Apply
+      </button>
     </div>
   );
 };

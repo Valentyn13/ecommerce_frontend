@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ILaptopFormData } from "../../types/laptop.types";
@@ -30,7 +30,7 @@ interface IFormInputProps {
     | "videoCard.model"
     | "hardDrive.value"
     | "hardDrive.hardType";
-  minLength?: IFormLength
+  minLength?: IFormLength;
   optionValues?: string[];
 }
 const FormInput: FC<IFormInputProps> = ({
@@ -51,30 +51,32 @@ const FormInput: FC<IFormInputProps> = ({
             id=""
             defaultValue=""
             {...register(formFieldName, {
-              required: 'Field is required',
+              required: "Field is required",
             })}
           >
             <option value="" disabled>
               Select {name.toLocaleLowerCase()}
             </option>
             {optionValues?.map((option) => (
-              <option key={uuidv4()} value={option}>{option}</option>
+              <option key={uuidv4()} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         ) : (
           <input
             type={inputType}
             {...register(formFieldName, {
-              required: 'Field is required',
+              required: "Field is required",
               minLength,
             })}
           />
         )}
-      <ErrorMessage
-        errors={errors}
-        name={formFieldName}
-        render={({ message }) => <div className="input_error">{message}</div>}
-      />
+        <ErrorMessage
+          errors={errors}
+          name={formFieldName}
+          render={({ message }) => <div className="input_error">{message}</div>}
+        />
       </label>
     </div>
   );

@@ -8,7 +8,6 @@ import { ILaptop } from "../../types/laptop.types";
 
 import "./Laptops.scss";
 
-
 const Laptops: FC = () => {
   const laptopsData = useAppSelector((state) => state.laptop);
 
@@ -45,7 +44,7 @@ const Laptops: FC = () => {
             return laptopRender(laptop, index);
           })}
       </div>
-      <Pagination/>
+      <Pagination />
     </div>
   );
 };

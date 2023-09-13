@@ -1,32 +1,32 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import Preloader from "../Preloader/Preloader";
 import { useAppSelector } from "../../redux/hooks";
+import ProfileDealsList from "../ProfileDealsList/ProfileDealsList";
+import { useGetCheckoutsQuery } from "../../redux/Slices/api/checkoutApiSlice";
 
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 
 import "./Profile.scss";
-import { useGetCheckoutsQuery } from "../../redux/Slices/api/checkoutApiSlice";
-import { useEffect } from "react";
-import Preloader from "../Preloader/Preloader";
-import ProfileDealsList from "../ProfileDealsList/ProfileDealsList";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.auth.userInfo);
 
-  const {data,error,isLoading, isSuccess} = useGetCheckoutsQuery((user?.user._id) as string)
+  const { data, error, isLoading, isSuccess } = useGetCheckoutsQuery(
+    user?.user._id as string
+  );
 
   useEffect(() => {
-if(error) {
-  if ('data' in error) {
-    console.log(error.data)
-  }
-
-}
-if(data) {
-  console.log(data)
-}
-  }, [error,data])
-      
+    if (error) {
+      if ("data" in error) {
+        console.log(error.data);
+      }
+    }
+    if (data) {
+      console.log(data);
+    }
+  }, [error, data]);
 
   return (
     <div className="profile ">
@@ -68,11 +68,8 @@ if(data) {
 
           <div className="purchase">
             <div className="purchase__container">
-              {isLoading && (<Preloader/>)}
-              {data && isSuccess && (
-              <ProfileDealsList deals={data}/>
-              )}
-              
+              {isLoading && <Preloader />}
+              {data && isSuccess && <ProfileDealsList deals={data} />}
             </div>
           </div>
         </div>

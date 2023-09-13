@@ -1,14 +1,17 @@
 import { FC } from "react";
-import { ILaptop } from "../../types/laptop.types";
 
-import './CompareWindow.scss'
 import { useAppDispatch } from "../../redux/hooks";
 import { removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
+import { ILaptop } from "../../types/laptop.types";
+
+import "./CompareWindow.scss";
+
 interface ICompareElementProps {
   element: ILaptop;
 }
+
 const CompareElement: FC<ICompareElementProps> = ({ element }) => {
-    const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   return (
     <div className="compareElement">
       <div className="compareElement__image">
@@ -88,7 +91,12 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
             {element.videoCard.model}
           </div>
         </div>
-        <button className="comp-remove-btn" onClick={() => dispatch(removeItemFromCompateList(element._id))}>Remove</button>
+        <button
+          className="comp-remove-btn"
+          onClick={() => dispatch(removeItemFromCompateList(element._id))}
+        >
+          Remove
+        </button>
       </div>
     </div>
   );
@@ -97,6 +105,7 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
 interface ICompareWindowProps {
   compareItems: ILaptop[];
 }
+
 const CompareWindow: FC<ICompareWindowProps> = ({ compareItems }) => {
   return (
     <div className="compareWindow">

@@ -252,7 +252,14 @@ const Admin = () => {
                   register={register}
                   inputType="option"
                   formFieldName="producer"
-                  optionValues={["Lenovo", "Acer","HP","Asus","Apple","Dell"]}
+                  optionValues={[
+                    "Lenovo",
+                    "Acer",
+                    "HP",
+                    "Asus",
+                    "Apple",
+                    "Dell",
+                  ]}
                   errors={errors}
                 />
               </AdminFormArea>
@@ -262,7 +269,7 @@ const Admin = () => {
                   register={register}
                   inputType="option"
                   formFieldName="screen.size"
-                  optionValues={["13", "14","15.6","16","17"]}
+                  optionValues={["13", "14", "15.6", "16", "17"]}
                   errors={errors}
                 />
                 <FormInput
@@ -340,7 +347,7 @@ const Admin = () => {
                   register={register}
                   inputType="option"
                   formFieldName="hardDrive.value"
-                  optionValues={["256","512","1024"]}
+                  optionValues={["256", "512", "1024"]}
                   errors={errors}
                 />
                 <FormInput

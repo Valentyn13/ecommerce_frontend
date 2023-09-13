@@ -15,8 +15,8 @@ import {
 } from "react-icons/ai";
 import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
 import "./LaptopCard.scss";
-import { addFavourite, addItemToCompare, removeFavourite, removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
-
+import { CompateInitStateType, FavouriteIintStateType, addFavourite, addItemToCompare, removeFavourite, removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
+import { ICartLaptopList } from "../../types/cart.types";
 interface ILaptopCardProps {
   isAction?: boolean;
   inSale?: boolean;
@@ -41,6 +41,35 @@ const LaptopCard: FC<ILaptopCardProps> = ({
   const [isElementInFavourite, setIsElementInFavourite] = useState(false)
   const [isElementCompared, setIsElementCompared] = useState(false)
 
+  const isInCartExist = (cartElem:ICartLaptopList) => {
+    return () => {
+      let exist = false
+      cartElem.forEach((elem) => {
+        if (elem.product._id === laptopProps._id) exist = true
+      })
+      return exist
+    }
+  }
+
+  const isInFovouritesExist = (favElem:FavouriteIintStateType) => {
+    return () => {
+      let exist = false
+      favElem.forEach((elem) => {
+        if (elem._id === laptopProps._id) exist = true
+      })
+      return exist
+    }
+  }
+
+  const isInCompareExist = (compareElem:CompateInitStateType) => {
+    return  () => {
+      let exist = false
+      compareElem.forEach((elem) => {
+        if (elem._id === laptopProps._id) exist = true
+      })
+      return exist
+    }
+  }
 
 
   const isInCartController = () => {
@@ -69,9 +98,12 @@ const LaptopCard: FC<ILaptopCardProps> = ({
       setIsElementCompared(false)
       dispatch(removeItemFromCompateList(laptopProps._id))
       return
+    }
+    if(compareList.length < 2) {
+      setIsElementCompared(true)
+      dispatch(addItemToCompare(laptopProps))
+      return
     } 
-    setIsElementCompared(true)
-    dispatch(addItemToCompare(laptopProps))
   }
 
   // CHECKER
@@ -88,14 +120,15 @@ const LaptopCard: FC<ILaptopCardProps> = ({
 
   return (
     <div className="laptop_card__wrapper">
+      
       {isAction && <div className="action">Action</div>}
       {inSale && <div className="sale">Top in sale</div>}
       <div className="card-icons">
         <div onClick={favouriteController}>
-          { isElementInFavourite ? <FilledHeart style={{color:'red'}}/> : <HeartButton  /> }
+          { isElementInFavourite && isInFovouritesExist(favourites)() ? <FilledHeart style={{color:'red'}}/> : <HeartButton  /> }
         </div>
         <div onClick={compareController}>
-          { isElementCompared ?  
+          { isElementCompared && isInCompareExist(compareList)() ?  
           <div className="isCompared" style={{padding:'3px'}}><Weights style={{color: 'green'}}/></div>
            :
            <div style={{padding:'3px'}}><Weights /></div>
@@ -112,7 +145,7 @@ const LaptopCard: FC<ILaptopCardProps> = ({
             {laptopProps.price} <span>₴</span>
           </p>
           <div className="laptop_card__cart" onClick={isInCartController}>
-            { isElementInCart ? (
+            { isElementInCart && isInCartExist(cartItems)() ? (
               <AlreadyInCart />
             ) : (
               <CartButton />
@@ -139,6 +172,9 @@ const LaptopCard: FC<ILaptopCardProps> = ({
             setActive={setIsViewDetailActive}
             isElementInCart={isElementInCart}
             handleIsInCartController={isInCartController}
+            isInCartExist={isInCartExist(cartItems)}
+            isInFovouritesExist={isInFovouritesExist(favourites)}
+            isInCompareExist={isInCompareExist(compareList)}
           />
         }
         contentHeight="100%"

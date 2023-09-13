@@ -16,6 +16,8 @@ import { HiOutlineViewGrid as CatalogIcon } from "react-icons/hi";
 import { BsPersonCircle as ProfileIcon } from "react-icons/bs";
 
 import "./Header.scss";
+import Favourites from "../Favourites/Favourites";
+import CompareWindow from "../CompareWindow/CompareWindow";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -27,12 +29,13 @@ const Header = () => {
   const user = useAppSelector((state) => state.auth.userInfo);
 
   const [isCartActive, setIsCartActive] = useState(false);
-
+  const [isFavouritesActive, setIsFavouritesActive] = useState(false)
+  const [isCompareModalActive, setIsCompareModalActive] = useState(false)
   const logoutHandler:MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(clearCart())
     dispatch(logout());
     navigate("/")
-  };
+  };  
 
   return (
     <header className="header">
@@ -75,18 +78,17 @@ const Header = () => {
             </div>
           )}
         <div className="header__options__hw-icons">
-          <div>
-          <MdFavorite/>
+          <div onClick={() => setIsFavouritesActive(true)}>
+          <MdFavorite />
           {favourites.length >0 && (
             <div className="hw-icons__count">{favourites.length}</div>
           )}
           </div>
-        <div>
-        <FaScaleUnbalanced/>
+        <div onClick={() => setIsCompareModalActive(true)}>
+        <FaScaleUnbalanced />
         {compareList.length >0 && (
           <div className="hw-icons__count">{compareList.length}</div>
         )}
-        
         </div>
         
         </div>
@@ -126,6 +128,22 @@ const Header = () => {
         active={isCartActive}
         setActive={setIsCartActive}
         children={<CartWindow setIsActive={setIsCartActive}/>}
+      />
+      <Modal
+        contentWidth="475px"
+        contentHeight="100%"
+        modalJustifyContent="flex-end"
+        active={isFavouritesActive}
+        setActive={setIsFavouritesActive}
+        children={<Favourites/>}
+      />
+            <Modal
+        active={isCompareModalActive}
+        setActive={setIsCompareModalActive}
+        children={<CompareWindow compareItems={compareList}/>}
+        contentHeight="100%"
+        contentWidth="80%"
+        modalJustifyContent="center"
       />
     </header>
   );

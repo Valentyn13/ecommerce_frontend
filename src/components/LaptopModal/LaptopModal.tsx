@@ -26,6 +26,9 @@ interface ILaptopModalProps {
   favouritesController: () => void;
   comparedController: () => void;
   handleIsInCartController: () => void;
+  isInCartExist: () => boolean;
+  isInFovouritesExist: () => boolean
+  isInCompareExist: () => boolean
 }
 
 const LaptopModal: FC<ILaptopModalProps> = ({
@@ -38,6 +41,9 @@ const LaptopModal: FC<ILaptopModalProps> = ({
   comparedController,
   favouritesController,
   handleIsInCartController,
+  isInCartExist,
+  isInCompareExist,
+  isInFovouritesExist
 }) => {
   const { CPU, screen, hardDrive, videoCard } = modalProps;
 
@@ -90,7 +96,7 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 <button className="go-back" onClick={() => setActive(false)}>
                   Go back
                 </button>
-                {isElementInCart ? (
+                {isElementInCart && isInCartExist() ? (
                   <button
                     style={{ backgroundColor: "lightyellow" }}
                     onClick={handleIsInCartController}
@@ -109,7 +115,7 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 </div>
 
                 <div className="hw-icons">
-                  {isInFavourites ? (
+                  {isInFavourites&& isInFovouritesExist()? (
                     <div onClick={favouritesController}>
                       <FilledHeart style={{ color: "red" }} />
                     </div>
@@ -119,7 +125,7 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                     </div>
                   )}
 
-                  {isCompared ? (
+                  {isCompared && isInCompareExist() ? (
                     <div onClick={comparedController} className="isCompared">
                       <Weights style={{ color: "green" }} />
                     </div>
@@ -139,14 +145,14 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 <div>
                   <p>Screen size</p>
                   <div></div>
-                </div>{" "}
+                </div>
                 {screen.size}
               </div>
               <div className="mainSection__screen-matrice mainSection__element">
-                {" "}
+
                 <div>
                   Screen matrice type<div></div>
-                </div>{" "}
+                </div>
                 {screen.screenType}
               </div>
               <div className="mainSection__screen-resolution mainSection__element">

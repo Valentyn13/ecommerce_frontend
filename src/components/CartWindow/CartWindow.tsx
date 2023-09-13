@@ -2,9 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Dispatch, FC, SetStateAction } from "react";
 
 import { useAppSelector } from "../../redux/hooks";
-
 import { ICartLaptopList } from "../../types/cart.types";
-
 import CartProductList from "../CartProductList/CartProductList";
 
 import "./CartWindow.scss";

@@ -36,10 +36,15 @@ const compareAndFavouriteReducer = createSlice({
         removeItemFromCompateList: (state, action:PayloadAction<string>) => {
             state.compare = state.compare.filter((item) => item._id != action.payload)
             localStorage.setItem("compare", JSON.stringify(state.compare))
+        },
+        deleteCompareItems: (state) => {
+            if (state.compare.length > 2) {
+                state.compare = state.compare.filter((_, index) => index < 2)
+            }
         }
     }
 })
 
 
-export const {addFavourite, removeFavourite,addItemToCompare, removeItemFromCompateList} = compareAndFavouriteReducer.actions
+export const {addFavourite, removeFavourite,addItemToCompare, removeItemFromCompateList, deleteCompareItems} = compareAndFavouriteReducer.actions
 export default compareAndFavouriteReducer.reducer

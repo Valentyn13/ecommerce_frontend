@@ -1,0 +1,63 @@
+.compareWindow {
+    color: black;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    overflow-y: scroll;
+}
+.compareElement {
+    flex-basis: 45%;
+
+    &__image {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .mainSection {
+        width: 100%;
+        &__block {
+            margin-bottom: 30px;
+            h2 {
+                line-height: 140%;
+                font-size: 25px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+        }
+        &__element {
+            font-size: 20px;
+            line-height: 120%;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            div {
+                flex-grow: 1;
+                display: inline-flex;
+                div {
+                    flex-grow: 1;
+                    border-bottom: 1px dotted #d2d2d2;
+                }
+            }
+    
+        }
+    
+    }
+}
+
+.comp-remove-btn {
+    padding: 5px 25px;
+    background-color: rgb(243, 120, 120);
+    border-radius: 5px;
+    display: block;
+    margin:  0 auto;
+    &:hover {
+        background-color: rgb(255, 80, 80);
+    }
+}

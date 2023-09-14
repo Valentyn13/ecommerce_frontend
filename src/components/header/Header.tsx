@@ -96,7 +96,6 @@ const Header = () => {
               )}
             </div>
           </div>
-
           {!user && (
             <div className="header__dropdown">
               <div
@@ -110,7 +109,6 @@ const Header = () => {
               </div>
             </div>
           )}
-
           <div className="header__cart cart">
             <div style={{ position: "relative" }}>
               <ShopingCart

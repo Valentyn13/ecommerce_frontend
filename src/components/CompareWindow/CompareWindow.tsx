@@ -1,10 +1,12 @@
-import { FC } from "react";
+import { FC} from "react";
 
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
 import { ILaptop } from "../../types/laptop.types";
 
 import "./CompareWindow.scss";
+import { addItem, removeItem } from "../../redux/Slices/CartSlice";
+import { isInCartExist } from "../../utils/utils";
 
 interface ICompareElementProps {
   element: ILaptop;
@@ -12,6 +14,17 @@ interface ICompareElementProps {
 
 const CompareElement: FC<ICompareElementProps> = ({ element }) => {
   const dispatch = useAppDispatch();
+
+  const cartElements = useAppSelector((state) => state.cart.cartItems);
+
+  const isInCartController = () => {
+    if (isInCartExist(cartElements, element._id)()) {
+      dispatch(removeItem(element._id));
+      return;
+    }
+    dispatch(addItem({ amount: 1, product: element }));
+  };
+
   return (
     <div className="compareElement">
       <div className="compareElement__image">
@@ -97,6 +110,19 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
         >
           Remove
         </button>
+        {isInCartExist(cartElements, element._id)() ? (
+          <button
+            style={{ backgroundColor: "lightyellow" }}
+            onClick={isInCartController}
+            className="add-to-cart"
+          >
+            Remove from cart
+          </button>
+        ) : (
+          <button className="add-to-cart" onClick={isInCartController}>
+            Add to cart +
+          </button>
+        )}
       </div>
     </div>
   );
@@ -108,7 +134,7 @@ interface ICompareWindowProps {
 
 const CompareWindow: FC<ICompareWindowProps> = ({ compareItems }) => {
   return (
-    <div className="compareWindow">
+    <div className="compareWindow _container">
       {compareItems.map((item) => {
         return <CompareElement key={item._id} element={item} />;
       })}

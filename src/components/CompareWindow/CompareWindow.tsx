@@ -1,4 +1,4 @@
-import { FC, useEffect, useState} from "react";
+import { FC, useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addItem, removeItem } from "../../redux/Slices/CartSlice";
@@ -17,9 +17,13 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
 
   const cartElements = useAppSelector((state) => state.cart.cartItems);
 
-  const [isInCart, setIsInCart] = useState(false)
+  const [isInCart, setIsInCart] = useState(false);
 
-  const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
+  const isInCartController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
     if (isExist) {
       dispatch(removeItem(id));
       return;
@@ -28,9 +32,8 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
   };
 
   useEffect(() => {
-    setIsInCart(isInCartExist(cartElements, element._id)())
-  }, [element._id, isInCart, setIsInCart, cartElements])
-  
+    setIsInCart(isInCartExist(cartElements, element._id)());
+  }, [element._id, isInCart, setIsInCart, cartElements]);
 
   return (
     <div className="compareElement">
@@ -117,7 +120,7 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
         >
           Remove
         </button>
-        {isInCartExist(cartElements, element._id)() ? (
+        {isInCart ? (
           <button
             style={{ backgroundColor: "lightyellow" }}
             onClick={() => isInCartController(isInCart, element._id, element)}
@@ -126,7 +129,10 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
             Remove from cart
           </button>
         ) : (
-          <button className="add-to-cart" onClick={() => isInCartController(isInCart, element._id, element)}>
+          <button
+            className="add-to-cart"
+            onClick={() => isInCartController(isInCart, element._id, element)}
+          >
             Add to cart +
           </button>
         )}

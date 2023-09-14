@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { FC, useState, useEffect, useCallback } from "react";
+import { FC, useState, useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addItem, removeItem } from "../../redux/Slices/CartSlice";
 import { ILaptop } from "../../types/laptop.types";
-import { isInCartExist, isInCompareExist, isInFovouritesExist, truncate } from "../../utils/utils";
+import {
+  isInCartExist,
+  isInCompareExist,
+  isInFovouritesExist,
+  truncate,
+} from "../../utils/utils";
 import {
   addFavourite,
   addItemToCompare,
@@ -34,7 +39,12 @@ const LaptopCard: FC<ILaptopCardProps> = ({
   inSale,
 }) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [isInCart, setIsInCart] = useState(false);
+  const [isInFavourites, setIsInFavourites] = useState(false);
+  const [isInCompare, setIsInCompare] = useState(false);
+
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const favourites = useAppSelector(
     (state) => state.compareAndFavourite.favourite
@@ -43,74 +53,68 @@ const LaptopCard: FC<ILaptopCardProps> = ({
     (state) => state.compareAndFavourite.compare
   );
 
-  const [isElementInCart, setIsElementInCart] = useState<boolean>(false);
-
-  const [isElementInFavourite, setIsElementInFavourite] = useState(false);
-  const [isElementCompared, setIsElementCompared] = useState(false);
-
-
-
-  const isInCartController = () => {
-    if (isElementInCart) {
-      setIsElementInCart(false);
-      dispatch(removeItem(laptopProps._id));
+  const isInCartController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
+    if (isExist) {
+      dispatch(removeItem(id));
       return;
     }
-    setIsElementInCart(true);
-    dispatch(addItem({ amount: 1, product: laptopProps }));
+    dispatch(addItem({ amount: 1, product: element }));
   };
 
-  const favouriteController = () => {
-    if (isElementInFavourite) {
-      setIsElementInFavourite(false);
-      dispatch(removeFavourite(laptopProps._id));
+  const isInCompareController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
+    if (isExist) {
+      dispatch(removeItemFromCompateList(id));
       return;
     }
-    setIsElementInFavourite(true);
-    dispatch(addFavourite(laptopProps));
+    dispatch(addItemToCompare(element));
   };
 
-  const compareController = () => {
-    if (isElementCompared) {
-      setIsElementCompared(false);
-      dispatch(removeItemFromCompateList(laptopProps._id));
+  const isInFavouritesController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
+    if (isExist) {
+      dispatch(removeFavourite(id));
       return;
     }
-    if (compareList.length < 2) {
-      setIsElementCompared(true);
-      dispatch(addItemToCompare(laptopProps));
-      return;
-    }
+    dispatch(addFavourite(element));
   };
 
-  // CHECKER
-  const cartChecker = useCallback(() => {
-    const inCart = cartItems.find(
-      (item) => item.product._id === laptopProps._id
-    );
-    const inFav = favourites.find((item) => item._id === laptopProps._id);
-    const isCompared = compareList.find((item) => item._id === laptopProps._id);
-    if (inFav) setIsElementInFavourite(true);
-    if (isCompared) setIsElementCompared(true);
-    if (inCart) setIsElementInCart(true);
-  }, [cartItems, laptopProps._id, favourites, compareList]);
-
-  useEffect(() => cartChecker(), [cartChecker]);
+  useEffect(() => {
+    setIsInCart(isInCartExist(cartItems, laptopProps._id)());
+    setIsInFavourites(isInFovouritesExist(favourites, laptopProps._id)());
+    setIsInCompare(isInCompareExist(compareList, laptopProps._id)());
+  }, [cartItems, favourites, compareList, laptopProps]);
 
   return (
     <div className="laptop_card__wrapper">
       {isAction && <div className="action">Action</div>}
       {inSale && <div className="sale">Top in sale</div>}
       <div className="card-icons">
-        <div onClick={favouriteController}>
-          {isElementInFavourite && isInFovouritesExist(favourites ,laptopProps._id)() ? (
+        <div           onClick={() =>
+            isInFavouritesController(isInFavourites, laptopProps._id, laptopProps)
+          }>
+          {isInFavourites ? (
             <FilledHeart style={{ color: "red" }} />
           ) : (
             <HeartButton />
           )}
         </div>
-        <div onClick={compareController}>
-          {isElementCompared && isInCompareExist(compareList, laptopProps._id)() ? (
+        <div
+          onClick={() =>
+            isInCompareController(isInCompare, laptopProps._id, laptopProps)
+          }
+        >
+          {isInCompare ? (
             <div className="isCompared" style={{ padding: "3px" }}>
               <Weights style={{ color: "green" }} />
             </div>
@@ -132,17 +136,18 @@ const LaptopCard: FC<ILaptopCardProps> = ({
           <p>
             {laptopProps.price} <span>₴</span>
           </p>
-          <div className="laptop_card__cart" onClick={isInCartController}>
-            {isElementInCart && isInCartExist(cartItems, laptopProps._id)() ? (
-              <AlreadyInCart />
-            ) : (
-              <CartButton />
-            )}
+          <div
+            className="laptop_card__cart"
+            onClick={() =>
+              isInCartController(isInCart, laptopProps._id, laptopProps)
+            }
+          >
+            {isInCart ? <AlreadyInCart /> : <CartButton />}
           </div>
         </div>
       </div>
       <div className="view-more">
-        <button onClick={() =>navigate(`/laptop/${laptopProps._id}`)}>
+        <button onClick={() => navigate(`/laptop/${laptopProps._id}`)}>
           View details
         </button>
       </div>

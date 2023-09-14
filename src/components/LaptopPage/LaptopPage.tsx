@@ -1,8 +1,24 @@
 import { FC, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import './../LaptopModal/LaptopModal.scss'
+
 import Preloader from "../Preloader/Preloader";
 import LaptopSlider from "../LaptopSlider/LaptopSlider";
+import { useLazyFetchLaptopByIdQuery } from "../../redux/Slices/api/laptopApiSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  isInCartExist,
+  isInFovouritesExist,
+  isInCompareExist,
+} from "../../utils/utils";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { removeItem, addItem } from "../../redux/Slices/CartSlice";
+import { ILaptop } from "../../types/laptop.types";
+import {
+  removeFavourite,
+  addFavourite,
+  addItemToCompare,
+  removeItemFromCompateList,
+} from "../../redux/Slices/comprasionAndFavouriteSlice";
 
 import {
   AiOutlineHeart as HeartButton,
@@ -11,42 +27,45 @@ import {
 import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
 
 import "react-toastify/ReactToastify.min.css";
+import "./../LaptopModal/LaptopModal.scss";
 
-import { useLazyFetchLaptopByIdQuery } from "../../redux/Slices/api/laptopApiSlice";
-import { useNavigate, useParams } from "react-router-dom";
-import { isInCartExist, isInFovouritesExist, isInCompareExist } from "../../utils/utils";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { removeItem, addItem } from "../../redux/Slices/CartSlice";
-import { ILaptop } from "../../types/laptop.types";
-import { removeFavourite, addFavourite, addItemToCompare, removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
+const LaptopPage: FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-interface ILaptopModalProps {
-}
+  const [getLaptopById, { data, error, isSuccess, isLoading }] =
+    useLazyFetchLaptopByIdQuery();
 
-const LaptopPage: FC<ILaptopModalProps> = () => {
- const { id } = useParams()
- const navigate = useNavigate()
- const dispatch = useAppDispatch()
-const [getLaptopById, {data, error, isSuccess, isLoading}] = useLazyFetchLaptopByIdQuery()
+  const [isInCart, setIsInCart] = useState(false);
+  const [isInFavourites, setIsInFavourites] = useState(false);
+  const [isInCompare, setIsInCompare] = useState(false);
 
-const [isInCart, setIsInCart] = useState(false)
-const [isInFavourites, setIsInFavourites] = useState(false)
-const [isInCompare, setIsInCompare] = useState(false)
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const favourites = useAppSelector(
+    (state) => state.compareAndFavourite.favourite
+  );
+  const compareList = useAppSelector(
+    (state) => state.compareAndFavourite.compare
+  );
 
-const cartItems = useAppSelector(state => state.cart.cartItems);
-const favourites = useAppSelector(state => state.compareAndFavourite.favourite)
-const compareList = useAppSelector (state => state.compareAndFavourite.compare)
-
-
-const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
+  const isInCartController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
     if (isExist) {
       dispatch(removeItem(id));
       return;
     }
-    dispatch(addItem({amount: 1, product: element}));
+    dispatch(addItem({ amount: 1, product: element }));
   };
 
-  const isInCompareController = (isExist: boolean, id: string, element: ILaptop) => {
+  const isInCompareController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
     if (isExist) {
       dispatch(removeItemFromCompateList(id));
       return;
@@ -54,7 +73,11 @@ const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
     dispatch(addItemToCompare(element));
   };
 
-  const isInFavouritesController = (isExist: boolean, id: string, element: ILaptop) => {
+  const isInFavouritesController = (
+    isExist: boolean,
+    id: string,
+    element: ILaptop
+  ) => {
     if (isExist) {
       dispatch(removeFavourite(id));
       return;
@@ -62,17 +85,17 @@ const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
     dispatch(addFavourite(element));
   };
 
-useEffect(() => {
-    if(data) {
-        setIsInCart(isInCartExist(cartItems, data._id)())
-        setIsInFavourites(isInFovouritesExist(favourites, data._id)())
-        setIsInCompare(isInCompareExist(compareList, data._id)())
+  useEffect(() => {
+    if (data) {
+      setIsInCart(isInCartExist(cartItems, data._id)());
+      setIsInFavourites(isInFovouritesExist(favourites, data._id)());
+      setIsInCompare(isInCompareExist(compareList, data._id)());
     }
-}, [data,cartItems,favourites,compareList])
+  }, [data, cartItems, favourites, compareList]);
 
   useEffect(() => {
     if (id) {
-        getLaptopById(id)
+      getLaptopById(id);
     }
     if (error) {
       if ("data" in error) {
@@ -89,6 +112,7 @@ useEffect(() => {
       }
     }
   }, [error, getLaptopById, id]);
+
   return (
     <div className="laptopModal">
       <ToastContainer />
@@ -96,28 +120,26 @@ useEffect(() => {
       {data && isSuccess && (
         <div className="laptopModal__container _container">
           <div className="laptopModal__headerSection">
-            <LaptopSlider
-              id={data._id}
-            />
+            <LaptopSlider id={data._id} />
             <div className="laptopModal__mainInfo">
               <div className="laptopModal__InfoBlock">
                 <div className="laptopModal__name">{data.name}</div>
                 <div className="laptopModal__producer">
                   Producer:{data.producer}
                 </div>
-                <div className="laptopModal__price">
-                  Price: {data.price} ₴
-                </div>
+                <div className="laptopModal__price">Price: {data.price} ₴</div>
               </div>
               <div className="laptopModal__controllers">
                 <div>
-                  <button className="go-back" onClick={() =>navigate('/')}>
+                  <button className="go-back" onClick={() => navigate("/")}>
                     Go back
                   </button>
                   {isInCart ? (
                     <button
                       style={{ backgroundColor: "lightyellow" }}
-                      onClick={() => isInCartController(isInCart, data._id, data)}
+                      onClick={() =>
+                        isInCartController(isInCart, data._id, data)
+                      }
                       className="add-to-cart"
                     >
                       Remove from cart
@@ -125,30 +147,47 @@ useEffect(() => {
                   ) : (
                     <button
                       className="add-to-cart"
-                      onClick={() => isInCartController(isInCart, data._id, data)}
+                      onClick={() =>
+                        isInCartController(isInCart, data._id, data)
+                      }
                     >
                       Add to cart +
                     </button>
                   )}
                 </div>
-
                 <div className="hw-icons">
                   {isInFavourites ? (
-                    <div onClick={() => isInFavouritesController(isInFavourites, data._id, data)}>
+                    <div
+                      onClick={() =>
+                        isInFavouritesController(isInFavourites, data._id, data)
+                      }
+                    >
                       <FilledHeart style={{ color: "red" }} />
                     </div>
                   ) : (
-                    <div onClick={() => isInFavouritesController(isInFavourites, data._id, data)}>
+                    <div
+                      onClick={() =>
+                        isInFavouritesController(isInFavourites, data._id, data)
+                      }
+                    >
                       <HeartButton />
                     </div>
                   )}
-
-                  {isInCompare? (
-                    <div onClick={() => isInCompareController(isInCompare, data._id, data)} className="isCompared">
+                  {isInCompare ? (
+                    <div
+                      onClick={() =>
+                        isInCompareController(isInCompare, data._id, data)
+                      }
+                      className="isCompared"
+                    >
                       <Weights style={{ color: "green" }} />
                     </div>
                   ) : (
-                    <div onClick={() => isInCompareController(isInCompare, data._id, data)}>
+                    <div
+                      onClick={() =>
+                        isInCompareController(isInCompare, data._id, data)
+                      }
+                    >
                       <Weights />
                     </div>
                   )}

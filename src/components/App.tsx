@@ -10,6 +10,7 @@ import CheckoutPage from "../pages/Checkout.page";
 
 import { useAppSelector } from "../redux/hooks";
 import Hero from "./Hero/Hero";
+import LaptopPage from "./LaptopPage/LaptopPage";
 
 const App = () => {
   const userinfo = useAppSelector((state) => state.auth.userInfo);
@@ -19,6 +20,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />}>
           <Route index element={<Hero />} />
+          <Route
+          path="laptop/:id"
+          element= {<LaptopPage/>}
+          />
           <Route
             path="profile"
             element={

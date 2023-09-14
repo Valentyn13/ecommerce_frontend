@@ -119,8 +119,6 @@ const FiltersBar = () => {
   }, [data, dispatch, error]);
 
   useEffect(() => {
-    console.log(pageNumber);
-    console.log("state: ", checkboxesValues.page);
     const fields = prepearer(checkboxesValues);
     fields.page = pageNumber;
     fetchLaptops(fields);

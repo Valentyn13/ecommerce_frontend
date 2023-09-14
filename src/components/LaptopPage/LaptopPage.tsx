@@ -1,8 +1,8 @@
-import { FC, Dispatch} from "react";
-import { ToastContainer} from "react-toastify";
-
+import { FC, useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import './../LaptopModal/LaptopModal.scss'
+import Preloader from "../Preloader/Preloader";
 import LaptopSlider from "../LaptopSlider/LaptopSlider";
-import { ILaptop } from "../../types/laptop.types";
 
 import {
   AiOutlineHeart as HeartButton,
@@ -11,65 +11,113 @@ import {
 import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
 
 import "react-toastify/ReactToastify.min.css";
-import "./LaptopModal.scss";
+
+import { useLazyFetchLaptopByIdQuery } from "../../redux/Slices/api/laptopApiSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { isInCartExist, isInFovouritesExist, isInCompareExist } from "../../utils/utils";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { removeItem, addItem } from "../../redux/Slices/CartSlice";
+import { ILaptop } from "../../types/laptop.types";
+import { removeFavourite, addFavourite, addItemToCompare, removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
 
 interface ILaptopModalProps {
-  isActive: boolean;
-  modalProps: ILaptop;
-  setActive: Dispatch<React.SetStateAction<boolean>>;
-  isElementInCart: boolean;
-  isInFavourites: boolean;
-  isCompared: boolean;
-  favouritesController: () => void;
-  comparedController: () => void;
-  handleIsInCartController: () => void;
-  isInCartExist: () => boolean;
-  isInFovouritesExist: () => boolean;
-  isInCompareExist: () => boolean;
 }
 
-const LaptopModal: FC<ILaptopModalProps> = ({
-  modalProps,
-  setActive,
-  isElementInCart,
-  isInFavourites,
-  isCompared,
-  comparedController,
-  favouritesController,
-  handleIsInCartController,
-  isInCartExist,
-  isInCompareExist,
-  isInFovouritesExist,
-}) => {
-  const { CPU, screen, hardDrive, videoCard } = modalProps;
+const LaptopPage: FC<ILaptopModalProps> = () => {
+ const { id } = useParams()
+ const navigate = useNavigate()
+ const dispatch = useAppDispatch()
+const [getLaptopById, {data, error, isSuccess, isLoading}] = useLazyFetchLaptopByIdQuery()
 
+const [isInCart, setIsInCart] = useState(false)
+const [isInFavourites, setIsInFavourites] = useState(false)
+const [isInCompare, setIsInCompare] = useState(false)
+
+const cartItems = useAppSelector(state => state.cart.cartItems);
+const favourites = useAppSelector(state => state.compareAndFavourite.favourite)
+const compareList = useAppSelector (state => state.compareAndFavourite.compare)
+
+
+const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
+    if (isExist) {
+      dispatch(removeItem(id));
+      return;
+    }
+    dispatch(addItem({amount: 1, product: element}));
+  };
+
+  const isInCompareController = (isExist: boolean, id: string, element: ILaptop) => {
+    if (isExist) {
+      dispatch(removeItemFromCompateList(id));
+      return;
+    }
+    dispatch(addItemToCompare(element));
+  };
+
+  const isInFavouritesController = (isExist: boolean, id: string, element: ILaptop) => {
+    if (isExist) {
+      dispatch(removeFavourite(id));
+      return;
+    }
+    dispatch(addFavourite(element));
+  };
+
+useEffect(() => {
+    if(data) {
+        setIsInCart(isInCartExist(cartItems, data._id)())
+        setIsInFavourites(isInFovouritesExist(favourites, data._id)())
+        setIsInCompare(isInCompareExist(compareList, data._id)())
+    }
+}, [data,cartItems,favourites,compareList])
+
+  useEffect(() => {
+    if (id) {
+        getLaptopById(id)
+    }
+    if (error) {
+      if ("data" in error) {
+        toast.error(JSON.stringify(error.data), {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
+  }, [error, getLaptopById, id]);
   return (
     <div className="laptopModal">
       <ToastContainer />
+      {isLoading && <Preloader />}
+      {data && isSuccess && (
         <div className="laptopModal__container _container">
           <div className="laptopModal__headerSection">
             <LaptopSlider
-                id={modalProps._id}
+              id={data._id}
             />
             <div className="laptopModal__mainInfo">
               <div className="laptopModal__InfoBlock">
-                <div className="laptopModal__name">{modalProps.name}</div>
+                <div className="laptopModal__name">{data.name}</div>
                 <div className="laptopModal__producer">
-                  Producer:{modalProps.producer}
+                  Producer:{data.producer}
                 </div>
                 <div className="laptopModal__price">
-                  Price: {modalProps.price} ₴
+                  Price: {data.price} ₴
                 </div>
               </div>
               <div className="laptopModal__controllers">
                 <div>
-                  <button className="go-back" onClick={() => setActive(false)}>
+                  <button className="go-back" onClick={() =>navigate('/')}>
                     Go back
                   </button>
-                  {isElementInCart && isInCartExist() ? (
+                  {isInCart ? (
                     <button
                       style={{ backgroundColor: "lightyellow" }}
-                      onClick={handleIsInCartController}
+                      onClick={() => isInCartController(isInCart, data._id, data)}
                       className="add-to-cart"
                     >
                       Remove from cart
@@ -77,7 +125,7 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                   ) : (
                     <button
                       className="add-to-cart"
-                      onClick={handleIsInCartController}
+                      onClick={() => isInCartController(isInCart, data._id, data)}
                     >
                       Add to cart +
                     </button>
@@ -85,22 +133,22 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 </div>
 
                 <div className="hw-icons">
-                  {isInFavourites && isInFovouritesExist() ? (
-                    <div onClick={favouritesController}>
+                  {isInFavourites ? (
+                    <div onClick={() => isInFavouritesController(isInFavourites, data._id, data)}>
                       <FilledHeart style={{ color: "red" }} />
                     </div>
                   ) : (
-                    <div onClick={favouritesController}>
+                    <div onClick={() => isInFavouritesController(isInFavourites, data._id, data)}>
                       <HeartButton />
                     </div>
                   )}
 
-                  {isCompared && isInCompareExist() ? (
-                    <div onClick={comparedController} className="isCompared">
+                  {isInCompare? (
+                    <div onClick={() => isInCompareController(isInCompare, data._id, data)} className="isCompared">
                       <Weights style={{ color: "green" }} />
                     </div>
                   ) : (
-                    <div onClick={comparedController}>
+                    <div onClick={() => isInCompareController(isInCompare, data._id, data)}>
                       <Weights />
                     </div>
                   )}
@@ -116,19 +164,19 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                   <p>Screen size</p>
                   <div></div>
                 </div>
-                {screen.size}
+                {data.screen.size}
               </div>
               <div className="mainSection__screen-matrice mainSection__element">
                 <div>
                   Screen matrice type<div></div>
                 </div>
-                {screen.screenType}
+                {data.screen.screenType}
               </div>
               <div className="mainSection__screen-resolution mainSection__element">
                 <div>
                   Screen resolution<div></div>
                 </div>
-                {screen.resolution}
+                {data.screen.resolution}
               </div>
             </div>
             <div className="mainSection__cpu mainSection__block">
@@ -137,19 +185,19 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 <div>
                   CPU producer<div></div>
                 </div>
-                {CPU.producer}
+                {data.CPU.producer}
               </div>
               <div className="mainSection__cpu-model mainSection__element">
                 <div>
                   CPU model<div></div>
                 </div>
-                {CPU.model}
+                {data.CPU.model}
               </div>
               <div className="mainSection__cpu-cores mainSection__element">
                 <div>
                   Cores<div></div>
                 </div>
-                {CPU.cores}
+                {data.CPU.cores}
               </div>
             </div>
             <div className="mainSection__hardDrive mainSection__block">
@@ -158,13 +206,13 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 <div>
                   Hard disk type<div></div>
                 </div>
-                {hardDrive.hardType}
+                {data.hardDrive.hardType}
               </div>
               <div className="mainSection__hardDrive-value mainSection__element">
                 <div>
                   Hard disk size<div></div>
                 </div>
-                {hardDrive.value}
+                {data.hardDrive.value}
               </div>
             </div>
             <div className="mainSection__videoCard mainSection__block">
@@ -173,19 +221,20 @@ const LaptopModal: FC<ILaptopModalProps> = ({
                 <div>
                   Video card producer<div></div>
                 </div>
-                {videoCard.producer}
+                {data.videoCard.producer}
               </div>
               <div className="mainSection__videoCard-model mainSection__element">
                 <div>
                   Video card model<div></div>
                 </div>
-                {videoCard.model}
+                {data.videoCard.model}
               </div>
             </div>
           </div>
         </div>
+      )}
     </div>
   );
 };
 
-export default LaptopModal;
+export default LaptopPage;

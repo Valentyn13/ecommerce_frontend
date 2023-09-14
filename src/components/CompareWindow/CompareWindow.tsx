@@ -1,12 +1,12 @@
-import { FC} from "react";
+import { FC, useEffect, useState} from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { addItem, removeItem } from "../../redux/Slices/CartSlice";
+import { isInCartExist } from "../../utils/utils";
 import { removeItemFromCompateList } from "../../redux/Slices/comprasionAndFavouriteSlice";
 import { ILaptop } from "../../types/laptop.types";
 
 import "./CompareWindow.scss";
-import { addItem, removeItem } from "../../redux/Slices/CartSlice";
-import { isInCartExist } from "../../utils/utils";
 
 interface ICompareElementProps {
   element: ILaptop;
@@ -17,13 +17,20 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
 
   const cartElements = useAppSelector((state) => state.cart.cartItems);
 
-  const isInCartController = () => {
-    if (isInCartExist(cartElements, element._id)()) {
-      dispatch(removeItem(element._id));
+  const [isInCart, setIsInCart] = useState(false)
+
+  const isInCartController = (isExist: boolean, id: string, element: ILaptop) => {
+    if (isExist) {
+      dispatch(removeItem(id));
       return;
     }
     dispatch(addItem({ amount: 1, product: element }));
   };
+
+  useEffect(() => {
+    setIsInCart(isInCartExist(cartElements, element._id)())
+  }, [element._id, isInCart, setIsInCart, cartElements])
+  
 
   return (
     <div className="compareElement">
@@ -113,13 +120,13 @@ const CompareElement: FC<ICompareElementProps> = ({ element }) => {
         {isInCartExist(cartElements, element._id)() ? (
           <button
             style={{ backgroundColor: "lightyellow" }}
-            onClick={isInCartController}
+            onClick={() => isInCartController(isInCart, element._id, element)}
             className="add-to-cart"
           >
             Remove from cart
           </button>
         ) : (
-          <button className="add-to-cart" onClick={isInCartController}>
+          <button className="add-to-cart" onClick={() => isInCartController(isInCart, element._id, element)}>
             Add to cart +
           </button>
         )}

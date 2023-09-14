@@ -22,4 +22,4 @@ export const sliderImagesSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useAddSliderImagesMutation, useLazyGetSliderImagesQuery } = sliderImagesSlice;
+export const { useAddSliderImagesMutation, useLazyGetSliderImagesQuery, useGetSliderImagesQuery } = sliderImagesSlice;

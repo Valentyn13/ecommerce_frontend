@@ -1,7 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { FC, useState, useEffect, useCallback } from "react";
 
-import Modal from "../Modal/Modal";
-import LaptopModal from "../LaptopModal/LaptopModal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addItem, removeItem } from "../../redux/Slices/CartSlice";
 import { ILaptop } from "../../types/laptop.types";
@@ -35,7 +34,7 @@ const LaptopCard: FC<ILaptopCardProps> = ({
   inSale,
 }) => {
   const dispatch = useAppDispatch();
-  const [isViewDetailActive, setIsViewDetailActive] = useState<boolean>(false);
+  const navigate = useNavigate()
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const favourites = useAppSelector(
     (state) => state.compareAndFavourite.favourite
@@ -143,33 +142,10 @@ const LaptopCard: FC<ILaptopCardProps> = ({
         </div>
       </div>
       <div className="view-more">
-        <button onClick={() => setIsViewDetailActive(true)}>
+        <button onClick={() =>navigate(`/laptop/${laptopProps._id}`)}>
           View details
         </button>
       </div>
-      <Modal
-        active={isViewDetailActive}
-        setActive={setIsViewDetailActive}
-        children={
-          <LaptopModal
-            isCompared={isElementCompared}
-            isInFavourites={isElementInFavourite}
-            favouritesController={favouriteController}
-            comparedController={compareController}
-            isActive={isViewDetailActive}
-            modalProps={laptopProps}
-            setActive={setIsViewDetailActive}
-            isElementInCart={isElementInCart}
-            handleIsInCartController={isInCartController}
-            isInCartExist={isInCartExist(cartItems, laptopProps._id)}
-            isInFovouritesExist={isInFovouritesExist(favourites, laptopProps._id)}
-            isInCompareExist={isInCompareExist(compareList, laptopProps._id)}
-          />
-        }
-        contentHeight="100%"
-        contentWidth="80%"
-        modalJustifyContent="center"
-      />
     </div>
   );
 };

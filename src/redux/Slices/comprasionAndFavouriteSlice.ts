@@ -22,12 +22,10 @@ const compareAndFavouriteReducer = createSlice({
         addFavourite: (state, action:PayloadAction<ILaptop>) => {
             state.favourite.push(action.payload)
             localStorage.setItem("favourite", JSON.stringify(state.favourite))
-            console.log(state.favourite.length)
         },
         removeFavourite: (state, action:PayloadAction<string>) => {
             state.favourite = state.favourite.filter((item) => item._id != action.payload)
             localStorage.setItem("favourite", JSON.stringify(state.favourite))
-            console.log(state.favourite.length)
         },
         addItemToCompare: (state, action:PayloadAction<ILaptop>) => {
             state.compare.push(action.payload)

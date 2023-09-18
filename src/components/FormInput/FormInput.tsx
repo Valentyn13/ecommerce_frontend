@@ -7,9 +7,9 @@ import { IFormLength } from "../../types/checkout.types";
 import { ErrorMessage } from "@hookform/error-message";
 
 interface IFormInputProps {
-  name: string;
+  name?: string;
   inputType: "text" | "number" | "file" | "option";
-  errors: FieldErrors<ILaptopFormData>;
+  errors: FieldErrors;
   register: UseFormRegister<ILaptopFormData>;
   formFieldName:
     | "name"
@@ -55,7 +55,7 @@ const FormInput: FC<IFormInputProps> = ({
             })}
           >
             <option value="" disabled>
-              Select {name.toLocaleLowerCase()}
+              Select {name?.toLocaleLowerCase()}
             </option>
             {optionValues?.map((option) => (
               <option key={uuidv4()} value={option}>

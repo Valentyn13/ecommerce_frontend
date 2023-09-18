@@ -64,7 +64,6 @@
         button {
             padding: 10px 20px;
             border-radius: 4px;
-            margin-right: 15px;
             font-size: 20px;
         }
 
@@ -73,6 +72,13 @@
         }
 
 }
+
+&__controllers-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:15px
+}
+
 
 .mainSection {
     width: 100%;
@@ -91,9 +97,14 @@
         margin-bottom: 5px;
         display: flex;
         justify-content: space-between;
-        div {
+        .mainSection__element_controller {
             flex-grow: 1;
             display: inline-flex;
+            p {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+            }
             div {
                 flex-grow: 1;
                 border-bottom: 1px dotted #d2d2d2;
@@ -106,7 +117,7 @@
 }
 
 .go-back {
-    background-color: rgb(247, 129, 129);
+    background-color: rgb(236, 137, 158);
 }
 
 .hw-icons {

@@ -18,8 +18,14 @@ export const sliderImagesSlice = apiSlice.injectEndpoints({
                 url: `${SLIDER_URL}/getSliderImages`,
                 params: { laptopId: data }
             })
-        })
+        }),
+        deleteSliderImages: builder.mutation<ISliderImagesFetchData, string>({
+            query: (data) => ({
+                url: `${SLIDER_URL}/delete/${data}`,
+                method: "DELETE",
+            })
+        }),
     })
 })
 
-export const { useAddSliderImagesMutation, useLazyGetSliderImagesQuery, useGetSliderImagesQuery } = sliderImagesSlice;
+export const { useAddSliderImagesMutation, useLazyGetSliderImagesQuery, useGetSliderImagesQuery, useDeleteSliderImagesMutation } = sliderImagesSlice;

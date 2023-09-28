@@ -12,8 +12,12 @@
         margin-bottom: 20px;
     }
     &__input {
+        padding: 3px;
+
         label {
-            cursor: pointer;
+        display: block;
+        width: 40%;
+        cursor: pointer;
         }
         input {
             cursor: pointer;
@@ -22,6 +26,9 @@
         margin-bottom: 3px;
         input {
             margin-right: 4px;
+        }
+        &:hover {
+            background-color: #59f13773;
         }
     }
     &__applyButton {

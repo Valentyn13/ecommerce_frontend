@@ -4,17 +4,25 @@
     &__container {
         padding: 20px;
     }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .add_section {
     &__header {
+        text-align:center;
         font-size: 36px;
     }
+    &__buttons-wrapper {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
     &__button {
-        margin-top: 10px;
         font-size: 18px;
-        margin-right: 5px;
-        padding: 5px 15px 5px 15px;
+        margin-right: 20px;
+        padding: 8px 16px;
         border-radius: 5px;
         background-color: greenyellow;
     }
@@ -104,3 +112,20 @@
         border: 1px solid green;
     }
    } 
+
+   .form-admin-submit {
+    padding: 10px 25px;
+    width: 300px;
+    margin-top: 20px;
+    align-self:  center;
+    border-radius: 5px;
+   }
+
+   .submit-active {
+    background-color: #43b02a;
+    color: black;
+    font-size: 18px;
+    &:hover {
+        background-color: #379424;
+    }
+   }

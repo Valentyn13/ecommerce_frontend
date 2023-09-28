@@ -42,12 +42,16 @@
     }
     &__catalog {
         display: flex;
+        cursor: pointer;
         background-color: #379424;
         justify-content: center;
         align-items: center;
         padding: 5px 15px 5px 15px;
         h3 {
             padding-right: 120px;
+        }
+        &:hover {
+            background-color: #298517;
         }
     }
 
@@ -126,6 +130,9 @@
     background-color: #379424;
     justify-content: center;
     align-items: center;
+    &:hover {
+        background-color: #298517;
+    }
     &__text{
         font-size: 18px;
         margin-left: 20px;

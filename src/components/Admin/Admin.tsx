@@ -189,12 +189,14 @@ const Admin = () => {
       <div className="admin__container _container">
         <div className="admin__add_section add_section">
           <h2 className="add_section__header">Add new laptop</h2>
+          <div className="add_section__buttons-wrapper">
           <button className="add_section__button">
             <Link to="/">Home</Link>
           </button>
           <button className="add_section__button">
             <Link to="/profile">Profile</Link>
           </button>
+          </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="add_section__container">
               <AdminFormArea areaName="Laptop images">
@@ -360,7 +362,7 @@ const Admin = () => {
                 />
               </AdminFormArea>
             </div>
-            <input type="submit" disabled={!isValid} />
+            <input className={isValid ? "form-admin-submit  submit-active" : "form-admin-submit"  } type="submit" disabled={!isValid} />
           </form>
         </div>
       </div>

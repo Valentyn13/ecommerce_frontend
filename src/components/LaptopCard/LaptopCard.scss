@@ -67,29 +67,29 @@ cursor: pointer;
         color:#43b02a;
     }
 }
-
-.action {
-    font-size: 17px;
+.action-container {
     position: absolute;
     top: 10px;
     left: 10px;
+    div {
+        margin-right: 10px;
+    }
+}
+.action {
+    font-size: 17px;
     background-color: red;
     border-radius: 20px;
     color: #fff;
-    padding: 5px 8px 5px 8px;
+    padding: 5px 8px;
     display: inline-block;
-
 }
 
 .sale {
     font-size: 17px;
     color: #fff;
-    position: absolute;
-    top: 10px;
-    left: 35%;
     background-color: orange;
     border-radius: 20px;
-    padding: 5px 8px 5px 8px;
+    padding: 5px 8px;
     display: inline-block;
 }
 

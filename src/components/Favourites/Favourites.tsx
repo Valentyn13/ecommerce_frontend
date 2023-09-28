@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { Dispatch, FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ILaptop } from "../../types/laptop.types";
@@ -8,11 +9,14 @@ import "./Favourites.scss";
 
 interface IFavouritesCardProps {
   favouriteElement: ILaptop;
+  setModalActive: Dispatch<React.SetStateAction<boolean>>;
 }
 export const FavouritesCard: FC<IFavouritesCardProps> = ({
   favouriteElement,
+  setModalActive,
 }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   return (
     <div className="favouriteCard">
@@ -35,15 +39,24 @@ export const FavouritesCard: FC<IFavouritesCardProps> = ({
             >
               Unfavourite
             </button>
-            <button>More</button>
+            <button
+              onClick={() => {
+                setModalActive(false);
+                navigate(`/laptop/${favouriteElement._id}`);
+              }}
+            >
+              More
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
-const Favourites = () => {
+interface IFavouritesProps {
+  setIsFavouriteActive: Dispatch<React.SetStateAction<boolean>>;
+}
+const Favourites: FC<IFavouritesProps> = ({ setIsFavouriteActive }) => {
   const favourites = useAppSelector(
     (state) => state.compareAndFavourite.favourite
   );
@@ -53,7 +66,11 @@ const Favourites = () => {
       <h2> Your Favourites</h2>
       {favourites.map((favElement) => {
         return (
-          <FavouritesCard key={favElement._id} favouriteElement={favElement} />
+          <FavouritesCard
+            setModalActive={setIsFavouriteActive}
+            key={favElement._id}
+            favouriteElement={favElement}
+          />
         );
       })}
     </div>

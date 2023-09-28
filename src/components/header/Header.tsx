@@ -35,7 +35,7 @@ const Header = () => {
   const [isCartActive, setIsCartActive] = useState(false);
   const [isFavouritesActive, setIsFavouritesActive] = useState(false);
   const [isCompareModalActive, setIsCompareModalActive] = useState(false);
-  
+
   const logoutHandler: MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(clearCart());
     dispatch(logout());
@@ -45,7 +45,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header__container _container">
-        <div className="header__catalog catalog">
+        <div className="header__catalog catalog" onClick={() => {navigate('/')}}>
           <div className="catalog__icon">
             <CatalogIcon />
           </div>
@@ -137,7 +137,7 @@ const Header = () => {
         modalJustifyContent="flex-end"
         active={isFavouritesActive}
         setActive={setIsFavouritesActive}
-        children={<Favourites />}
+        children={<Favourites setIsFavouriteActive={setIsFavouritesActive} />}
       />
       <Modal
         active={isCompareModalActive}

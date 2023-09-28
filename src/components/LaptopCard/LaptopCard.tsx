@@ -97,12 +97,22 @@ const LaptopCard: FC<ILaptopCardProps> = ({
 
   return (
     <div className="laptop_card__wrapper">
-      {isAction && <div className="action">Action</div>}
-      {inSale && <div className="sale">Top in sale</div>}
+      {(isAction || inSale) && (
+        <div className="action-container">
+          {isAction && <div className="action">Action</div>}
+          {inSale && <div className="sale">Top in sale</div>}
+        </div>
+      )}
       <div className="card-icons">
-        <div           onClick={() =>
-            isInFavouritesController(isInFavourites, laptopProps._id, laptopProps)
-          }>
+        <div
+          onClick={() =>
+            isInFavouritesController(
+              isInFavourites,
+              laptopProps._id,
+              laptopProps
+            )
+          }
+        >
           {isInFavourites ? (
             <FilledHeart style={{ color: "red" }} />
           ) : (

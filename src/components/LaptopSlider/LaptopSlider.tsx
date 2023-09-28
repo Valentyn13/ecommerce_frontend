@@ -1,17 +1,19 @@
-import { FC, useState } from "react";
+import { FC , useState } from "react";
 
 import { ISliderImagesFetchData } from "../../types/sliderImages.types";
 import { useGetSliderImagesQuery } from "../../redux/Slices/api/sliderImagesApiSlice";
+
+import "./LaptopSlider.scss";
 import Preloader from "../Preloader/Preloader";
 
 interface ILaptopSliderProps {
-  id:string
+  id: string;
 }
 
-const LaptopSlider: FC<ILaptopSliderProps> = ({id}) => {
+const LaptopSlider: FC<ILaptopSliderProps> = ({ id }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  const {data, isLoading, isSuccess} = useGetSliderImagesQuery(id)
+  const { data, isSuccess, isLoading } = useGetSliderImagesQuery(id);
 
   const nextSlide = (data: ISliderImagesFetchData) => {
     const isLastSlide = currentSlideIndex === data.images.length - 1;
@@ -24,16 +26,19 @@ const LaptopSlider: FC<ILaptopSliderProps> = ({id}) => {
     const newIndex = isFirst ? data.images.length - 1 : currentSlideIndex - 1;
     setCurrentSlideIndex(newIndex);
   };
+
   return (
     <>
-    {isLoading && <Preloader/>}
-      { isSuccess && data && (
-        <div className="laptopModal__slider laptopSlider">
-          <img
-            className="slider-img"
-            src={data.images[currentSlideIndex]}
-            alt="slider image"
-          />
+    {isLoading && (<Preloader/>)}
+      {isSuccess && data && (
+        <>
+          <div>
+            <img
+              className="slider-img"
+              src={data.images[currentSlideIndex]}
+              alt="slider image"
+            />
+          </div>
           <img
             onClick={() => nextSlide(data)}
             className="arrow_next"
@@ -46,7 +51,7 @@ const LaptopSlider: FC<ILaptopSliderProps> = ({id}) => {
             src="/arrow2.png"
             alt="arrow"
           />
-        </div>
+        </>
       )}
     </>
   );

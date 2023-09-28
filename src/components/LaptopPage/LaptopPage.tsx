@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import Preloader from "../Preloader/Preloader";
 import LaptopSlider from "../LaptopSlider/LaptopSlider";
@@ -23,6 +24,7 @@ import {
   addItemToCompare,
   removeItemFromCompateList,
 } from "../../redux/Slices/comprasionAndFavouriteSlice";
+import { useDeleteSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
 
 import {
   AiOutlineHeart as HeartButton,
@@ -32,8 +34,8 @@ import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
 
 import "react-toastify/ReactToastify.min.css";
 import "./../LaptopModal/LaptopModal.scss";
-import { useDeleteSliderImagesMutation } from "../../redux/Slices/api/sliderImagesApiSlice";
-import { SubmitHandler, useForm } from "react-hook-form";
+
+
 import FormInput from "../FormInput/FormInput";
 
 const LaptopPage: FC = () => {
@@ -52,7 +54,6 @@ const LaptopPage: FC = () => {
   const [isEditModeActive, setIsEditModeActive] = useState(false);
   const [isInFavourites, setIsInFavourites] = useState(false);
   const [isInCompare, setIsInCompare] = useState(false);
-
   const user = useAppSelector((state) => state.auth.userInfo);
 
   const cartItems = useAppSelector((state) => state.cart.cartItems);
@@ -205,11 +206,13 @@ const LaptopPage: FC = () => {
   return (
     <div className="laptopModal">
       <ToastContainer />
-      {isLoading && <Preloader />}
+      {isLoading &&  (<Preloader />)}
       {data && (
         <div className="laptopModal__container _container">
           <div className="laptopModal__headerSection">
-            <LaptopSlider id={data._id} />
+          <div className="laptopModal__slider laptopSlider">
+          <LaptopSlider id={data._id} />
+          </div>
             <div className="laptopModal__mainInfo">
               <div className="laptopModal__InfoBlock">
                 <div className="laptopModal__name">{data.name}</div>

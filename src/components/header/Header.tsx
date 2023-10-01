@@ -39,6 +39,7 @@ const Header = () => {
   const [isFavouritesActive, setIsFavouritesActive] = useState(false);
   const [isCompareModalActive, setIsCompareModalActive] = useState(false);
   const [isBurgerActive, setIsBurgerActive] = useState(false);
+
   const logoutHandler: MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(clearCart());
     dispatch(logout());
@@ -49,7 +50,9 @@ const Header = () => {
     <header className="header">
       <div className="header__container _container">
         <div className="burger-button">
-          <BurgerButton onClick={() => setIsBurgerActive(true)} />
+          {!isBurgerActive && (
+            <BurgerButton onClick={() => setIsBurgerActive(true)} />
+          )}
         </div>
         <div
           className={
@@ -118,13 +121,23 @@ const Header = () => {
               </div>
             )}
             <div className="header__options__hw-icons">
-              <div onClick={() => setIsFavouritesActive(true)}>
+              <div
+                onClick={() => {
+                  setIsBurgerActive(false);
+                  setIsFavouritesActive(true);
+                }}
+              >
                 <MdFavorite />
                 {favourites.length > 0 && (
                   <div className="hw-icons__count">{favourites.length}</div>
                 )}
               </div>
-              <div onClick={() => setIsCompareModalActive(true)}>
+              <div
+                onClick={() => {
+                  setIsCompareModalActive(true);
+                  setIsBurgerActive(false);
+                }}
+              >
                 <FaScaleUnbalanced />
                 {compareList.length > 0 && (
                   <div className="hw-icons__count">{compareList.length}</div>

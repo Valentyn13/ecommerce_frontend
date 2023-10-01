@@ -1,5 +1,6 @@
 .filtersBar {
-    padding: 30px 15px 5px 15px;
+    position: relative;
+    padding: 20px 10px 5px 10px;
     height: 100%;
     &__block {
         h3{
@@ -16,7 +17,7 @@
 
         label {
         display: block;
-        width: 40%;
+        width: 100px;
         cursor: pointer;
         }
         input {
@@ -45,4 +46,23 @@
         }
     }
 
+    &__close {
+        cursor: pointer;
+        margin-bottom: 10px;
+        font-size: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+@media (max-width:400px) {
+    position: absolute;
+    background-color: #99f091fa;
+    z-index: 100;
+    width: 150px;
+    left: -300px;
+}
+
+}
+
+.filtersBar__active {
+    left: 0px;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, FC, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import FiltersBarBlock from "../FiltersBarBlock/FiltersBarBlock";
@@ -13,10 +13,15 @@ import {
   IFiletersFields,
   REDUCER_ACTION_TYPE,
 } from "../../types/filter.types";
-
+import { FaFilterCircleXmark as CloseFilter } from "react-icons/fa6";
 import "./FiltersBar.scss";
 
-const FiltersBar = () => {
+interface IFiltersBarProps {
+  isFilerOpen: boolean;
+  setIsFilterOpen: Dispatch<React.SetStateAction<boolean>>;
+}
+
+const FiltersBar: FC<IFiltersBarProps> = ({ isFilerOpen, setIsFilterOpen }) => {
   const dispatch = useAppDispatch();
   const [makeRquest, setMakeRequest] = useState(false);
   const [checkboxesValues, setCheckboxesValues] = useState<IFiletersFields>({
@@ -124,8 +129,13 @@ const FiltersBar = () => {
     fetchLaptops(fields);
   }, [makeRquest, pageNumber]);
   return (
-    <div className="filtersBar">
+    <div className={isFilerOpen ? "filtersBar filtersBar__active": "filtersBar"}>
       <ToastContainer />
+      {isFilerOpen && (
+        <div className="filtersBar__close">
+          <CloseFilter onClick={() => setIsFilterOpen(false)} />
+        </div>
+      )}
       <FiltersBarBlock name="Producer">
         <FiltersBarInput
           name="Asus"
@@ -251,6 +261,7 @@ const FiltersBar = () => {
       <button
         className="filtersBar__applyButton"
         onClick={() => {
+          setIsFilterOpen(false)
           setMakeRequest(!makeRquest);
         }}
       >

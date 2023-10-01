@@ -40,6 +40,14 @@ const CartWindow: FC<ICartWindowProps> = ({ setIsActive }) => {
       >
         Checkout
       </button>
+      <button
+        className="cartWindow__close"
+        onClick={() => {
+          setIsActive(false);
+        }}
+      >
+        Close cart
+      </button>
     </div>
   );
 };

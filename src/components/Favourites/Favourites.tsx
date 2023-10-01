@@ -73,6 +73,14 @@ const Favourites: FC<IFavouritesProps> = ({ setIsFavouriteActive }) => {
           />
         );
       })}
+      <button
+        className="cartWindow__close"
+        onClick={() => {
+          setIsFavouriteActive(false);
+        }}
+      >
+        Close favoutites
+      </button>
     </div>
   );
 };

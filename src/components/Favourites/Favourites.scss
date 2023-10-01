@@ -16,12 +16,17 @@
 .favouriteCard {
   padding: 10px;
   display: flex;
+  flex-wrap:nowrap;
   margin-bottom: 10px;
   border: 1px solid green;
   &__image {
-    flex-basis: 200px;
+    flex-basis: 250px;
     img {
       width: 100%;
+    }
+
+    @media (max-width:476px) {
+margin-bottom: 20px;
     }
   }
 
@@ -53,7 +58,7 @@
     flex-direction: column;
     gap: 10px;
     .unfavourite {
-      padding: 5px 10px;
+      padding: 8px 16px;
       border-radius: 5px;
       background-color: rgb(255, 121, 121);
       &:hover {
@@ -61,12 +66,18 @@
       }
     }
     button {
-      padding: 5px 10px;
+      padding: 8px 16px;
       border-radius: 5px;
       background-color: #52c23c;
       &:hover {
         background-color: #3bac24;
       }
     }
+  }
+
+  @media (max-width:476px) {
+    font-size: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

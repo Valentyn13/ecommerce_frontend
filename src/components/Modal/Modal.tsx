@@ -31,7 +31,7 @@ const Modal: FC<IModalProps> = ({
       onClick={() => setActive(false)}
     >
       <div
-        style={{ width: contentWidth, height: contentHeight }}
+        style={{ maxWidth: contentWidth, height: contentHeight }}
         className={active ? "modal__content content-active" : "modal__content"}
         onClick={(e) => e.stopPropagation()}
       >

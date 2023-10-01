@@ -1,7 +1,6 @@
 .deal {
-    font-size: 18px;
+    font-size: 20px;
     width: 100%;
-    //padding: 25px 10px;
     display: flex;
     flex-direction: column;
     border: 1px solid #379424;
@@ -10,13 +9,23 @@
         flex-direction: column;
         gap: 10px;
     }
-
+    &__items {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
     &__item {
         padding: 15px;
         background-color:white;
         border-bottom: 1px solid #379424;
         display: flex;
         width: 100%;
+        @media (max-width:720px) {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+        }
     }
     &__item_image {
         flex-basis: 150px;
@@ -32,9 +41,12 @@
         margin-left: 50px;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
         p {
             margin-bottom: 3px;
+        }
+        @media (max-width:720px) {
+            margin-left: 0px;
         }
     }
 
@@ -44,6 +56,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        @media (max-width:720px) {
+            flex-basis: auto;
+            align-items: flex-start
+        }
     }
 
     &__info {

@@ -2,12 +2,11 @@ import { Routes, Route } from "react-router-dom";
 
 import SingUp from "./SingUp/SingUp";
 import LogIn from "./Login/Login";
-import Home from "../pages/Home.page";
 import ProfilePpage from "../pages/Profile.page";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import AdminPage from "../pages/Admin.page";
 import CheckoutPage from "../pages/Checkout.page";
-
+import Layout from "../pages/Home.page";
 import { useAppSelector } from "../redux/hooks";
 import Hero from "./Hero/Hero";
 import LaptopPage from "./LaptopPage/LaptopPage";
@@ -18,12 +17,9 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Hero />} />
-          <Route
-          path="laptop/:id"
-          element= {<LaptopPage/>}
-          />
+          <Route path="laptop/:id" element={<LaptopPage />} />
           <Route
             path="profile"
             element={

@@ -35,7 +35,6 @@ import { LiaBalanceScaleSolid as Weights } from "react-icons/lia";
 import "react-toastify/ReactToastify.min.css";
 import "./../LaptopModal/LaptopModal.scss";
 
-
 import FormInput from "../FormInput/FormInput";
 
 const LaptopPage: FC = () => {
@@ -206,13 +205,13 @@ const LaptopPage: FC = () => {
   return (
     <div className="laptopModal">
       <ToastContainer />
-      {isLoading &&  (<Preloader />)}
+      {isLoading && <Preloader />}
       {data && (
         <div className="laptopModal__container _container">
           <div className="laptopModal__headerSection">
-          <div className="laptopModal__slider laptopSlider">
-          <LaptopSlider id={data._id} />
-          </div>
+            <div className="laptopModal__slider laptopSlider">
+              <LaptopSlider id={data._id} />
+            </div>
             <div className="laptopModal__mainInfo">
               <div className="laptopModal__InfoBlock">
                 <div className="laptopModal__name">{data.name}</div>

@@ -36,6 +36,7 @@
     }
 
     @media (max-width: 640px) {
+      grid-auto-rows:auto ;
       grid-template-columns: repeat(1,1fr);
     }
 }

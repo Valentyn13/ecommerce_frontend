@@ -245,24 +245,28 @@ const LaptopPage: FC = () => {
                       Add to cart +
                     </button>
                   )}
-                  {user && user.user.role === "ADMIN" && isEditModeActive ? (
-                    <button
-                      style={{
-                        backgroundColor: isValid ? "yellow" : "lightgray",
-                        cursor: isValid ? "pointer" : "not-allowed",
-                      }}
-                      disabled={!isValid}
-                      onClick={handleSubmit(handleEditChangesSubmit)}
-                    >
-                      Save changes
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setIsEditModeActive(true)}
-                      style={{ backgroundColor: "orange" }}
-                    >
-                      Edit laptop
-                    </button>
+                  {user && user.user.role === "ADMIN" && (
+                    <>
+                      {isEditModeActive ? (
+                        <button
+                          style={{
+                            backgroundColor: isValid ? "yellow" : "lightgray",
+                            cursor: isValid ? "pointer" : "not-allowed",
+                          }}
+                          disabled={!isValid}
+                          onClick={handleSubmit(handleEditChangesSubmit)}
+                        >
+                          Save changes
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setIsEditModeActive(true)}
+                          style={{ backgroundColor: "orange" }}
+                        >
+                          Edit laptop
+                        </button>
+                      )}
+                    </>
                   )}
                   {user && user.user.role === "ADMIN" && (
                     <button

@@ -21,6 +21,7 @@ import {
   RxCross1 as CloseBurger,
 } from "react-icons/rx";
 import "./Header.scss";
+import { createNewCompareList } from "../../utils/utils";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -197,9 +198,9 @@ const Header = () => {
       <Modal
         active={isCompareModalActive}
         setActive={setIsCompareModalActive}
-        children={<CompareWindow compareItems={compareList} />}
+        children={<CompareWindow setActive={setIsCompareModalActive} compareItems={createNewCompareList(compareList)} />}
         contentHeight="100%"
-        contentWidth="80%"
+        contentWidth="100%"
         modalJustifyContent="center"
       />
     </header>

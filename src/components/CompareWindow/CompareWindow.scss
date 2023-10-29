@@ -1,87 +1,106 @@
 .compareWindow {
     color: black;
-    height: 100%;
-    display: flex;
-    gap: 10px;
-    padding: 20px;
+    padding: 10px;
     overflow-y: scroll;
+    height: 100%;
     &__warning {
         text-align: center;
         font-size: 24px;
         color: gray;
     }
+    &__actions {
+         display: flex;
+         justify-content: space-evenly;
+    }
 }
-.compareElement {
-    flex-basis: 50%;
-    padding: 5px;
-    &__image {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+
+.comp-remove-btn {
+    display: block;
+    width: 100%;
+    transition: 0.15s;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin-left: 5px;
+    background-color: rgb(243, 120, 120);
+    &:hover {
+        background-color: rgb(255, 80, 80);
+    }
+}
+.actions_container {
+    flex-basis: 200px;
+}
+.table {
+    max-width: 800px;
+    overflow-y: scroll;
+    &__container {
+    }
+    &__images-container{
+        display:  grid;
+        grid-template-columns: calc(50% - 5px) calc(50% - 5px);
+        grid-template-rows: 400px;
+        gap: 10px;
         margin-bottom: 20px;
-        height: 300px;
         img {
             width: 100%;
             height: 100%;
         }
     }
+    &__data-container{
+        border:  1px solid gray;
+        border-bottom: none;
+        display:  grid;
+        grid-template-columns: 20% 40% 40%;
 
-    .mainSection {
-        width: 100%;
-        &__block {
-            margin-bottom: 20px;
-            h2 {
-                line-height: 140%;
-                font-size: 25px;
-                font-weight: 600;
-                margin-bottom: 8px;
-            }
-        }
-        &__element {
-            font-size: 20px;
-            line-height: 120%;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            div {
-                flex-grow: 1;
-                display: inline-flex;
-                div {
-                    flex-grow: 1;
-                    border-bottom: 1px dotted #d2d2d2;
-                }
-            }
-    
-        }
-        button {
-            display: block;
-            padding: 5px 25px;
-            border-radius: 5px;
-            margin:  0 auto;
-            margin-bottom: 10px;
-        }
-        .add-to-cart {
-            background-color: green;
-            transition: 0.15s;
-            &:hover {
-                background-color: rgb(27, 216, 84);
-            }
+        @media (max-width: 700px) {
+            grid-template-columns: 50% 50%;
         }
     }
 
-    @media (max-width:800px) {
-        &:first-of-type {
-            margin-right: 0px;
-           border-right: 2px solid black;
-           
+    &__column {
+        border-bottom: 1px solid gray;
+        border-right:  1px solid gray;
+        display: grid;
+        background-color: rgb(255, 255, 255);
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(10,90px);
+        &:last-child {
+            border-right: none; 
+          }
+        div {
+            background-color: rgb(255, 255, 255);
+            font-size: 20px;
+            padding: 5px;
+            //min-width: 215px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid gray;
+            &:last-child {
+              border-bottom: none;  
+            }
+
+            @media (max-width: 850px) {
+                font-size: 16px;
+            }
         }
     }
 }
 
-.comp-remove-btn {
-    transition: 0.15s;
-    background-color: rgb(243, 120, 120);
-    &:hover {
-        background-color: rgb(255, 80, 80);
+.key_column {
+    @media (max-width: 700px) {
+     display: none;
     }
+}
+.close_window_controller {
+    margin-top: 40px;
+    display: flex;
+    justify-content:  center;
+}
+.close_window {
+    display: block;
+    width: 50%;
+    font-size: 18px;
+    background-color: green;
+    padding: 10px 20px;
 }

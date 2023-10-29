@@ -5,6 +5,7 @@ import {
 } from "../redux/Slices/comprasionAndFavouriteSlice";
 import { ICartLaptopList } from "../types/cart.types";
 import { IFiletersFieldsPrepeared } from "../types/filter.types";
+import { ILaptop } from "../types/laptop.types";
 
 export const total = (arr: ICartLaptopList) =>
   arr.reduce((acc, element) => {
@@ -74,3 +75,60 @@ export const isInCompareExist = (
     return exist;
   };
 };
+
+export const flattenObj = (ob: any) => {
+  // The object which contains the
+  // final result
+  const result = {} as any;
+
+  // loop through the object "ob"
+  for (const i in ob) {
+    // We check the type of the i using
+    // typeof() function and recursively
+    // call the function again
+    if (typeof ob[i] === "object" && !Array.isArray(ob[i])) {
+      const temp = flattenObj(ob[i]);
+      for (const j in temp) {
+        // Store temp in result
+          result[j] = temp[j];
+      }
+    }
+
+    // Else store ob[i] in result directly
+    else {
+      result[i] = ob[i];
+    }
+  }
+  return result;
+};
+
+export const createNewCompareList = (list:ILaptop[]) => {
+  const newList =  list.map((el) => flattenObj(el))
+  const newData = newList.reduce((acc, curr) => {
+    const keyArr = []
+    const dataArr =[]
+    let _id =''
+    for (const key in curr) {
+      if (key == '_id') {
+        _id = curr[key]
+      }
+      if (key !== '_id' && key !== '__v'){
+        keyArr.push(key)
+        dataArr.push(curr[key])
+      }
+    }
+    acc.push({
+      keys: keyArr,
+      data: dataArr,
+      _id
+    })
+    return acc
+  }, [])
+  return newData
+}
+
+
+export const findMainImage = (list: string[]) => {
+  const image = list.find(el => String(el).slice(0,4) === 'data')
+return image
+}
